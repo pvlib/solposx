@@ -1,0 +1,96 @@
+name: Build & Publish package to PyPI
+
+# CI setup instructions:
+# 1. Replace 'assessingsolar/solposx' and 'solposx' with your GitHub organization and repository name
+# 2. Create a new environment for additional protection and security in the GitHub UI:
+#    Settings > Environments
+#    Name: release
+# 3. Setup trusted publishing for the release environment:
+#    https://docs.pypi.org/trusted-publishers/
+# 4. Ensure your main development branch is named 'main'; if not, update the workflow or rename the branch
+
+# This workflow is triggered on pull requests that target the main branch
+# on pushes to the main branch new tags that start with 'v' (for example, 'v1.0.0').
+# Only the main branch is used for publishing to PyPI, in the second job.
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+env:
+  python-version: "3.12"
+
+jobs:
+  build-distribution:
+    name: Build distribution
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      # Deep clone to fetch all commits and tags, by setting the fetch-depth to 0
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.python-version }}
+
+    - name: Install build tools
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade setuptools wheel build twine
+
+    - name: Build packages
+      # creates the necessary distribution files to /dist
+      run: python -m build
+
+    - name: Check metadata verification
+      # this step ensures the metadata is correct and complete
+      # it is a good practice to run this before publishing to PyPI
+      run: python -m twine check --strict dist/*
+
+    - name: Distribution files & installation sizes
+      # this step is useful to get some useful metrics and ensure changes do not break the size of the distribution
+      run: |
+        echo "Distribution files sizes"
+        du -sh dist/*
+        python -m pip install dist/*.whl --target /tmp/assessingsolar --quiet --quiet
+        echo "Installation size of wheel"
+        du -sh /tmp/assessingsolar/solposx
+
+    - name: Upload artifact with distribution files
+      # this step uploads the distribution files to the GitHub artifact store if they are needed later to publish to PyPI
+      if: github.repository == 'assessingsolar/solposx' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+      uses: actions/upload-artifact@v4
+      with:
+        name: distro-files
+        path: dist/
+        if-no-files-found: error  # files are required in the next job
+        retention-days: 1  # delete the artifact after 1 day, no need to keep it for too long
+        compression-level: 0  # no need to compress the files
+
+  publish-distribution:
+    name: Upload distribution to PyPI
+    runs-on: ubuntu-latest
+    needs: build-distribution  # first build, then publish
+    # only publish distribution to PyPI in tagged commits
+    if: github.repository == 'assessingsolar/solposx' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    environment: release
+    permissions:
+      id-token: write  # this permission mandatory for trusted publishing
+    steps:
+      - name: Download artifact with distribution files
+        uses: actions/download-artifact@v4
+        with:
+          name: distro-files
+          path: dist/
+
+      - name: Publish distribution to PyPI
+        # this step publishes the distribution files to PyPI by using PyPI trusted publishers
+        # https://docs.pypi.org/trusted-publishers/
+        uses: pypa/gh-action-pypi-publish@release/v1
