@@ -1,1 +1,1 @@
-from .hughes import hughes # noqa: F401
+from .hughes import hughes  # noqa: F401

@@ -2,6 +2,7 @@
 
 import pvlib
 
+
 def _pandas_to_utc(pd_object):
     """
     Convert a pandas datetime-like object to UTC, if localized.
@@ -72,7 +73,7 @@ def calc_error(zenith_1, azimuth_1, zenith_2, azimuth_2):
     azimuth_diff = (azimuth_1 - azimuth_2 + 180) % 360 - 180  # handle 0/360 correctly
     azimuth_bias = azimuth_diff.mean()
     azimuth_rmsd = (azimuth_diff**2).mean()**0.5
-    
+
     aoi = pvlib.irradiance.aoi(zenith_1, azimuth_1, zenith_2, azimuth_2)
     combined_rmsd = (aoi**2).mean()**0.5
 

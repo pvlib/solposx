@@ -6,7 +6,7 @@ except PackageNotFoundError:  # pragma: no cover
     __version__ = "0+unknown"
 
 # Make the modules directly available to the package
-from solposx import (
+from solposx import (  # noqa: F401
     solarposition,
     refraction,
     tools,

@@ -1,1 +1,1 @@
-from .iqbal import iqbal # noqa: F401
+from .iqbal import iqbal  # noqa: F401
