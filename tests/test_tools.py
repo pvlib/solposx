@@ -39,8 +39,10 @@ def expected_calc_error():
     N = 10
     out = {
         'zenith_bias': np.zeros(N),
+        'zenith_mad': np.zeros(N),
         'zenith_rmsd': np.zeros(N),
         'azimuth_bias': np.zeros(N),
+        'azimuth_mad': np.zeros(N),
         'azimuth_rmsd': np.zeros(N),
         'combined_rmsd': np.zeros(N),
     }
@@ -52,3 +54,4 @@ def test_calc_error(expected_calc_error):
     result = calc_error(zeros, zeros, zeros, zeros)
     for k in expected_calc_error.keys():
         np.testing.assert_equal(result[k], expected_calc_error[k])
+    assert len(result.keys()) == len(expected_calc_error.keys())

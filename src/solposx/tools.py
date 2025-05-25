@@ -1,6 +1,7 @@
 """Collection of utility functions."""
 
 import pvlib
+import numpy as np
 
 
 def _pandas_to_utc(pd_object):
@@ -69,12 +70,12 @@ def calc_error(zenith_1, azimuth_1, zenith_2, azimuth_2):
     """
     zenith_diff = zenith_1 - zenith_2
     zenith_bias = zenith_diff.mean()
-    zenith_mad = zenith_diff.abs().mean()
+    zenith_mad = np.abs(zenith_diff).mean()
     zenith_rmsd = (zenith_diff**2).mean()**0.5
 
     azimuth_diff = (azimuth_1 - azimuth_2 + 180) % 360 - 180  # handle 0/360 correctly
     azimuth_bias = azimuth_diff.mean()
-    azimuth_mad = azimuth_diff.abs().mean()
+    azimuth_mad = np.abs(azimuth_diff).mean()
     azimuth_rmsd = (azimuth_diff**2).mean()**0.5
 
     aoi = pvlib.irradiance.aoi(zenith_1, azimuth_1, zenith_2, azimuth_2)
