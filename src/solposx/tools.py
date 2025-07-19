@@ -56,7 +56,7 @@ def calc_error(zenith_1, azimuth_1, zenith_2, azimuth_2):
     zenith_1, zenith_2 : array-like
         Zenith angles for the two sets of solar positions. [degrees]
     azimuth_1, azimuth_2 : array-like
-        Azimuth angles for the two sets of solar position. [degrees]
+        Azimuth angles for the two sets of solar positions. [degrees]
 
     Returns
     -------
