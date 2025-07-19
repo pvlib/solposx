@@ -26,7 +26,6 @@ author = 'Adam R. Jensen'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'myst_nb',  # markdown and jupyter-notebook parsing
     'sphinx.ext.autodoc',  # generate documentation from docstrings
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',

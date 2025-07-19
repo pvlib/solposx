@@ -1,1 +1,1 @@
-from .iqbal import iqbal  # noqa: F401
+from solposx.solarposition.iqbal import iqbal  # noqa: F401
