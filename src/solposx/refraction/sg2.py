@@ -3,7 +3,7 @@ import numpy as np
 
 
 def sg2(elevation, pressure=101325., temperature=12.):
-    """
+    r"""
     Atmospheric refraction correction of solar position based on SG2.
 
     This function calculates the atmospheric refraction correction of the solar
@@ -28,11 +28,13 @@ def sg2(elevation, pressure=101325., temperature=12.):
     The equation to calculate the refraction correction is given by:
 
     .. math::
-       For el > -0.01 [rad]:
-           ref = \frac{P}{1010}*\frac{283}{273+T}*\frac{2.96706*10^{-4}}{tan(el+0.0031376*(el+0.089186)^{-1})}
 
-       For el < -0.01 [rad]:
-           ref = -\frac{P}{1010}*\frac{283}{273+T}*\frac{1.005516*10^{-4}}{tan(el)}
+       \begin{cases}
+
+       \frac{P}{1010}*\frac{283}{273+T}*\frac{2.96706*10^{-4}}{tan(el+0.0031376*(el+0.089186)^{-1})} & \text{if } el > -0.01 [\text{rad}]
+
+       -\frac{P}{1010}*\frac{283}{273+T}*\frac{1.005516*10^{-4}}{tan(el)} & \text{for } el < -0.01 [\text{rad}]
+       \end{cases}
 
     where :math:`P` is the local air pressure, :math:`T` is the local air
     temperature, and :math:`el` is the true solar elevation angle.

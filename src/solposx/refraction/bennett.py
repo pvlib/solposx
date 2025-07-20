@@ -28,6 +28,7 @@ def bennett(elevation, pressure=101325., temperature=12.):
     The equation to calculate the refraction correction is given by:
 
     .. math::
+
        ref = (\frac{0.28*P}{T+273})*\frac{0.016667}{tan(el+\frac{7.31}{el+4.4})}
 
     where :math:`P` is the local air pressure, :math:`T` is the local air

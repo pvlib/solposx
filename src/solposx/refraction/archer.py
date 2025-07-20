@@ -26,6 +26,7 @@ def archer(elevation):
     The equation to calculate the refraction correction is given by:
 
     .. math::
+
         C = cos(Z) + 0.0083 * (\frac{1}{0.955 + (20.267 * cos(Z))} - 0.047121)
         Z_a = arccos(C)
         refraction = Z - Z_a
@@ -40,7 +41,9 @@ def archer(elevation):
        :doi:`10.1016/0038-092X(80)90410-7`.
     .. [2] Walraven R., Calculating the position of the sun., Solar Energy,
        vol. 20, pp. 393-397. :doi:`10.1016/0038-092X(78)90155-X`.
+
     """
+
     zenith = 90 - elevation
     C1 = cosd(zenith)
     D = 1 / (0.955 + (20.267 * C1)) - 0.047121

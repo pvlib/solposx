@@ -31,7 +31,9 @@ def spa(elevation, pressure=101325, temperature=12, atmos_refract=0.5667):
     The equation to calculate the refraction correction is given by:
 
     .. math::
-        ref = \frac{P}{1010} * \frac{283}{273 + T} * \frac{1.02}{60 * tan(el + \frac{10.3}{el + 5.11})}
+
+       ref = \frac{P}{1010} * \frac{283}{273 + T} * \frac{1.02}{60 * tan(el + \frac{10.3}{el + 
+5.11})}
 
     where :math:`P` is the local air pressure, :math:`T` is the local air
     temperature and :math:`el` is the true solar elevation angle.
@@ -41,6 +43,7 @@ def spa(elevation, pressure=101325, temperature=12, atmos_refract=0.5667):
     .. [1] I. Reda, A. Andreas "Solar Position Algorithm for Solar Radiation
        Applications (Revised)." 2008. NREL Report No. TP-560-34302, pp. 55
        :doi:`10.2172/15003974`.
+
     """  # noqa: #501
 
     pressure = pressure / 100  # convert to hPa

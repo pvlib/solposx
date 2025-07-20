@@ -23,6 +23,7 @@ def michalsky(elevation):
     The equation to calculate the refraction correction is given by:
 
     .. math::
+
         ref = \frac{3.51561 * (0.1594 + 0.0196 * el + 0.00002 * el^2)}{1 + 0.505 * el + 0.0845 * el^2}
 
     where :math:`el` is the true (uncorrected) solar elevation angle.
