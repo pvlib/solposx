@@ -50,6 +50,7 @@ optional = ["skyfield"]
 test = ["pytest>=7", "pytest-cov", "packaging"]
 doc = [
     "sphinx==8.2.3",
+    "myst-nb==1.1.2",
     "sphinx-book-theme==1.1.4",
     "pvlib==0.13.0",
     "pandas==2.3.0",
