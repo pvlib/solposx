@@ -41,7 +41,7 @@ def spa(elevation, pressure=101325, temperature=12, atmos_refract=0.5667):
     .. [1] I. Reda, A. Andreas "Solar Position Algorithm for Solar Radiation
        Applications (Revised)." 2008. NREL Report No. TP-560-34302, pp. 55
        :doi:`10.2172/15003974`.
-    """
+    """  # noqa: #501
 
     pressure = pressure / 100  # convert to hPa
     # switch sets elevation when the sun is below the horizon
