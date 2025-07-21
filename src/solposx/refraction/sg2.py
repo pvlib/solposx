@@ -4,14 +4,14 @@ import numpy as np
 
 def sg2(elevation, pressure=101325., temperature=12.):
     r"""
-    Atmospheric refraction correction of solar position based on SG2.
+    Atmospheric refraction correction based on the algorithm in SG2.
 
     This function calculates the atmospheric refraction correction of the solar
     elevation angle using the method developed by Ph. Blanc and L. Wald [1]_.
 
     Parameters
     ----------
-    elevation : numeric
+    elevation : array-like
         True solar elevation angle (not accounting for refraction). [degrees]
     pressure : numeric, default 101325
         Local atmospheric pressure. [Pascal]
@@ -20,7 +20,7 @@ def sg2(elevation, pressure=101325., temperature=12.):
 
     Returns
     -------
-    refraction_correction : numeric
+    refraction_correction : array-like
         Refraction correction. [degrees]
 
     Notes
@@ -31,13 +31,13 @@ def sg2(elevation, pressure=101325., temperature=12.):
 
        \begin{cases}
 
-       \frac{P}{1010}*\frac{283}{273+T}*\frac{2.96706*10^{-4}}{tan(el+0.0031376*(el+0.089186)^{-1})} & \text{if } el > -0.01 [\text{rad}]
+       \frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{2.96706 \cdot 10^{-4}}{\text{tan}(el+0.0031376 \cdot (el+0.089186)^{-1})} & \text{for } el > -0.01 \text{ [rad]}
 
-       -\frac{P}{1010}*\frac{283}{273+T}*\frac{1.005516*10^{-4}}{tan(el)} & \text{for } el < -0.01 [\text{rad}]
+       -\frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{1.005516 \cdot 10^{-4}}{\text{tan}(el)} & \text{for } el < -0.01 \text{ [rad]}
        \end{cases}
 
-    where :math:`P` is the local air pressure, :math:`T` is the local air
-    temperature, and :math:`el` is the true solar elevation angle.
+    where :math:`el` is the true solar elevation angle, :math:`P` is the local
+    air pressure, :math:`T` is the local air temperature.
 
     References
     ----------

@@ -6,10 +6,9 @@ from solposx.tools import _pandas_to_utc, _fractional_hour
 
 def iqbal(times, latitude, longitude):
     """
-    Calculate solar position using Iqbal's algorithm.
+    Calculate solar position using the Iqbal algorithm.
 
-    The Iqbal algorithm [1]_ is based on equations in [2]_ has a stated
-    accuracy of YYY degrees from years ZZZ to ZZZ.
+    The Iqbal algorithm [1]_ is based on equations in [2]_.
 
     Parameters
     ----------
@@ -19,16 +18,15 @@ def iqbal(times, latitude, longitude):
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
     longitude : float
-        Longitude in decimal degrees. Positive east of prime meridian,
-        negative to west. [degrees]
+        Longitude in decimal degrees. Positive east of the prime meridian,
+        negative to the west. [degrees]
 
     Returns
     -------
     DataFrame with the following columns (all values in degrees):
-
-        * elevation : actual sun elevation (not accounting for refraction).
-        * zenith : actual sun zenith (not accounting for refraction).
-        * azimuth : sun azimuth, east of north.
+        - elevation : actual sun elevation (not accounting for refraction).
+        - zenith : actual sun zenith (not accounting for refraction).
+        - azimuth : sun azimuth, east of north.
 
     References
     ----------

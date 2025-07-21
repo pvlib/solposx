@@ -3,10 +3,10 @@ from pvlib.tools import tand
 
 
 def bennett(elevation, pressure=101325., temperature=12.):
-    """
-    Atmospheric refraction correction of solar position based on G. Bennett.
+    r"""
+    Atmospheric refraction correction based on the Bennett algorithm.
 
-    This function calculates the atmospheric refraction correction of the solar
+    Calculation of atmospheric refraction correction of the solar
     elevation angle using the method developed by Bennett [1]_.
 
     Parameters
@@ -29,7 +29,7 @@ def bennett(elevation, pressure=101325., temperature=12.):
 
     .. math::
 
-       ref = (\frac{0.28*P}{T+273})*\frac{0.016667}{tan(el+\frac{7.31}{el+4.4})}
+       ref = \frac{0.28*P}{T+273} \cdot \frac{0.016667}{\text{tan}(el + 7.31 / (el+4.4))}
 
     where :math:`P` is the local air pressure, :math:`T` is the local air
     temperature, and :math:`el` is the true (uncorrected) solar elevation angle.
@@ -39,7 +39,6 @@ def bennett(elevation, pressure=101325., temperature=12.):
     .. [1] G. Bennett, "The calculation of astronomical refraction in marine
        navigation.", Journal of Navigation, volume 35, issue 2, pp. 255-259
        (1982), :doi:`10.1017/S0373463300022037`.
-
     """
 
     pressure = pressure / 100  # convert to hPa
