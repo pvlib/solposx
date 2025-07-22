@@ -22,4 +22,4 @@ jobs:
         pip install flake8
     - name: Lint with flake8
       run: |
-        flake8 . --count --max-line-length=99 --statistics
+        flake8 . --count --max-line-length=99 --statistics --ignore=E741

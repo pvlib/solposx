@@ -17,10 +17,14 @@ _PSA_PARAMS = {
     ]
 }
 
+
 def psa(times, latitude, longitude, coefficients=2020):
     """
-    Calculate solar position using the algorithm developed at the
-    Plataforma Solar de Almería (PSA).
+    Calculate solar position using the PSA algorithm.
+
+    The algorithm was developed at Plataforma Solar de Almería (PSA).
+    [1]_ and has a stated accuracy of 0.0083 degrees for the period 1999 to
+    2015.
 
     This algorithm can use two sets of coefficients: TODO
     2001 - tuned to the range XX, with accuracy YY
@@ -36,18 +40,21 @@ def psa(times, latitude, longitude, coefficients=2020):
     longitude : float
         Longitude in decimal degrees. Positive east of prime meridian,
         negative to west.
-    coefficients : TYPE, optional
-        DESCRIPTION. The default is 2020.
+    coefficients : int, default 2020
+        DESCRIPTION.
 
     Raises
     ------
     ValueError
-        DESCRIPTION.
+        Raises an error if ``coefficients`` is not in [2001, 2020].
 
     Returns
     -------
-    TYPE
-        DESCRIPTION.
+    DataFrame with the following columns (all values in degrees):
+
+        * elevation : actual sun elevation (not accounting for refraction).
+        * azimuth : sun azimuth, east of north.
+        * zenith : actual sun zenith (not accounting for refraction).
 
     References
     ----------

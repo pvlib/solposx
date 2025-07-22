@@ -44,7 +44,6 @@ def spa(elevation, pressure=101325., temperature=12., refraction_limit=0.5667):
        Applications (Revised)." 2008. NREL Report No. TP-560-34302, pp. 55
        :doi:`10.2172/15003974`.
     """  # noqa: #501
-
     pressure = pressure / 100  # convert to hPa
     # switch sets elevation when the sun is below the horizon
     switch = elevation >= -1.0 * (0.26667 + refraction_limit)
