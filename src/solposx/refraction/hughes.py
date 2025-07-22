@@ -49,7 +49,7 @@ def hughes(elevation, pressure=101325., temperature=12.):
     ----------
     .. [1] J. C. Zimmerman, "Sun-pointing programs and their accuracy."
        SANDIA Technical Report SAND-81-0761, :doi:`10.2172/6377969`.
-    """
+    """  # noqa: #501
     TanEl = pd.Series(np.tan(np.radians(elevation)))
     Refract = pd.Series(0, TanEl.index, dtype=np.float64)
 
