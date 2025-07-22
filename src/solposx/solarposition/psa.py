@@ -22,9 +22,8 @@ def psa(times, latitude, longitude, coefficients=2020):
     """
     Calculate solar position using the PSA algorithm.
 
-    The algorithm was developed at Plataforma Solar de Almería (PSA).
-    [1]_ and has a stated accuracy of 0.0083 degrees for the period 1999 to
-    2015.
+    The algorithm was developed at Plataforma Solar de Almería (PSA)
+    [1]_ (2001) and [2]_ (2020).
 
     This algorithm can use two sets of coefficients: TODO
     2001 - tuned to the range XX, with accuracy YY
