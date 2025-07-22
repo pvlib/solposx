@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 
 project = 'solposx'
 copyright = '2025 Adam R. Jensen'
-author = 'Adam R. Jensen'
+author = 'Adam R. Jensen, Kevin S. Anderson, & Ioannis Sifnaios'
 
 
 # -- General configuration ---------------------------------------------------
@@ -26,6 +26,7 @@ author = 'Adam R. Jensen'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'myst_nb',  # markdown and jupyter-notebook parsing
     'sphinx.ext.autodoc',  # generate documentation from docstrings
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
