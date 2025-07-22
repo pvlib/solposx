@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from tools import _pandas_to_utc, _fractional_hour
+from solposx.tools import _pandas_to_utc, _fractional_hour
 
 
 def walraven(times, latitude, longitude):

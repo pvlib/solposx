@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-from tools import _pandas_to_utc, _fractional_hour
-from refraction.sg2 import sg2_refraction
+from solposx.tools import _pandas_to_utc, _fractional_hour
+from solposx import refraction
 
 
 def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
@@ -208,7 +208,7 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
     elevation_deg = np.rad2deg(elevation)
 
     # Atmospheric refraction correction term
-    refraction = sg2_refraction(elevation_deg, air_pressure, temperature)
+    refraction = refraction.sg2(elevation_deg, air_pressure, temperature)
 
     result = pd.DataFrame({
         'elevation': elevation_deg,

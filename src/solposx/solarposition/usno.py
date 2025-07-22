@@ -2,7 +2,7 @@ import pandas as pd
 from pvlib.tools import sind, cosd, tand, asind
 import numpy as np
 from pvlib import spa
-from tools import _pandas_to_utc
+from solposx.tools import _pandas_to_utc
 
 
 def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):

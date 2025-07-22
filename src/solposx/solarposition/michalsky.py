@@ -1,8 +1,8 @@
 from pvlib.tools import sind, cosd, asind
 import numpy as np
 import pandas as pd
-from refraction.michalsky import michalsky_refraction
-from tools import _pandas_to_utc, _fractional_hour
+from solposx import refraction
+from solposx.tools import _pandas_to_utc, _fractional_hour
 
 
 def michalsky(times, latitude, longitude, spencer_correction=True,
@@ -162,7 +162,7 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
         az = az % 360
 
     # refraction correction
-    r = michalsky_refraction(el)
+    r = refraction.michalsky(el)
 
     result = pd.DataFrame({
         'elevation': el,

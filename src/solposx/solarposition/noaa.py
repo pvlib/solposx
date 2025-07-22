@@ -1,8 +1,8 @@
 import pandas as pd
 from pvlib.tools import sind, cosd, asind, acosd, tand
 import numpy as np
-from refraction.hughes import hughes_refraction
-from tools import _pandas_to_utc, _fractional_hour
+from solposx import refraction
+from solposx.tools import _pandas_to_utc, _fractional_hour
 
 
 def noaa(times, latitude, longitude, delta_t=67.0):
@@ -124,7 +124,7 @@ def noaa(times, latitude, longitude, delta_t=67.0):
     )
 
     elevation = 90 - zenith
-    refraction_correction = hughes_refraction(
+    refraction_correction = refraction.hughes(
         elevation=elevation, pressure=101325, temperature=10)
 
     result = pd.DataFrame({
