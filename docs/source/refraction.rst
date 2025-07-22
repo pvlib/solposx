@@ -8,8 +8,8 @@ Refraction correction algorithms
    :toctree: generated/
 
    refraction.archer
-   refraction.bennett
-   refraction.hughes
-   refraction.michalsky
-   refraction.sg2
-   refraction.spa
+   refraction.bennett
+   refraction.hughes
+   refraction.michalsky
+   refraction.sg2
+   refraction.spa
