@@ -55,6 +55,7 @@ html_theme_options = {
     "repository_url": "https://github.com/assessingsolar/solposx",
     "use_issues_button": True,
     "use_repository_button": True,
+    "use_download_button": False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
