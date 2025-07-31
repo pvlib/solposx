@@ -20,6 +20,8 @@ Contributions to the repository, e.g., bug fixes, feature requests, are more tha
 :maxdepth: 1
 :hidden:
 
+solarposition_introduction
+refraction_introduction
 installation
 documentation
 whatsnew
