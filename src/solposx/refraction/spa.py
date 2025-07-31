@@ -15,9 +15,9 @@ def spa(elevation, pressure=101325., temperature=12., refraction_limit=-0.5667):
     elevation : array-like
         True solar elevation angle (not accounting for refraction). [degrees]
     pressure : numeric, default 101325
-        Local atmospheric pressure. [Pa]
+        Annual average local pressure. [Pa]
     temperature : numeric, default 12
-        Local air temperature. [C]
+        Annual average local air temperature. [C]
     refraction_limit : float, default -0.5667
         Solar elevation angle below which refraction is not applied, as the sun
         is assumed to be below horizon. Note that the sun diameter is added to
@@ -34,10 +34,10 @@ def spa(elevation, pressure=101325., temperature=12., refraction_limit=-0.5667):
 
     .. math::
 
-       ref = \frac{P}{1010} \cdot \frac{283}{273 + T} \cdot \frac{1.02}{60 \cdot \text{tan}(el + 10.3/(el + 5.11))}
+       ref = \frac{P}{101000} \cdot \frac{283}{273 + T} \cdot \frac{1.02}{60 \cdot \text{tan} (el + 10.3/(el + 5.11))}
 
-    where :math:`el` is the true solar elevation angle, :math:`P` is the local
-    air pressure, and :math:`T` is the local air temperature.
+    where :math:`el` is the true solar elevation angle, :math:`P` is the annual average local
+    air pressure, and :math:`T` is the annual average local air temperature.
 
     References
     ----------
@@ -45,7 +45,7 @@ def spa(elevation, pressure=101325., temperature=12., refraction_limit=-0.5667):
        Applications (Revised)." 2008. NREL Report No. TP-560-34302, pp. 55
        :doi:`10.2172/15003974`.
     """  # noqa: #501
-    pressure = pressure / 100  # convert to hPa
+    pressure = pressure / 100  # convert from Pa to hPa/mbar
     # switch sets elevation when the sun is below the horizon
     above_horizon = elevation >= (-0.26667 + refraction_limit)
 
