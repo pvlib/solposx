@@ -5,7 +5,7 @@ from solposx.tools import _pandas_to_utc, _fractional_hour
 
 def walraven(times, latitude, longitude):
     """
-    Calculate solar position using Walraven's algorithm.
+    Calculate solar position using the Walraven algorithm.
 
     Walraven's algorithm [1]_ has a stated accuracy of 0.01 degrees.
 
