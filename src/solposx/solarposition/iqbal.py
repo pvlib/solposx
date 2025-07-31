@@ -13,13 +13,14 @@ def iqbal(times, latitude, longitude):
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Must be localized or UTC will be assumed.
+        Time stamps for which to calculate solar position. Must be timezone
+        aware.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
     longitude : float
-        Longitude in decimal degrees. Positive east of the prime meridian,
-        negative to the west. [degrees]
+        Longitude in decimal degrees. Positive east of prime meridian,
+        negative to west. [degrees]
 
     Returns
     -------
