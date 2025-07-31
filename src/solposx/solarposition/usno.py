@@ -12,7 +12,8 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Must be localized or UTC will be assumed.
+        Time stamps for which to calculate solar position. Must be timezone
+        aware.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
