@@ -50,14 +50,15 @@ def sg2(elevation, pressure=101325., temperature=12.):
     pressure = pressure / 100  # convert Pa to hPa
     elevation_rad = np.deg2rad(elevation)
 
-    refraction = np.where(
-        elevation_rad > -0.01,
-        ((pressure * 283 * 2.96706 * 10**-4) /
-         (1010 * (273 + temperature)
-          * np.tan(elevation_rad + 0.0031376 *
-                   (elevation_rad + 0.089186)**-1))),
-        ((-pressure * 283 * 1.005516*10**-4) /
-         (1010 * (273 + temperature) * np.tan(elevation_rad)))
-        )
+    refraction = (
+        2.96706 * 10**-4 /
+        (np.tan(elevation_rad + 0.0031376 / (elevation_rad + 0.089186))))
+
+    # Apply correction term of Cornwall et al. (2011)
+    low_elevation_mask = elevation_rad <= -0.01
+    refraction[low_elevation_mask] = (
+        -1.005516*10**-4 / (np.tan(elevation_rad)))[low_elevation_mask]
+
+    refraction = refraction * pressure / 1010 * 283 / (273 + temperature)
 
     return np.rad2deg(refraction)

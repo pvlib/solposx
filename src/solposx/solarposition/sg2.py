@@ -208,13 +208,13 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
     elevation_deg = np.rad2deg(elevation)
 
     # Atmospheric refraction correction term
-    refraction = refraction.sg2(elevation_deg, air_pressure, temperature)
+    r = refraction.sg2(elevation_deg, air_pressure, temperature)
 
     result = pd.DataFrame({
         'elevation': elevation_deg,
-        'apparent_elevation': elevation_deg + refraction,
+        'apparent_elevation': elevation_deg + r,
         'zenith': 90 - elevation_deg,
-        'apparent_zenith': 90 - elevation_deg - refraction,
+        'apparent_zenith': 90 - elevation_deg - r,
         'azimuth': np.rad2deg(azimuth),
     }, index=times)
     return result
