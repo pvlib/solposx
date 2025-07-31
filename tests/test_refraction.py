@@ -1,3 +1,4 @@
+import pandas as pd
 import numpy as np
 import pytest
 from solposx.refraction import archer
@@ -6,8 +7,6 @@ from solposx.refraction import hughes
 from solposx.refraction import michalsky
 from solposx.refraction import sg2
 from solposx.refraction import spa
-
-# elevation, pressure, temperature
 
 
 @pytest.fixture
@@ -71,8 +70,16 @@ def expected_spa():
     (spa, expected_spa, {'pressure': 101325., 'temperature': 12.}),
 ])
 def test_algorithm(algorithm, expected, kwargs, test_elevation_angles):
+    # numpy array input
     result = algorithm(elevation=test_elevation_angles, **kwargs)
-    np.testing.assert_almost_equal(expected(), np.array(result))
+    np.testing.assert_almost_equal(expected(), result)
+
+    # pandas series input
+    series_index = pd.date_range('2020-01-01', periods=len(test_elevation_angles), freq='1h')
+    test_elevation_angles_series = pd.Series(test_elevation_angles, index=series_index)
+    expected_series = pd.Series(expected(), index=series_index)
+    result_series = algorithm(elevation=test_elevation_angles_series, **kwargs)
+    pd.testing.assert_series_equal(expected_series, result_series)
 
 
 def test_spa_refraction_limit():
