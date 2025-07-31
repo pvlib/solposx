@@ -209,7 +209,7 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
     elevation_deg = np.rad2deg(elevation)
 
     # Atmospheric refraction correction term
-    r = refraction.sg2(elevation_deg, air_pressure, temperature)
+    r = refraction.sg2(np.array(elevation_deg), air_pressure, temperature)
 
     result = pd.DataFrame({
         'elevation': elevation_deg,
