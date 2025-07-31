@@ -5,7 +5,7 @@ import pandas as pd
 
 def hughes(elevation, pressure=101325., temperature=12.):
     r"""
-    Atmospheric refraction correction of solar position based on Grover Hughes.
+    Atmospheric refraction correction based on the Hughes algorithm.
 
     This function was developed by G. Hughes as part of the SUNAEP software
     [1]_.

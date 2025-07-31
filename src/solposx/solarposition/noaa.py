@@ -8,7 +8,7 @@ from solposx.tools import _pandas_to_utc, _fractional_hour
 
 def noaa(times, latitude, longitude, delta_t=67.0):
     """
-    Calculate solar position using NOAA's algorithm.
+    Calculate solar position using the NOAA algorithm.
 
     NOAA's algorithm [1]_ has a stated accuracy of 0.0167 degrees
     from years -2000 to +3000 for latitudes within +/- 72 degrees. For

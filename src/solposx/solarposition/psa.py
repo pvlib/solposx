@@ -25,9 +25,10 @@ def psa(times, latitude, longitude, coefficients=2020):
     The algorithm was developed at Plataforma Solar de Almería (PSA)
     [1]_ (2001) and [2]_ (2020).
 
-    This algorithm can use two sets of coefficients: TODO
-    2001 - tuned to the range XX, with accuracy YY
-    2020 - tuned to the range XX, with accuracy YY
+    This algorithm can use two sets of coefficients:
+
+    - 2001 - tuned to the range 1999-2015
+    - 2020 - tuned to the range 2020-2050
 
     Parameters
     ----------

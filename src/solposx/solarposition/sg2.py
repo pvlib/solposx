@@ -47,6 +47,10 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
     The SG2 equations as described in [1]_ had a number of typos and errors.
     These errors have been corrected in the present implementation.
 
+    See Also
+    --------
+    solposx.solarposition.sg2_c
+
     References
     ----------
     .. [1] Blanc, Ph., Wald, L. The SG2 algorithm for a fast and accurate
@@ -224,12 +228,14 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
 def sg2_c(times, latitude, longitude, elevation=0, air_pressure=101325,
           temperature=12):
     """
-    Calculate solar position using the SG2 algorithm.
+    Calculate solar position using the SG2 Python package.
 
-    SG2 algorithm [1]_ has a stated accuracy of 0.003 degrees
+    This function uses the SG2 Python package [1]_, which wraps the
+    official C-code.
+
+    The SG2 algorithm [2]_ has a stated accuracy of 0.003 degrees
     from years 1980 to 2030.
 
-    This implementation is a wrapper around the official C-implemetation.
 
     Parameters
     ----------
@@ -260,9 +266,14 @@ def sg2_c(times, latitude, longitude, elevation=0, air_pressure=101325,
           refraction.
         * azimuth : sun azimuth, east of north.
 
+    See Also
+    --------
+    solposx.solarposition.sg2
+
     References
     ----------
-    .. [1] Blanc, Ph., Wald, L. The SG2 algorithm for a fast and accurate
+    .. [1] https://pypi.org/project/sg2/
+    .. [2] Blanc, Ph., Wald, L. The SG2 algorithm for a fast and accurate
        computation of the position of the sun for multidecadal time period.
        Solar Energy vol. 86 (10), pp. 3072-3083.
        :doi:`10.1016/j.solener.2012.07.018`

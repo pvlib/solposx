@@ -8,7 +8,7 @@ from solposx.tools import _pandas_to_utc, _fractional_hour
 def michalsky(times, latitude, longitude, spencer_correction=True,
               julian_date='original'):
     """
-    Calculate solar position using Michalsky's algorithm.
+    Calculate solar position using the Michalsky algorithm.
 
     Michalsky's algorithm [1]_ has a stated accuracy of 0.01 degrees
     from 1950 to 2050.
