@@ -8,7 +8,7 @@ from solposx.tools import _pandas_to_utc, _fractional_hour
 def michalsky(times, latitude, longitude, spencer_correction=True,
               julian_date='original'):
     """
-    Calculate solar position using Michalsky's algorithm.
+    Calculate solar position using the Michalsky algorithm.
 
     Michalsky's algorithm [1]_ has a stated accuracy of 0.01 degrees
     from 1950 to 2050.
@@ -94,8 +94,7 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
         jd = times_utc.to_julian_date()
     else:
         raise ValueError(
-            "Either `original` or `pandas` has to be chosen for the Julian"
-            " date calculation.")
+            "`julian_date` has to be either `original` or `pandas`.")
 
     n = jd - 2451545.0
 
@@ -162,6 +161,7 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
         az = az % 360
 
     # refraction correction
+    el = np.array(el)  # convert from Index to array
     r = refraction.michalsky(el)
 
     result = pd.DataFrame({
