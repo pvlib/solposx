@@ -1,13 +1,14 @@
 import pandas as pd
 from pvlib.tools import sind, cosd, asind, acosd, tand
 import numpy as np
+from pvlib import spa
 from solposx import refraction
 from solposx.tools import _pandas_to_utc, _fractional_hour
 
 
 def noaa(times, latitude, longitude, delta_t=67.0):
     """
-    Calculate solar position using NOAA's algorithm.
+    Calculate solar position using the NOAA algorithm.
 
     NOAA's algorithm [1]_ has a stated accuracy of 0.0167 degrees
     from years -2000 to +3000 for latitudes within +/- 72 degrees. For
@@ -26,13 +27,12 @@ def noaa(times, latitude, longitude, delta_t=67.0):
     longitude : float
         Longitude in decimal degrees. Positive east of prime meridian,
         negative to west. [degrees]
-    delta_t : float or array, optional, default 67.0
+    delta_t : float or array, default 67.0
         Difference between terrestrial time and UT1.
         If delta_t is None, uses spa.calculate_deltat
         using time.year and time.month from pandas.DatetimeIndex.
         For most simulations the default delta_t is sufficient.
-        The USNO has historical and forecasted delta_t [3]_.
-        [seconds]
+        The USNO has historical and forecasted delta_t [3]_. [seconds]
 
     Returns
     -------
@@ -63,6 +63,9 @@ def noaa(times, latitude, longitude, delta_t=67.0):
     times_utc = _pandas_to_utc(times)
     julian_date = times_utc.to_julian_date()
     jc = (julian_date - 2451545) / 36525
+
+    if delta_t is None:
+        delta_t = spa.calculate_deltat(times_utc.year, times_utc.month)
 
     # [degrees]
     mean_long = (
@@ -125,7 +128,7 @@ def noaa(times, latitude, longitude, delta_t=67.0):
 
     elevation = 90 - zenith
     refraction_correction = refraction.hughes(
-        elevation=elevation, pressure=101325, temperature=10)
+        elevation=np.array(elevation), pressure=101325, temperature=10)
 
     result = pd.DataFrame({
         'elevation': elevation,
