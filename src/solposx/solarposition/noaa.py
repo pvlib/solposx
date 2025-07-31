@@ -128,7 +128,7 @@ def noaa(times, latitude, longitude, delta_t=67.0):
 
     elevation = 90 - zenith
     refraction_correction = refraction.hughes(
-        elevation=elevation, pressure=101325, temperature=10).values
+        elevation=np.array(elevation), pressure=101325, temperature=10)
 
     result = pd.DataFrame({
         'elevation': elevation,
