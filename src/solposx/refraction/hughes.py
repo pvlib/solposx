@@ -5,7 +5,7 @@ import pandas as pd
 
 def hughes(elevation, pressure=101325., temperature=12.):
     r"""
-    Atmospheric refraction correction of solar position based on Grover Hughes.
+    Atmospheric refraction correction based on the Hughes algorithm.
 
     This function was developed by G. Hughes as part of the SUNAEP software
     [1]_.
@@ -21,7 +21,8 @@ def hughes(elevation, pressure=101325., temperature=12.):
     pressure : numeric, default 101325
         Local atmospheric pressure. [Pascal]
     temperature : numeric, default 12
-        Local air temperature. [C]
+        Atmospheric temperature. The default in this code deviates from
+        [1]_, which used 10 C. [C]
 
     Returns
     -------
@@ -50,18 +51,20 @@ def hughes(elevation, pressure=101325., temperature=12.):
     .. [1] J. C. Zimmerman, "Sun-pointing programs and their accuracy."
        SANDIA Technical Report SAND-81-0761, :doi:`10.2172/6377969`.
     """  # noqa: #501
-    TanEl = pd.Series(np.tan(np.radians(elevation)))
-    Refract = pd.Series(0, TanEl.index, dtype=np.float64)
+    TanEl = np.tan(np.radians(elevation))
 
-    Refract[(elevation > 5) & (elevation <= 85)] = (
-        58.1/TanEl - 0.07/(TanEl**3) + 8.6e-05/(TanEl**5))
+    Refract = 58.1/TanEl - 0.070/(TanEl**3) + 8.6e-05/(TanEl**5)
 
-    Refract[(elevation > -0.575) & (elevation <= 5)] = (
+    low_elevation_mask = (elevation > -0.575) & (elevation <= 5)
+    Refract[low_elevation_mask] = (
         elevation *
         (-518.2 + elevation*(103.4 + elevation*(-12.79 + elevation*0.711))) +
-        1735)
+        1735)[low_elevation_mask]
 
-    Refract[elevation <= -0.575] = -20.774 / TanEl
+    negative_elevation_mask = elevation <= -0.575
+    Refract[negative_elevation_mask] = (-20.774 / TanEl)[negative_elevation_mask]
+
+    # Correct for temperature and pressure
     Refract *= (283/(273. + temperature)) * (pressure/101325.) / 3600.
 
-    return Refract.values
+    return Refract
