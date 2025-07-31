@@ -2,7 +2,7 @@
 import numpy as np
 
 
-def spa(elevation, pressure=101325., temperature=12., refraction_limit=0.5667):
+def spa(elevation, pressure=101325., temperature=12., refraction_limit=-0.5667):
     r"""
     Atmospheric refraction correction from the SPA algorithm.
 
@@ -15,12 +15,13 @@ def spa(elevation, pressure=101325., temperature=12., refraction_limit=0.5667):
     elevation : array-like
         True solar elevation angle (not accounting for refraction). [degrees]
     pressure : numeric, default 101325
-        Local atmospheric pressure. [Pascal]
+        Local atmospheric pressure. [Pa]
     temperature : numeric, default 12
         Local air temperature. [C]
-    refraction_limit : float, default 0.5667
-        The value of 0.5667 is typically adopted for the atmospheric refraction
-        at sunrise and sunset times. [degrees]
+    refraction_limit : float, default -0.5667
+        Solar elevation angle below which refraction is not applied, as the sun
+        is assumed to be below horizon. Note that the sun diameter is added to
+        this. [degrees]
 
     Returns
     -------
@@ -46,11 +47,11 @@ def spa(elevation, pressure=101325., temperature=12., refraction_limit=0.5667):
     """  # noqa: #501
     pressure = pressure / 100  # convert to hPa
     # switch sets elevation when the sun is below the horizon
-    switch = elevation >= -1.0 * (0.26667 + refraction_limit)
+    above_horizon = elevation >= (-0.26667 + refraction_limit)
 
     refraction_correction = (
         (pressure / 1010.0) * (283.0 / (273 + temperature))
         * 1.02 / (60 * np.tan(np.radians(elevation + 10.3 /
-                                         (elevation + 5.11))))) * switch
+                                         (elevation + 5.11))))) * above_horizon
 
     return refraction_correction

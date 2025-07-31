@@ -64,4 +64,4 @@ def hughes(elevation, pressure=101325., temperature=12.):
     Refract[elevation <= -0.575] = -20.774 / TanEl
     Refract *= (283/(273. + temperature)) * (pressure/101325.) / 3600.
 
-    return Refract.values
+    return Refract

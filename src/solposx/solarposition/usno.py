@@ -107,7 +107,7 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
     elif gmst_option == 3:
         GMST = 18.697375 + 24.065709824279 * DAY_UT
     else:
-        ValueError(f"{gmst_option} is not a valid `gmst_option`")
+        raise ValueError(f"{gmst_option} is not a valid `gmst_option`")
 
     GMST = GMST % 24
 

@@ -94,8 +94,7 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
         jd = times_utc.to_julian_date()
     else:
         raise ValueError(
-            "Either `original` or `pandas` has to be chosen for the Julian"
-            " date calculation.")
+            "`julian_date` has to be either `original` or `pandas`.")
 
     n = jd - 2451545.0
 
@@ -162,6 +161,7 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
         az = az % 360
 
     # refraction correction
+    el = np.array(el)  # convert from Index to array
     r = refraction.michalsky(el)
 
     result = pd.DataFrame({

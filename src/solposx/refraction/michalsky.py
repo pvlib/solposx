@@ -34,9 +34,11 @@ def michalsky(elevation):
        approximate solar position (1950–2050)," Solar Energy, vol. 40, no. 3.
        pp. 227–235, 1988. :doi:`10.1016/0038-092x(88)90045-x`.
     """  # noqa: #501
-
+    # note that 3.51561 = 1013.2 mb / 288.2 deg C
     refraction_correction = (
         3.51561 * (0.1594 + 0.0196 * elevation + 0.00002 * elevation**2) /
         (1 + 0.505 * elevation + 0.0845 * elevation**2))
+
+    refraction_correction[elevation < -0.56] = 0.56
 
     return refraction_correction

@@ -65,7 +65,7 @@ def psa(times, latitude, longitude, coefficients=2020):
        :doi:`10.1016/j.solener.2020.10.084`
     """
 
-    if isinstance(coefficients, int):
+    if isinstance(coefficients, (int, str)):
         try:
             p = _PSA_PARAMS[coefficients]
         except KeyError:
