@@ -53,4 +53,4 @@ jobs:
         with:
           branch: black-fixes-${{ github.run_id }}
           title: "style: auto-format with black"
-          body: "This PR was created automatically by the lint job to apply Black formatting.
+          body: "This PR was created automatically by the lint job to apply Black formatting."
