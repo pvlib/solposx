@@ -7,8 +7,8 @@ def hughes(elevation, pressure=101325., temperature=12.):
     r"""
     Atmospheric refraction correction based on the Hughes algorithm.
 
-    This function was developed by G. Hughes as part of the SUNAEP software
-    [1]_.
+    This function was developed by G. Hughes [1]_ and was used in the SUNAEP
+    software [2]_.
 
     It is also used to calculate the refraction correction in the NOAA
     solar position algorithm using a fixed pressure of 101325 Pa and
@@ -48,7 +48,10 @@ def hughes(elevation, pressure=101325., temperature=12.):
 
     References
     ----------
-    .. [1] J. C. Zimmerman, "Sun-pointing programs and their accuracy."
+    .. [1] `G. W. Hughes, "Engineering Astronomy."
+       Sandia Laboratories.
+       <https://pvpmc.sandia.gov/app/uploads/sites/243/2022/10/Engineering-Astronomy.pdf>`_
+    .. [2] J. C. Zimmerman, "Sun-pointing programs and their accuracy."
        SANDIA Technical Report SAND-81-0761, :doi:`10.2172/6377969`.
     """  # noqa: #501
     TanEl = np.tan(np.radians(elevation))
