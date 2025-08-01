@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from solposx.tools import _pandas_to_utc, _fractional_hour
 from solposx import refraction
-import sg2 as sg2_package
 
 
 def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
@@ -281,6 +280,14 @@ def sg2_c(times, latitude, longitude, elevation=0, air_pressure=101325,
        Solar Energy, vol. 86, no. 10, pp. 3072-3083, 2012,
        :doi:`10.1016/j.solener.2012.07.018`
     """
+    try:
+        # Try loading optional package
+        import sg2 as sg2_package
+    except ImportError:
+        # If package is not available, raise an error
+        raise ImportError(
+            'The sg2_c function requires the sg2 Python package.')
+
     # list of geopoints as 2D array of (N,3) where each row is repectively
     # longitude in degrees, latitude in degrees and altitude in meters.
     geopoints = np.vstack([longitude, latitude, elevation]).T
