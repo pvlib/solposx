@@ -49,7 +49,8 @@ def psa(times, latitude, longitude, coefficients=2020):
     Raises
     ------
     ValueError
-        Raises an error if ``coefficients`` is not in [2001, 2020].
+        Raises an error if ``coefficients`` is not in [2001, 2020] or a list
+        of the 15 coefficients.
 
     Returns
     -------
