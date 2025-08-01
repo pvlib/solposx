@@ -12,5 +12,7 @@ Solar position algorithms
    solarposition.noaa
    solarposition.psa
    solarposition.sg2
+   solarposition.sg2_c
+   solarposition.spa
    solarposition.usno
    solarposition.walraven

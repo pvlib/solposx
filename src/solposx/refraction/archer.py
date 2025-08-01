@@ -7,7 +7,7 @@ def archer(elevation):
     Atmospheric refraction correction based on the Archer algorithm.
 
     This function calculates the atmospheric refraction correction of the solar
-    zenith angle using the method described in Archer [1]_. The method was
+    elevation angle using the method described in Archer [1]_. The method was
     originally developed to be used with the Walraven solar position algorithm
     [2]_.
 

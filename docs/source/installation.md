@@ -1,9 +1,11 @@
 # Installation
 
-The package can be installed from [PyPI](https://pypi.org/) with the following command:
+The package can be installed from [PyPI](https://pypi.org/project/solposx/) with the following command:
 
     pip install solposx
 
-Some of the solar position algorithms are imported from the solar energy modeling library [pvlib](https://pvlib-python.readthedocs.io/en/stable/) which can be installed by the command:
+Some functions require additional optional dependencies, e.g., the Python packages [skyfield](https://pypi.org/project/skyfield/) and [sg2](https://pypi.org/project/sg2). For convenience, the optional dependencies can be installed with the following command:
 
-    pip install pvlib
+    pip install solposx[all]
+
+The source code is openly developed on [GitHub](https://github.com/AssessingSolar/solposx).

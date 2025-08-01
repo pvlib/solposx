@@ -7,12 +7,15 @@ from solposx.tools import _pandas_to_utc
 
 def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
     """
-    Calculate solar position using USNO's algorithm.
+    Calculate solar position using the USNO algorithm.
+
+    The U.S. Naval Observatory (USNO) algorithm is provided in [1]_.
 
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Must be localized or UTC will be assumed.
+        Time stamps for which to calculate solar position. Must be timezone
+        aware.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
@@ -24,24 +27,25 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
         If delta_t is None, uses spa.calculate_deltat
         using time.year and time.month from pandas.DatetimeIndex.
         For most simulations the default delta_t is sufficient.
-        The USNO has historical and forecasted delta_t [3]_. [seconds]
+        The USNO has historical and forecasted delta_t [2]_. [seconds]
     gmst_option : numeric, default 1
         Different ways of calculating the Greenwich mean sidereal time. See
-        [1]_
+        [1]_.
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        * elevation : actual sun elevation (not accounting for refraction).
-        * zenith : actual sun zenith (not accounting for refraction).
-        * azimuth : sun azimuth, east of north.
+        - elevation : actual sun elevation (not accounting for refraction).
+        - zenith : actual sun zenith (not accounting for refraction).
+        - azimuth : sun azimuth, east of north.
 
     References
     ----------
     .. [1] USNO Computing Altitude and Azimuth from Greenwich Apparent Sidereal
        Time: https://aa.usno.navy.mil/faq/alt_az
-    .. [3] USNO delta T:
+    .. [2] USNO delta T:
        https://maia.usno.navy.mil/products/deltaT
     """
     times_utc = _pandas_to_utc(times)
@@ -107,7 +111,7 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
     elif gmst_option == 3:
         GMST = 18.697375 + 24.065709824279 * DAY_UT
     else:
-        ValueError(f"{gmst_option} is not a valid `gmst_option`")
+        raise ValueError(f"{gmst_option} is not a valid `gmst_option`")
 
     GMST = GMST % 24
 

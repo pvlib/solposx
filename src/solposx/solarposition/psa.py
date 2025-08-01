@@ -25,47 +25,53 @@ def psa(times, latitude, longitude, coefficients=2020):
     The algorithm was developed at Plataforma Solar de Almería (PSA)
     [1]_ (2001) and [2]_ (2020).
 
-    This algorithm can use two sets of coefficients: TODO
-    2001 - tuned to the range XX, with accuracy YY
-    2020 - tuned to the range XX, with accuracy YY
+    This algorithm can use two sets of coefficients:
+
+    - 2001 - tuned to the range 1999-2015
+    - 2020 - tuned to the range 2020-2050
 
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Must be localized or UTC will be assumed.
+        Time stamps for which to calculate solar position. Must be timezone
+        aware.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
-        to south.
+        to south. [degrees]
     longitude : float
         Longitude in decimal degrees. Positive east of prime meridian,
-        negative to west.
-    coefficients : int, default 2020
-        DESCRIPTION.
+        negative to west. [degrees]
+    coefficients : int or list, default 2020
+        Coefficients for the solar position algorithm. Available options
+        include 2001 or 2020. Alternative a list of custom coefficients
+        can be specified.
 
     Raises
     ------
     ValueError
-        Raises an error if ``coefficients`` is not in [2001, 2020].
+        Raises an error if ``coefficients`` is not in [2001, 2020] or a list
+        of the 15 coefficients.
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        * elevation : actual sun elevation (not accounting for refraction).
-        * azimuth : sun azimuth, east of north.
-        * zenith : actual sun zenith (not accounting for refraction).
+        - elevation : actual sun elevation (not accounting for refraction).
+        - azimuth : sun azimuth, east of north.
+        - zenith : actual sun zenith (not accounting for refraction).
 
     References
     ----------
-    .. [1] Blanco, M., Alarcón, D., López, T., Lara, M. "Computing the Solar
-       Vector" Solar Energy Vol. 70, No. 5, 2001.
+    .. [1] M. Blanco, D. Alarcón, T. López, and M. Lara, "Computing the Solar
+       Vector," Solar Energy, vol. 70, no. 5, 2001,
        :doi:`10.1016/S0038-092X(00)00156-0`
-    .. [2] Blanco, M., Milidonis, K., Bonanos A., "Updating the PSA sun
-       position algorithm." Solar Energy, Vol. 212, 2020.
+    .. [2] M. Blanco, K. Milidonis, and A. Bonanos, "Updating the PSA sun
+       position algorithm," Solar Energy, vol. 212, 2020,
        :doi:`10.1016/j.solener.2020.10.084`
     """
 
-    if isinstance(coefficients, int):
+    if isinstance(coefficients, (int, str)):
         try:
             p = _PSA_PARAMS[coefficients]
         except KeyError:

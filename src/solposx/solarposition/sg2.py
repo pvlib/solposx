@@ -2,20 +2,22 @@ import pandas as pd
 import numpy as np
 from solposx.tools import _pandas_to_utc, _fractional_hour
 from solposx import refraction
+import sg2 as sg2_package
 
 
 def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
         temperature=12):
     """
-    Calculate solar position using SG2 algorithm.
+    Calculate solar position using the SG2 algorithm.
 
-    SG2 algorithm [1]_ has a stated accuracy of 0.003 degrees
+    The SG2 algorithm [1]_ has a stated accuracy of 0.003 degrees
     from years 1980 to 2030.
 
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Must be localized or UTC will be assumed.
+        Time stamps for which to calculate solar position. Must be timezone
+        aware.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
@@ -25,32 +27,37 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
     elevation : float, default : 0
         Altitude of the location of interest. [m]
     air_pressure : float, default : 101325
-        Annual average of local air pressure. [Pa]
+        Annual average air pressure. [Pa]
     temperature : float, default : 12
-        Annual average of local air temperature. [°C]
+        Annual average air temperature. [°C]
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        * elevation : actual sun elevation (not accounting for refraction).
-        * apparent_elevation : sun elevation, accounting for
+        - elevation : actual sun elevation (not accounting for refraction).
+        - apparent_elevation : sun elevation, accounting for
           atmospheric refraction.
-        * zenith : actual sun zenith (not accounting for refraction).
-        * apparent_zenith : sun zenith, accounting for atmospheric
+        - zenith : actual sun zenith (not accounting for refraction).
+        - apparent_zenith : sun zenith, accounting for atmospheric
           refraction.
-        * azimuth : sun azimuth, east of north.
+        - azimuth : sun azimuth, east of north.
 
     Notes
     -----
     The SG2 equations as described in [1]_ had a number of typos and errors.
     These errors have been corrected in the present implementation.
 
+    See Also
+    --------
+    solposx.solarposition.sg2_c
+
     References
     ----------
-    .. [1] Blanc, Ph., Wald, L. The SG2 algorithm for a fast and accurate
-       computation of the position of the sun for multidecadal time period.
-       Solar Energy vol. 86 (10), pp. 3072-3083.
+    .. [1] Ph. Blanc and L. Wald, "The SG2 algorithm for a fast and accurate
+       computation of the position of the sun for multidecadal time period,"
+       Solar Energy, vol. 86, no. 10, pp. 3072-3083, 2012,
        :doi:`10.1016/j.solener.2012.07.018`
     """
     # convert coordinates to [rad]
@@ -208,13 +215,98 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
     elevation_deg = np.rad2deg(elevation)
 
     # Atmospheric refraction correction term
-    refraction = refraction.sg2(elevation_deg, air_pressure, temperature)
+    r = refraction.sg2(np.array(elevation_deg), air_pressure, temperature)
 
     result = pd.DataFrame({
         'elevation': elevation_deg,
-        'apparent_elevation': elevation_deg + refraction,
+        'apparent_elevation': elevation_deg + r,
         'zenith': 90 - elevation_deg,
-        'apparent_zenith': 90 - elevation_deg - refraction,
+        'apparent_zenith': 90 - elevation_deg - r,
         'azimuth': np.rad2deg(azimuth),
     }, index=times)
     return result
+
+
+def sg2_c(times, latitude, longitude, elevation=0, air_pressure=101325,
+          temperature=12):
+    """
+    Calculate solar position using the SG2 Python package.
+
+    This function uses the SG2 Python package [1]_, which wraps the
+    official C-code.
+
+    The SG2 algorithm [2]_ has a stated accuracy of 0.003 degrees
+    from years 1980 to 2030.
+
+
+    Parameters
+    ----------
+    times : pandas.DatetimeIndex
+        Must be localized.
+    latitude : float
+        Latitude in decimal degrees. Positive north of equator, negative
+        to south. [degrees]
+    longitude : float
+        Longitude in decimal degrees. Positive east of prime meridian,
+        negative to west. [degrees]
+    elevation : float, default : 0
+        Altitude of the location of interest. [m]
+    air_pressure : float, default : 101325
+        Annual average air pressure. [Pa]
+    temperature : float, default : 12
+        Annual average air temperature. [°C]
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
+
+        - elevation : actual sun elevation (not accounting for refraction).
+        - apparent_elevation : sun elevation, accounting for
+          atmospheric refraction.
+        - zenith : actual sun zenith (not accounting for refraction).
+        - apparent_zenith : sun zenith, accounting for atmospheric
+          refraction.
+        - azimuth : sun azimuth, east of north.
+
+    See Also
+    --------
+    solposx.solarposition.sg2
+
+    References
+    ----------
+    .. [1] https://pypi.org/project/sg2/
+    .. [2] Ph. Blanc and L. Wald, "The SG2 algorithm for a fast and accurate
+       computation of the position of the sun for multidecadal time period,"
+       Solar Energy, vol. 86, no. 10, pp. 3072-3083, 2012,
+       :doi:`10.1016/j.solener.2012.07.018`
+    """
+    # list of geopoints as 2D array of (N,3) where each row is repectively
+    # longitude in degrees, latitude in degrees and altitude in meters.
+    geopoints = np.vstack([longitude, latitude, elevation]).T
+
+    fields = ["topoc.alpha_S", "topoc.gamma_S0", "geoc.epsilon"]
+
+    ret = sg2_package.sun_position(
+        geopoints,
+        times.values,
+        fields,
+    )
+    elevation_rad = ret.topoc.gamma_S0[0]
+    elevation_deg = np.rad2deg(elevation_rad)
+
+    apparent_elevation_rad = sg2_package.topocentric_correction_refraction_SAE(
+        elevation_rad,
+        air_pressure/100,
+        temperature,
+    )
+
+    out = pd.DataFrame({
+        'elevation': elevation_deg,
+        'apparent_elevation': np.rad2deg(apparent_elevation_rad),
+        'zenith': 90 - elevation_deg,
+        'apparent_zenith': 90 - np.rad2deg(apparent_elevation_rad),
+        'azimuth': np.degrees(ret.topoc.alpha_S[0]),
+    }, index=times)
+
+    return out
