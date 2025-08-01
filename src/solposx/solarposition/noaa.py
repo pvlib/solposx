@@ -15,7 +15,9 @@ def noaa(times, latitude, longitude, delta_t=67.0):
     latitudes outside this the accuracy is 0.167 degrees.
 
     The NOAA algorithm uses by default the Hughes refraction model,
-    see ~:py:func:`solposx.refraction.hughes`.
+    see ~:py:func:`solposx.refraction.hughes`.  Note, that the implementation
+    deviates slightly from Hughes in that refraction is set to 0 for solar
+    elevation angles above 85 degrees.
 
     Parameters
     ----------
