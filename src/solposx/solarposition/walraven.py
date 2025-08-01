@@ -39,7 +39,7 @@ def walraven(times, latitude, longitude):
     .. [2] R. Walraven, "Erratum," Solar Energy,
        vol. 22, pp. 195, 1979, :doi:`10.1016/0038-092X(79)90106-3`
     .. [3] J. W. Spencer, “Comments on The Astronomical Almanac’s Algorithm for
-       Approximate Solar Position (1950–2050),” Solar Energy, vol. 42, no. 4.,
+       Approximate Solar Position (1950–2050),” Solar Energy, vol. 42, no. 4,
        pp. 353, 1989, :doi:`10.1016/0038-092x(89)90039-x`.
     """
     times_utc = _pandas_to_utc(times)

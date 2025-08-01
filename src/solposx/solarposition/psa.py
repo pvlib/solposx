@@ -63,11 +63,11 @@ def psa(times, latitude, longitude, coefficients=2020):
 
     References
     ----------
-    .. [1] Blanco, M., Alarcón, D., López, T., Lara, M. "Computing the Solar
-       Vector" Solar Energy Vol. 70, No. 5, 2001.
+    .. [1] M. Blanco, D. Alarcón, T. López, and M. Lara, "Computing the Solar
+       Vector," Solar Energy, vol. 70, no. 5, 2001,
        :doi:`10.1016/S0038-092X(00)00156-0`
-    .. [2] Blanco, M., Milidonis, K., Bonanos A., "Updating the PSA sun
-       position algorithm." Solar Energy, Vol. 212, 2020.
+    .. [2] M. Blanco, K. Milidonis, and A. Bonanos, "Updating the PSA sun
+       position algorithm," Solar Energy, vol. 212, 2020,
        :doi:`10.1016/j.solener.2020.10.084`
     """
 

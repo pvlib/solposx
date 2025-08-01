@@ -55,9 +55,9 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
 
     References
     ----------
-    .. [1] Blanc, Ph., Wald, L. The SG2 algorithm for a fast and accurate
-       computation of the position of the sun for multidecadal time period.
-       Solar Energy vol. 86 (10), pp. 3072-3083.
+    .. [1] Ph. Blanc and L. Wald, "The SG2 algorithm for a fast and accurate
+       computation of the position of the sun for multidecadal time period,"
+       Solar Energy, vol. 86, no. 10, pp. 3072-3083, 2012,
        :doi:`10.1016/j.solener.2012.07.018`
     """
     # convert coordinates to [rad]
@@ -276,9 +276,9 @@ def sg2_c(times, latitude, longitude, elevation=0, air_pressure=101325,
     References
     ----------
     .. [1] https://pypi.org/project/sg2/
-    .. [2] Blanc, Ph., Wald, L. The SG2 algorithm for a fast and accurate
-       computation of the position of the sun for multidecadal time period.
-       Solar Energy vol. 86 (10), pp. 3072-3083.
+    .. [2] Ph. Blanc and L. Wald, "The SG2 algorithm for a fast and accurate
+       computation of the position of the sun for multidecadal time period,"
+       Solar Energy, vol. 86, no. 10, pp. 3072-3083, 2012,
        :doi:`10.1016/j.solener.2012.07.018`
     """
     # list of geopoints as 2D array of (N,3) where each row is repectively

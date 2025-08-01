@@ -57,7 +57,7 @@ def noaa(times, latitude, longitude, delta_t=67.0):
     .. [1] Solar Calculation Details. Global Monitoring
        Laboratory Earth System Research Laboratories.
        https://gml.noaa.gov/grad/solcalc/calcdetails.html
-    .. [2] Meeus, J. "Astronomical Algorithms", 1991.
+    .. [2] J. Meeus, "Astronomical Algorithms," 1991.
        https://archive.org/details/astronomicalalgorithmsjeanmeeus1991
     .. [3] USNO delta T:
        https://maia.usno.navy.mil/products/deltaT

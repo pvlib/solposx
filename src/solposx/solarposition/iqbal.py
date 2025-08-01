@@ -33,7 +33,7 @@ def iqbal(times, latitude, longitude):
 
     References
     ----------
-    .. [1] M. Iqbal, “An Introduction to Solar Radiation.” Elsevier, 1983.
+    .. [1] M. Iqbal, “An Introduction to Solar Radiation,” Elsevier, 1983,
        :doi:`10.1016/b978-0-12-373750-2.x5001-0`.
     .. [2] J. W. Spencer, "Fourier series representation of the position of the
        Sun," Search, vol. 2, no. 5, pp. 172, 1971.
