@@ -53,11 +53,12 @@ def psa(times, latitude, longitude, coefficients=2020):
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        * elevation : actual sun elevation (not accounting for refraction).
-        * azimuth : sun azimuth, east of north.
-        * zenith : actual sun zenith (not accounting for refraction).
+            - elevation : actual sun elevation (not accounting for refraction).
+            - azimuth : sun azimuth, east of north.
+            - zenith : actual sun zenith (not accounting for refraction).
 
     References
     ----------

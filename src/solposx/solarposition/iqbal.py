@@ -24,7 +24,7 @@ def iqbal(times, latitude, longitude):
 
     Returns
     -------
-    DataFrame
+    pandas.DataFrame
         DataFrame with the following columns (all values in degrees):
 
         - elevation : actual sun elevation (not accounting for refraction).

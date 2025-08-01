@@ -32,11 +32,12 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        * elevation : actual sun elevation (not accounting for refraction).
-        * zenith : actual sun zenith (not accounting for refraction).
-        * azimuth : sun azimuth, east of north.
+            - elevation : actual sun elevation (not accounting for refraction).
+            - zenith : actual sun zenith (not accounting for refraction).
+            - azimuth : sun azimuth, east of north.
 
     References
     ----------

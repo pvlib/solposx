@@ -35,15 +35,16 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        * elevation : actual sun elevation (not accounting for refraction).
-        * apparent_elevation : sun elevation, accounting for
-          atmospheric refraction.
-        * zenith : actual sun zenith (not accounting for refraction).
-        * apparent_zenith : sun zenith, accounting for atmospheric
-          refraction.
-        * azimuth : sun azimuth, east of north.
+            - elevation : actual sun elevation (not accounting for refraction).
+            - apparent_elevation : sun elevation, accounting for
+              atmospheric refraction.
+            - zenith : actual sun zenith (not accounting for refraction).
+            - apparent_zenith : sun zenith, accounting for atmospheric
+              refraction.
+            - azimuth : sun azimuth, east of north.
 
     Raises
     ------
