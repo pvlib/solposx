@@ -35,19 +35,21 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0.,
         '1h' for hours, '1d' for days, '1mo' for months, and '1y' for years.
         The default is '1h'.
     url : str, optional
-        API endpoint. The default is :const:``nasa_horizons.URL``.
+        API endpoint. The default is :const:`URL`.
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        * elevation : actual sun elevation (not accounting for refraction).
-        * apparent_elevation : sun elevation, accounting for
-          atmospheric refraction.
-        * zenith : actual sun zenith (not accounting for refraction).
-        * apparent_zenith : sun zenith, accounting for atmospheric
-          refraction.
-        * azimuth : sun azimuth, east of north.
+        - uncertainty_right_ascension
+        - uncertainty_declination
+        - right_ascension
+        - declination
+        - apparent_right_ascesion
+        - apparent_declination
+        - apparent_azimuth
+        - apparent_elevation
 
     References
     ----------
