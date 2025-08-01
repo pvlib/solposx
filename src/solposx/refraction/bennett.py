@@ -14,14 +14,14 @@ def bennett(elevation, pressure=101325., temperature=12.):
     elevation : array-like
         True solar elevation angle (not accounting for refraction). [degrees]
     pressure : numeric, default 101325
-        Local atmospheric pressure. [Pascal]
+        Annual average atmospheric pressure. [Pascal]
     temperature : numeric, default 12
-        Local air temperature. [C]
+        Annaul average air temperature. [C]
 
     Returns
     -------
-    refraction_correction : numeric
-        Refraction correction. [degrees]
+    np.array or pd.Series
+        Atmospheric refraction angle. [degrees]
 
     Notes
     -----

@@ -14,14 +14,14 @@ def sg2(elevation, pressure=101325., temperature=12.):
     elevation : array-like
         True solar elevation angle (not accounting for refraction). [degrees]
     pressure : numeric, default 101325
-        Local atmospheric pressure. [Pascal]
+        Annual average atmospheric pressure. [Pascal]
     temperature : numeric, default 12
-        Local air temperature. [C]
+        Annual average air temperature. [C]
 
     Returns
     -------
-    refraction_correction : array-like
-        Refraction correction. [degrees]
+    np.array or pd.Series
+        Atmospheric refraction angle. [degrees]
 
     Notes
     -----
@@ -29,12 +29,10 @@ def sg2(elevation, pressure=101325., temperature=12.):
 
     .. math::
 
-       \begin{cases}
-
-       \frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{2.96706 \cdot 10^{-4}}{\text{tan}(el+0.0031376 \cdot (el+0.089186)^{-1})} & \text{for } el > -0.01 \text{ [rad]}
-
-       -\frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{1.005516 \cdot 10^{-4}}{\text{tan}(el)} & \text{for } el < -0.01 \text{ [rad]}
-       \end{cases}
+       \begin{align}
+       & \frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{2.96706 \cdot 10^{-4}}{\text{tan}(el+0.0031376 \cdot (el+0.089186)^{-1})} & \text{ for } el > -0.01 \text{ [rad]}\\
+       & -\frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{1.005516 \cdot 10^{-4}}{\text{tan}(el)} & \text{ for } el < -0.01 \text{ [rad]}
+       \end{align}
 
     where :math:`el` is the true solar elevation angle, :math:`P` is the local
     air pressure, :math:`T` is the local air temperature.
