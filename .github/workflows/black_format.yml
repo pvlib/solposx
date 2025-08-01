@@ -1,6 +1,9 @@
 name: Lint and Auto Format
 
-on: [push]
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
   lint:
