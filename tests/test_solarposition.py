@@ -478,3 +478,14 @@ def test_usno_gmst_option_value_error():
             latitude=50, longitude=10,
             gmst_option='not_an_option',
         )
+
+
+def test_noaa_refraction_85_degrees():
+    # Test that NOAA sets refraction to zero for solar
+    # elevation angles between (85 and 90]
+    # The below example has a solar elevation angle of 87.9
+    angles = noaa(
+        times=pd.date_range('2020-03-23 12', periods=1, tz='UTC'),
+        latitude=0, longitude=0,
+    )
+    assert angles['elevation'].iloc[0] == angles['apparent_elevation'].iloc[0]
