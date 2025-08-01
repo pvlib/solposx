@@ -1,9 +1,6 @@
 name: Lint and Auto Format
 
-on:
-  push:
-    branches: [main]
-  pull_request:
+on: [push]
 
 jobs:
   lint:
@@ -26,7 +23,7 @@ jobs:
         run: pip install black
 
       - name: Run Black (format code)
-        run: black --verbose ./src --jupyter
+        run: black --verbose ./src
 
       - name: Check for changes
         id: check_diff
