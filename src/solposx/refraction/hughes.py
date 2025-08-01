@@ -67,7 +67,7 @@ def hughes(elevation, pressure=101325., temperature=12.):
     negative_elevation_mask = elevation <= -0.575
     Refract[negative_elevation_mask] = (-20.774 / TanEl)[negative_elevation_mask]
 
-    # Correct for temperature and pressure
+    # Correct for temperature and pressure and convert to degrees
     Refract *= (283/(273. + temperature)) * (pressure/101325.) / 3600.
 
     return Refract
