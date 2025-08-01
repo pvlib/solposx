@@ -1,13 +1,17 @@
 """Calculate solar position using Skyfield."""
 
-from skyfield.api import load, wgs84
 import pandas as pd
 
-DE440 = load('de440.bsp')
-TS = load.timescale()
+try:
+    # Try loading optional package
+    from skyfield.api import load
+    DE440 = load('de440.bsp')
+    TS = load.timescale()
+except ImportError:
+    pass
 
 
-def skyfield(times, latitude, longitude, de=DE440):
+def skyfield(times, latitude, longitude, de=None):
     """
     Calculate solar position using the Skyfield Python package.
 
@@ -46,6 +50,17 @@ def skyfield(times, latitude, longitude, de=DE440):
     .. [2] Skyfield GitHub repository
        https://github.com/skyfielders/python-skyfield
     """
+    try:
+        # Try loading optional package
+        from skyfield.api import wgs84
+    except ImportError:
+        # If package is not available, raise an error
+        raise ImportError(
+            'The skyfield function requires the skyfield Python package.')
+
+    if de is None:
+        de = DE440
+
     earth = de['Earth']
     sun = de['Sun']
 

@@ -469,7 +469,6 @@ def test_algorithm(algorithm, expected, kwargs, test_conditions):
 
     pd.testing.assert_index_equal(expected.index, result.index)
     rtol = 1e-3 if algorithm.__name__ == 'sg2' else 1e-6
-    print(algorithm.__name__)
     pd.testing.assert_frame_equal(
         expected, result, check_like=False, rtol=rtol)
     for c in expected.columns:
