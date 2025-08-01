@@ -7,8 +7,8 @@ try:
     from skyfield.api import load
     DE440 = load('de440.bsp')
     TS = load.timescale()
-except ImportError:
-    pass
+except ImportError:  # pragma: no cover
+    pass  # pragma: no cover
 
 
 def skyfield(times, latitude, longitude, de=None):
@@ -53,10 +53,11 @@ def skyfield(times, latitude, longitude, de=None):
     try:
         # Try loading optional package
         from skyfield.api import wgs84
-    except ImportError:
-        # If package is not available, raise an error
+    except ImportError:  # pragma: no cover
+        # Raise an error if package is not available
         raise ImportError(
-            'The skyfield function requires the skyfield Python package.')
+            'The skyfield function requires the skyfield Python package.'
+            )  # pragma: no cover
 
     if de is None:
         de = DE440
