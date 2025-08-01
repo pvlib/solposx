@@ -8,6 +8,7 @@ from solposx.solarposition import psa
 from solposx.solarposition import usno
 from solposx.solarposition import sg2
 from solposx.solarposition import sg2_c
+from solposx.solarposition import skyfield
 from solposx.solarposition import spa
 from solposx.solarposition import walraven
 
@@ -323,6 +324,34 @@ def expected_walraven():
     return data
 
 
+def expected_skyfield():
+    columns = ['elevation', 'zenith', 'azimuth']
+    values = [
+        [32.21731177, 57.78268823, 204.91794786],
+        [32.20484556, 57.79515444, 204.96423388],
+        [34.92239511, 55.07760489, 169.37578931],
+        [18.63535617, 71.36464383, 234.18984836],
+        [35.75683037, 54.24316963, 197.66893877],
+        [-9.5305175, 99.5305175, 201.18798691],
+        [66.85755467, 23.14244533, 245.08983994],
+        [9.52569869, 80.47430131, 338.81201317],
+        [50.10684928, 39.89315072, 326.23556156],
+        [35.36142589, 54.63857411, 175.38836795],
+        [-53.24128453, 143.24128453, 18.64711844],
+        [-53.24128453, 143.24128453, 18.64711844],
+        [32.43211642, 57.56788358, 205.06175657],
+        [32.63128589, 57.36871411, 204.24697987],
+        [-23.40856284, 113.40856284, 79.54814898],
+        [1.10723972, 88.89276028, 104.53937506],
+        [32.21731177, 57.78268823, 204.91794786],
+        [32.21731177, 57.78268823, 204.91794786],
+        [32.21731177, 57.78268823, 204.91794786],
+    ]
+    data = pd.DataFrame(data=values, columns=columns)
+    data['zenith'] = 90 - data['elevation']
+    return data
+
+
 def expected_spa():
     columns = ['apparent_zenith', 'zenith', 'apparent_elevation', 'elevation',
                'azimuth', 'equation_of_time']
@@ -428,8 +457,9 @@ def _generate_solarposition_dataframe(inputs, algorithm, **kwargs):
     (usno, expected_usno_option_3, {'gmst_option': 3}),
     (sg2, expected_sg2, {}),
     (sg2_c, expected_sg2, {}),
-    (walraven, expected_walraven, {}),
+    (skyfield, expected_skyfield, {}),
     (spa, expected_spa, {}),
+    (walraven, expected_walraven, {}),
 ])
 def test_algorithm(algorithm, expected, kwargs, test_conditions):
     expected = expected().set_index(test_conditions.index)
