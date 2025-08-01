@@ -18,8 +18,8 @@ def archer(elevation):
 
     Returns
     -------
-    refraction_correction : array-like
-        Refraction correction. [degrees]
+    np.array or pd.Series
+        Atmospheric refraction angle. [degrees]
 
     Notes
     -----

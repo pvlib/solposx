@@ -15,8 +15,8 @@ def michalsky(elevation):
 
     Returns
     -------
-    refraction_correction : numeric
-        Refraction correction. [degrees]
+    np.array or pd.Series
+        Atmospheric refraction angle. [degrees]
 
     Notes
     -----
