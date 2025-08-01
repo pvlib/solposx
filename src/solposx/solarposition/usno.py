@@ -9,6 +9,8 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
     """
     Calculate solar position using the USNO algorithm.
 
+    The U.S. Naval Observatory (USNO) algorithm is provided in [1]_.
+
     Parameters
     ----------
     times : pandas.DatetimeIndex
@@ -25,10 +27,10 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
         If delta_t is None, uses spa.calculate_deltat
         using time.year and time.month from pandas.DatetimeIndex.
         For most simulations the default delta_t is sufficient.
-        The USNO has historical and forecasted delta_t [3]_. [seconds]
+        The USNO has historical and forecasted delta_t [2]_. [seconds]
     gmst_option : numeric, default 1
         Different ways of calculating the Greenwich mean sidereal time. See
-        [1]_
+        [1]_.
 
     Returns
     -------
@@ -43,7 +45,7 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
     ----------
     .. [1] USNO Computing Altitude and Azimuth from Greenwich Apparent Sidereal
        Time: https://aa.usno.navy.mil/faq/alt_az
-    .. [3] USNO delta T:
+    .. [2] USNO delta T:
        https://maia.usno.navy.mil/products/deltaT
     """
     times_utc = _pandas_to_utc(times)

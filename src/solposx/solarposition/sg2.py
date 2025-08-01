@@ -252,9 +252,9 @@ def sg2_c(times, latitude, longitude, elevation=0, air_pressure=101325,
     elevation : float, default : 0
         Altitude of the location of interest. [m]
     air_pressure : float, default : 101325
-        Annual average of local air pressure. [Pa]
+        Annual average air pressure. [Pa]
     temperature : float, default : 12
-        Annual average of local air temperature. [°C]
+        Annual average air temperature. [°C]
 
     Returns
     -------

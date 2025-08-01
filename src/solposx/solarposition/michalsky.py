@@ -72,15 +72,15 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
     References
     ----------
     .. [1] J. J. Michalsky, "The Astronomical Almanac’s algorithm for
-       approximate solar position (1950–2050)," Solar Energy, vol. 40, no. 3.
-       Elsevier BV, pp. 227–235, 1988. :doi:`10.1016/0038-092x(88)90045-x`.
+       approximate solar position (1950–2050)," Solar Energy, vol. 40, no. 3,
+       pp. 227–235, 1988, :doi:`10.1016/0038-092x(88)90045-x`.
     .. [2] J. W. Spencer, “Comments on The Astronomical Almanac’s Algorithm for
-       Approximate Solar Position (1950–2050),” Solar Energy, vol. 42, no. 4.
-       Elsevier BV, p. 353, 1989. :doi:`10.1016/0038-092x(89)90039-x`.
-    .. [3] J. J. Michalsky, “Errata,” Solar Energy, vol. 41, no. 1. Elsevier
-       BV, p. 113, 1988. :doi:`10.1016/0038-092x(88)90122-3`.
-    .. [4] J. J. Michalsky, “Errata,” Solar Energy, vol. 43, no. 5. Elsevier
-       BV, p. 323, 1989. :doi:`10.1016/0038-092x(89)90122-9`.
+       Approximate Solar Position (1950–2050),” Solar Energy, vol. 42, no. 4,
+       pp. 353, 1989, :doi:`10.1016/0038-092x(89)90039-x`.
+    .. [3] J. J. Michalsky, “Errata,” Solar Energy, vol. 41, no. 1,
+       pp. 113, 1988, :doi:`10.1016/0038-092x(88)90122-3`.
+    .. [4] J. J. Michalsky, “Errata,” Solar Energy, vol. 43, no. 5,
+       pp. 323, 1989, :doi:`10.1016/0038-092x(89)90122-9`.
     """
     times_utc = _pandas_to_utc(times)
 
