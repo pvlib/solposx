@@ -48,11 +48,11 @@ def hughes(elevation, pressure=101325., temperature=12.):
 
     References
     ----------
-    .. [1] `G. W. Hughes, "Engineering Astronomy."
-       Sandia Laboratories.
+    .. [1] `G. W. Hughes, "Engineering Astronomy,"
+       Sandia Laboratories, 1985,
        <https://pvpmc.sandia.gov/app/uploads/sites/243/2022/10/Engineering-Astronomy.pdf>`_
-    .. [2] J. C. Zimmerman, "Sun-pointing programs and their accuracy."
-       SANDIA Technical Report SAND-81-0761, :doi:`10.2172/6377969`.
+    .. [2] J. C. Zimmerman, "Sun-pointing programs and their accuracy,"
+       SANDIA Technical Report SAND-81-0761, 1981, :doi:`10.2172/6377969`.
     """  # noqa: #501
     TanEl = np.tan(np.radians(elevation))
 
