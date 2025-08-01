@@ -38,11 +38,11 @@ def archer(elevation):
 
     References
     ----------
-    .. [1] C. B. Archer, "Comments on 'Calculating the position of the sun'",
-       Solar Energy, vol. 25, Issue 1, Elsevier BV, pp. 91, 1980.
+    .. [1] C. B. Archer, "Comments on 'Calculating the position of the sun',"
+       Solar Energy, vol. 25, Issue 1, pp. 91, 1980,
        :doi:`10.1016/0038-092X(80)90410-7`.
-    .. [2] Walraven R., Calculating the position of the sun., Solar Energy,
-       vol. 20, pp. 393-397. :doi:`10.1016/0038-092X(78)90155-X`.
+    .. [2] R. Walraven, "Calculating the position of the sun," Solar Energy,
+       vol. 20, no. 5, pp. 393-397, 1978, :doi:`10.1016/0038-092X(78)90155-X`.
     """  # noqa: #501
 
     zenith = 90 - elevation
