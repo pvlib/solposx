@@ -7,7 +7,9 @@ def walraven(times, latitude, longitude):
     """
     Calculate solar position using the Walraven algorithm.
 
-    Walraven's algorithm [1]_ has a stated accuracy of 0.01 degrees.
+    Walraven's algorithm [1]_ has a stated accuracy of 0.01 degrees. The
+    implementation accounts for the 1979 Erratum [2]_ and the correct
+    azimuth quadrant selection [3]_.
 
     Parameters
     ----------
@@ -23,16 +25,22 @@ def walraven(times, latitude, longitude):
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        * elevation : actual sun elevation (not accounting for refraction).
-        * zenith : actual sun zenith (not accounting for refraction).
-        * azimuth : sun azimuth, east of north.
+        - elevation : actual sun elevation (not accounting for refraction).
+        - zenith : actual sun zenith (not accounting for refraction).
+        - azimuth : sun azimuth, east of north.
 
     References
     ----------
-    .. [1] Walraven R., Calculating the position of the sun., Solar Energy,
-       vol. 20, pp. 393-397. :doi:`10.1016/0038-092X(78)90155-X`
+    .. [1] R. Walraven, “Calculating the position of the sun,” Solar Energy,
+       vol. 20, no. 5, pp. 393–397, 1978, :doi:`10.1016/0038-092x(78)90155-x`.
+    .. [2] R. Walraven, "Erratum," Solar Energy,
+       vol. 22, pp. 195, 1979, :doi:`10.1016/0038-092X(79)90106-3`
+    .. [3] J. W. Spencer, “Comments on The Astronomical Almanac’s Algorithm for
+       Approximate Solar Position (1950–2050),” Solar Energy, vol. 42, no. 4,
+       pp. 353, 1989, :doi:`10.1016/0038-092x(89)90039-x`.
     """
     times_utc = _pandas_to_utc(times)
 

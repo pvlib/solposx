@@ -24,14 +24,16 @@ def iqbal(times, latitude, longitude):
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
+
         - elevation : actual sun elevation (not accounting for refraction).
         - zenith : actual sun zenith (not accounting for refraction).
         - azimuth : sun azimuth, east of north.
 
     References
     ----------
-    .. [1] M. Iqbal, “An Introduction to Solar Radiation.” Elsevier, 1983.
+    .. [1] M. Iqbal, “An Introduction to Solar Radiation,” 1983,
        :doi:`10.1016/b978-0-12-373750-2.x5001-0`.
     .. [2] J. W. Spencer, "Fourier series representation of the position of the
        Sun," Search, vol. 2, no. 5, pp. 172, 1971.

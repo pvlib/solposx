@@ -15,7 +15,7 @@ def noaa(times, latitude, longitude, delta_t=67.0):
     latitudes outside this the accuracy is 0.167 degrees.
 
     The NOAA algorithm uses by default the Hughes refraction model,
-    see :py:func:`package_name.refraction.hughes`.
+    see ~:py:func:`solposx.refraction.hughes`.
 
     Parameters
     ----------
@@ -37,15 +37,16 @@ def noaa(times, latitude, longitude, delta_t=67.0):
 
     Returns
     -------
-    DataFrame with the following columns (all values in degrees):
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        * elevation : actual sun elevation (not accounting for refraction).
-        * apparent_elevation : sun elevation, accounting for
+        - elevation : actual sun elevation (not accounting for refraction).
+        - apparent_elevation : sun elevation, accounting for
           atmospheric refraction.
-        * zenith : actual sun zenith (not accounting for refraction).
-        * apparent_zenith : sun zenith, accounting for atmospheric
+        - zenith : actual sun zenith (not accounting for refraction).
+        - apparent_zenith : sun zenith, accounting for atmospheric
           refraction.
-        * azimuth : sun azimuth, east of north.
+        - azimuth : sun azimuth, east of north.
 
     Notes
     -----
@@ -56,7 +57,7 @@ def noaa(times, latitude, longitude, delta_t=67.0):
     .. [1] Solar Calculation Details. Global Monitoring
        Laboratory Earth System Research Laboratories.
        https://gml.noaa.gov/grad/solcalc/calcdetails.html
-    .. [2] Meeus, J. "Astronomical Algorithms", 1991.
+    .. [2] J. Meeus, "Astronomical Algorithms," 1991.
        https://archive.org/details/astronomicalalgorithmsjeanmeeus1991
     .. [3] USNO delta T:
        https://maia.usno.navy.mil/products/deltaT
