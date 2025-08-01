@@ -26,9 +26,9 @@ def walraven(times, latitude, longitude):
     pandas.DataFrame
         DataFrame with the following columns (all values in degrees):
 
-            - elevation : actual sun elevation (not accounting for refraction).
-            - zenith : actual sun zenith (not accounting for refraction).
-            - azimuth : sun azimuth, east of north.
+        - elevation : actual sun elevation (not accounting for refraction).
+        - zenith : actual sun zenith (not accounting for refraction).
+        - azimuth : sun azimuth, east of north.
 
     References
     ----------
