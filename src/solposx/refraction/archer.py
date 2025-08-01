@@ -27,11 +27,11 @@ def archer(elevation):
 
     .. math::
 
-        C = \text{cos}(Z) + 0.0083 \cdot \left(\frac{1}{0.955 + (20.267 \cdot \text{cos}(Z))} - 0.047121 \right)
-
-        Z_a = \text{arccos}(C)
-
-        refraction = Z - Z_a
+        \begin{align}
+        & C = \text{cos}(Z) + 0.0083 \cdot \left(\frac{1}{0.955 + (20.267 \cdot \text{cos}(Z))} - 0.047121 \right)\\
+        & Z_a = \text{arccos}(C)\\
+        & refraction = Z - Z_a\\
+        \end{align}
 
     where :math:`Z` is the true solar zenith angle and :math:`Z_a` is the
     aparent zenith angle.
