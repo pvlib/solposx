@@ -30,7 +30,7 @@ def noaa(times, latitude, longitude, delta_t=67.0):
     longitude : float
         Longitude in decimal degrees. Positive east of prime meridian,
         negative to west. [degrees]
-    delta_t : float or array, default 67.0
+    delta_t : numeric, default 67.0
         Difference between terrestrial time and UT1.
         If delta_t is None, uses spa.calculate_deltat
         using time.year and time.month from pandas.DatetimeIndex.

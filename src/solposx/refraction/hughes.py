@@ -19,15 +19,15 @@ def hughes(elevation, pressure=101325., temperature=12.):
     elevation : array-like
         True solar elevation angle (not accounting for refraction). [degrees]
     pressure : numeric, default 101325
-        Local atmospheric pressure. [Pascal]
+        Annual average atmospheric pressure. [Pascal]
     temperature : numeric, default 12
-        Atmospheric temperature. The default in this code deviates from
+        Annual average temperature. The default in this code deviates from
         [1]_, which used 10 C. [C]
 
     Returns
     -------
-    refraction_correction : array-like
-        Refraction correction. [degrees]
+    np.array or pd.Series
+        Atmospheric refraction angle. [degrees]
 
     Notes
     -----
@@ -35,14 +35,11 @@ def hughes(elevation, pressure=101325., temperature=12.):
 
     .. math::
 
-        \text{For }5° < el <= 90°:
-            ref = \frac{58.1}{\text{tan}(el)} - \frac{0.07}{\text{tan}(el)^3} + \frac{8.6\cdot 10^{-5}}{tan(el)^5}
-
-        \text{For }-0.575° < el <= 5°:
-            ref = el \cdot (-518.2 + el \cdot (103.4 + el \cdot (-12.79 + el \cdot 0.711))) + 1735
-
-        \text{For }el <= -0.575°:
-            ref = \frac{-20.774}{\text{tan}(el)}
+        \begin{align}
+        & \frac{58.1}{\text{tan}(el)} - \frac{0.07}{\text{tan}(el)^3} + \frac{8.6\cdot 10^{-5}}{tan(el)^5} \text{ for } 5° < el <= 90°\\
+        & el \cdot (-518.2 + el \cdot (103.4 + el \cdot (-12.79 + el \cdot 0.711))) + 1735 \text{ for } -0.575° < el <= 5°\\
+        & \frac{-20.774}{\text{tan}(el)} \text{ for } el <= -0.575°\\
+        \end{align}
 
     where :math:`el` is the true (unrefracted) solar elevation angle.
 

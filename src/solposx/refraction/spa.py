@@ -25,8 +25,8 @@ def spa(elevation, pressure=101325., temperature=12., refraction_limit=-0.5667):
 
     Returns
     -------
-    refraction_correction : numeric
-        Refraction correction. [degrees]
+    np.array or pd.Series
+        Atmospheric refraction angle. [degrees]
 
     Notes
     -----
