@@ -70,9 +70,9 @@ def noaa(times, latitude, longitude, delta_t=67.0):
 
     # Allow for latitude of -90 and 90 on Ubunty and MacOS
     if latitude == 90:
-        latitude = 90 - np.finfo(float).eps
+        latitude += - 1e-12
     elif latitude == - 90:
-        latitude = - 90 + np.finfo(float).eps
+        latitude += 1e-12
 
     if delta_t is None:
         delta_t = spa.calculate_deltat(times_utc.year, times_utc.month)
