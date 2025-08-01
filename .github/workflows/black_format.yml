@@ -1,0 +1,56 @@
+name: Lint and Auto Format
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write      # to push changes
+      pull-requests: write # to create PRs
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Black
+        run: pip install black
+
+      - name: Run Black (format code)
+        run: black --verbose ./src --jupyter
+
+      - name: Check for changes
+        id: check_diff
+        run: |
+          if git diff --quiet; then
+            echo "no_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_diff.outputs.no_changes == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b black-fixes-${{ github.run_id }}
+          git add .
+          git commit -m "style: auto-format with black"
+          git push origin HEAD
+
+      - name: Create Pull Request
+        if: steps.check_diff.outputs.no_changes == 'false'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: black-fixes-${{ github.run_id }}
+          title: "style: auto-format with black"
+          body: "This PR was created automatically by the lint job to apply Black formatting.
