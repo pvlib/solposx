@@ -35,14 +35,14 @@ def hughes(elevation, pressure=101325., temperature=12.):
 
     .. math::
 
-        \text{For }5° < el <= 90°:
-            ref = \frac{58.1}{\text{tan}(el)} - \frac{0.07}{\text{tan}(el)^3} + \frac{8.6\cdot 10^{-5}}{tan(el)^5}
+        \begin{align}
+        & \text{For }5° < el <= 90°: ref = \frac{58.1}{\text{tan}(el)} - \frac{0.07}{\text{tan}(el)^3} + \frac{8.6\cdot 10^{-5}}{tan(el)^5}
 
-        \text{For }-0.575° < el <= 5°:
-            ref = el \cdot (-518.2 + el \cdot (103.4 + el \cdot (-12.79 + el \cdot 0.711))) + 1735
+        & \text{For }-0.575° < el <= 5°: ref = el \cdot (-518.2 + el \cdot (103.4 + el \cdot (-12.79 + el \cdot 0.711))) + 1735
 
-        \text{For }el <= -0.575°:
-            ref = \frac{-20.774}{\text{tan}(el)}
+        & \text{For }el <= -0.575°: ref = \frac{-20.774}{\text{tan}(el)}
+
+        end{align}
 
     where :math:`el` is the true (unrefracted) solar elevation angle.
 

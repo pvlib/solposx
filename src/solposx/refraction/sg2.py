@@ -30,8 +30,8 @@ def sg2(elevation, pressure=101325., temperature=12.):
     .. math::
 
        \begin{align}
-       \frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{2.96706 \cdot 10^{-4}}{\text{tan}(el+0.0031376 \cdot (el+0.089186)^{-1})} & \text{for } el > -0.01 \text{ [rad]}\\
-       -\frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{1.005516 \cdot 10^{-4}}{\text{tan}(el)} & \text{for } el < -0.01 \text{ [rad]}
+       & \frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{2.96706 \cdot 10^{-4}}{\text{tan}(el+0.0031376 \cdot (el+0.089186)^{-1})} & \text{ for } el > -0.01 \text{ [rad]}\\
+       & -\frac{P}{1010} \cdot \frac{283}{273+T} \cdot \frac{1.005516 \cdot 10^{-4}}{\text{tan}(el)} & \text{ for } el < -0.01 \text{ [rad]}
        \end{align}
 
     where :math:`el` is the true solar elevation angle, :math:`P` is the local
