@@ -28,7 +28,7 @@ def skyfield(times, latitude, longitude, de=DE440):
         Longitude in decimal degrees. Positive east of prime meridian,
         negative to west. [degrees]
     de : Skyfield SpiceKernel, optional, default DE440
-        Eempheris of choice.
+        Empheris of choice.
 
     Returns
     -------
