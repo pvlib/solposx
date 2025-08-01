@@ -3,8 +3,6 @@ import pandas as pd
 
 from solposx.tools import _pandas_to_utc, _fractional_hour
 
-from pvlib.solarposition import _datetime_to_unixtime
-
 _PSA_PARAMS = {
     2020: [
         2.267127827, -9.300339267e-4, 4.895036035, 1.720279602e-2,
