@@ -553,11 +553,26 @@ def test_delta_t_array_input():
     # test that delta_t can be specified as either an array or float
     times = pd.date_range('2020-03-23 12', periods=10, tz='UTC')
     delta_t = np.ones(len(times)) * 67.0
-    # test noaa
+    # test noaa - array
     noaa_array = noaa(times, 50, 10, delta_t=delta_t)
     noaa_float = noaa(times, 50, 10, delta_t=67.0)
     pd.testing.assert_frame_equal(noaa_array, noaa_float)
-    # test usno
+    # test usno - array
     usno_array = usno(times, 50, 10, delta_t=delta_t)
+    usno_float = usno(times, 50, 10, delta_t=67.0)
+    pd.testing.assert_frame_equal(usno_array, usno_float)
+
+
+def test_delta_t_series_input():
+    # test that delta_t can be specified as either an array or float
+    times = pd.date_range('2020-03-23 12', periods=10, tz='UTC')
+    delta_t = np.ones(len(times)) * 67.0
+    delta_t_series = pd.Series(delta_t, index=times)
+    # test noaa - series
+    noaa_array = noaa(times, 50, 10, delta_t=delta_t_series)
+    noaa_float = noaa(times, 50, 10, delta_t=67.0)
+    pd.testing.assert_frame_equal(noaa_array, noaa_float)
+    # test usno - series
+    usno_array = usno(times, 50, 10, delta_t=delta_t_series)
     usno_float = usno(times, 50, 10, delta_t=67.0)
     pd.testing.assert_frame_equal(usno_array, usno_float)
