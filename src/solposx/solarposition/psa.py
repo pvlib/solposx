@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from solposx.tools import _pandas_to_utc, _fractional_hour
+
 from pvlib.solarposition import _datetime_to_unixtime
 
 _PSA_PARAMS = {
@@ -82,17 +84,35 @@ def psa(times, latitude, longitude, coefficients=2020):
     phi = np.radians(latitude)
     lambda_t = longitude
 
-    # The julian day calculation in the reference is awkward, as it relies
-    # on C-style integer division (round toward zero) and thus requires
-    # tedious floating point divisions with manual integer casts to work
-    # around python's integer division (round down).  It is also slow.
-    # Faster and simpler to calculate the "elapsed julian day" number
-    # via unixtime:
-    unixtime = _datetime_to_unixtime(times)
-    # unix time is the number of seconds since 1970-01-01, but PSA needs the
-    # number of days since 2000-01-01 12:00.  The difference is 10957.5 days.
-    n = unixtime / 86400 - 10957.5
-    h = ((unixtime / 86400) % 1)*24
+    time_utc = _pandas_to_utc(times)
+
+    year = time_utc.year
+    month = time_utc.month
+    day = time_utc.day
+    hour = _fractional_hour(time_utc)
+
+    month_term = ((time_utc.month - 14) / 12).values.astype(int)
+
+    jd = ((1461 * ((year + 4800 + month_term)) / 4).astype(int)
+          + (367 * ((month - 2 - 12 * (month_term))) / 12).astype(int)
+          - ((3 * ((year + 4900 + month_term) / 100).astype(int)) / 4).astype(int)
+          + day - 32075 - 0.5 + hour / 24.0
+          )
+
+    n = jd - 2451545.0
+
+    # Alternative (faster) julian day calculatoin
+    # # The julian day calculation in the reference is awkward, as it relies
+    # # on C-style integer division (round toward zero) and thus requires
+    # # tedious floating point divisions with manual integer casts to work
+    # # around python's integer division (round down).  It is also slow.
+    # # Faster and simpler to calculate the "elapsed julian day" number
+    # # via unixtime:
+    # unixtime = _datetime_to_unixtime(times)
+    # # unix time is the number of seconds since 1970-01-01, but PSA needs the
+    # # number of days since 2000-01-01 12:00.  The difference is 10957.5 days.
+    # n = unixtime / 86400 - 10957.5
+    # h = ((unixtime / 86400) % 1)*24
 
     # ecliptic longitude (lambda_e) and obliquity (epsilon):
     omega = p[0] + p[1] * n  # Eq 3
@@ -113,7 +133,7 @@ def psa(times, latitude, longitude, coefficients=2020):
     d = np.arcsin(np.sin(epsilon) * np.sin(lambda_e))  # Eq 9
 
     # local coordinates:
-    gmst = p[13] + p[14] * n + h  # Eq 10
+    gmst = p[13] + p[14] * n + hour  # Eq 10
     lmst = (gmst * 15 + lambda_t) * np.pi/180  # Eq 11
     w = lmst - ra  # Eq 12
     theta_z = np.arccos(np.cos(phi) * np.cos(w) * np.cos(d) + np.sin(d) * np.sin(phi))  # Eq 13
