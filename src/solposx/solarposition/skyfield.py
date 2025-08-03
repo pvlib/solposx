@@ -2,16 +2,8 @@
 
 import pandas as pd
 
-try:
-    # Try loading optional package
-    from skyfield.api import load
-    DE440 = load('de440.bsp')
-    TS = load.timescale()
-except ImportError:  # pragma: no cover
-    pass  # pragma: no cover
 
-
-def skyfield(times, latitude, longitude, de=None):
+def skyfield(times, latitude, longitude, de='de440.bsp'):
     """
     Calculate solar position using the Skyfield Python package.
 
@@ -31,8 +23,8 @@ def skyfield(times, latitude, longitude, de=None):
     longitude : float
         Longitude in decimal degrees. Positive east of prime meridian,
         negative to west. [degrees]
-    de : Skyfield SpiceKernel, optional, default DE440
-        Empheris of choice.
+    de : str or Skyfield SpiceKernel, optional, default : 'de440.bsp'
+        Ephemeris of choice.
 
     Returns
     -------
@@ -52,15 +44,17 @@ def skyfield(times, latitude, longitude, de=None):
     """
     try:
         # Try loading optional package
-        from skyfield.api import wgs84
+        from skyfield.api import load, wgs84
     except ImportError:  # pragma: no cover
         # Raise an error if package is not available
         raise ImportError(
             'The skyfield function requires the skyfield Python package.'
             )  # pragma: no cover
 
-    if de is None:
-        de = DE440
+    if isinstance(de, str):
+        de = load(de)
+
+    TS = load.timescale()
 
     earth = de['Earth']
     sun = de['Sun']
