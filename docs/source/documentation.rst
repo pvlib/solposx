@@ -1,9 +1,9 @@
 .. currentmodule:: solposx
 
 
-##################
-Code documentation
-##################
+#############
+Documentation
+#############
 
 The documentation for the individual functions can be found by navigating to the relevant section below.
 
@@ -12,3 +12,4 @@ The documentation for the individual functions can be found by navigating to the
 
    solarposition
    refraction
+   tools
