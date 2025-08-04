@@ -3,7 +3,6 @@ name: Lint and Auto Format
 on:
   push:
     branches: [main]
-  pull_request:
 
 jobs:
   lint:
@@ -26,7 +25,7 @@ jobs:
         run: pip install black
 
       - name: Run Black (format code)
-        run: black --verbose ./src --jupyter
+        run: black --verbose ./src
 
       - name: Check for changes
         id: check_diff
@@ -54,3 +53,4 @@ jobs:
           branch: black-fixes-${{ github.run_id }}
           title: "style: auto-format with black"
           body: "This PR was created automatically by the lint job to apply Black formatting."
+          branch: black-fixes-${{ github.run_id }}
