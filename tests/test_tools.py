@@ -35,7 +35,7 @@ def test_fractional_hour(times_index, expected_fractional_hour):
 
 
 @pytest.fixture
-def expected_calc_error():
+def expected_calc_error_zeros():
     N = 10
     out = {
         'zenith_bias': np.zeros(N),
@@ -49,9 +49,28 @@ def expected_calc_error():
     return out
 
 
-def test_calc_error(expected_calc_error):
+def test_calc_error_zeros(expected_calc_error_zeros):
     zeros = np.zeros(10)
     result = calc_error(zeros, zeros, zeros, zeros)
-    for k in expected_calc_error.keys():
-        np.testing.assert_equal(result[k], expected_calc_error[k])
-    assert len(result.keys()) == len(expected_calc_error.keys())
+    for k in expected_calc_error_zeros.keys():
+        np.testing.assert_equal(result[k], expected_calc_error_zeros[k])
+    assert len(result.keys()) == len(expected_calc_error_zeros.keys())
+
+
+@pytest.mark.parametrize('zenith', [0, 45, 90, 135, 180])
+@pytest.mark.parametrize('azimuth', [0, 45, 90, 135, 180, 225, 270, 315, 360])
+@pytest.mark.parametrize('zenith_delta', [-100, -50, 0, 50, 100])
+@pytest.mark.parametrize('zenith_delta', [
+    -300, -200, -100, -10, 0, 10, 100, 200, 300
+])
+def test_calc_error(zenith, azimuth, zenith_delta, azimuth_delta):
+    errs = calc_error(zenith, azimuth,
+                      zenith+zenith_delta, azimuth+azimuth_delta)
+    np.testing.assert_almost_equal(errs['zenith_bias'], zenith_delta)
+    np.testing.assert_almost_equal(errs['zenith_mad'], abs(zenith_delta))
+    np.testing.assert_almost_equal(errs['zenith_rmsd'], abs(zenith_delta))
+    np.testing.assert_almost_equal(errs['azimuth_bias'], azimuth_delta)
+    np.testing.assert_almost_equal(errs['azimuth_mad'], abs(azimuth_delta))
+    np.testing.assert_almost_equal(errs['azimuth_rmsd'], abs(azimuth_delta))
+    np.testing.assert_almost_equal(errs['combined_rmsd'],
+                                   (zenith_delta**2 + azimuth_delta**2)**0.5)
