@@ -16,7 +16,7 @@ def bennett(elevation, pressure=101325., temperature=12.):
     pressure : numeric, default 101325
         Annual average atmospheric pressure. [Pascal]
     temperature : numeric, default 12
-        Annaul average air temperature. [C]
+        Annual average air temperature. [C]
 
     Returns
     -------

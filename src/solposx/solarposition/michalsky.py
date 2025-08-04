@@ -29,8 +29,9 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
         works for all latitudes.
     julian_date : string, default 'original'
         Julian date calculation. Can be one of the following:
-            * ``'original'``: calculation based on Michalsky's paper [1]_.
-            * ``'pandas'``: calculation using a pandas build-in function
+
+        * ``'original'``: calculation based on Michalsky's paper [1]_.
+        * ``'pandas'``: calculation using a pandas built-in function
 
     Returns
     -------
@@ -60,7 +61,7 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
     implementation includes by default the correction provided by Spencer such
     that it works for all latitudes.
 
-    Minor clarifications were made to the original paper have been published
+    Minor clarifications to the original paper have been published
     as errata in [3]_ and [4]_.
 
     The Julian date calculation in the original Michalsky paper [1]_ ensures

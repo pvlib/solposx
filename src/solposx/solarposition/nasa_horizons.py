@@ -12,7 +12,7 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0.,
 
     The NASA Horizons [1]_ is an online solar system data and ephemeris
     computation service, which among other things can provide highly
-    accurate calcultions of sun positions.
+    accurate calculations of sun positions.
 
     The NASA Horizons API is described in [2]_.
 
@@ -53,9 +53,9 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0.,
 
     References
     ----------
-    .. [1] NASA Horizons Systems
+    .. [1] `NASA Horizons Systems
        <https://ssd.jpl.nasa.gov/horizons/>`_
-    .. [2] NASA Horizons API
+    .. [2] `NASA Horizons API
        <https://ssd-api.jpl.nasa.gov/doc/horizons.html/>`_
     """
     params = {

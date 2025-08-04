@@ -24,10 +24,10 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
         negative to west. [degrees]
     delta_t : numeric, default 67.0
         Difference between terrestrial time and UT1.
-        If delta_t is None, uses spa.calculate_deltat
-        using time.year and time.month from pandas.DatetimeIndex.
-        For most simulations the default delta_t is sufficient.
-        The USNO has historical and forecasted delta_t [2]_. [seconds]
+        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
+        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
+        For most simulations the default ``delta_t`` is sufficient.
+        The USNO has historical and forecasted ``delta_t`` [2]_. [seconds]
     gmst_option : int, default 1
         Different ways of calculating the Greenwich mean sidereal time.
         `gmst_option` needs to be either 1, 2, or 3. See [1]_.
