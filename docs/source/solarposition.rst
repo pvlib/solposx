@@ -4,7 +4,7 @@
 Solar position algorithms
 =========================
 
-Functions to compute approximate sun positions for the specified times and
+Functions to compute sun positions for the specified times and
 location.  All functions return solar zenith, elevation, and azimuth angles.
 Algorithms that include an atmospheric refraction model also return
 "apparent" (refraction-corrected) values.
