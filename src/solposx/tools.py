@@ -69,17 +69,17 @@ def calc_error(zenith_1, azimuth_1, zenith_2, azimuth_2):
         * combined_rmse: total angular root-mean-squared difference in position
     """
     zenith_diff = zenith_1 - zenith_2
-    zenith_bias = zenith_diff.mean()
-    zenith_mad = np.abs(zenith_diff).mean()
-    zenith_rmsd = (zenith_diff**2).mean()**0.5
+    zenith_bias = np.mean(zenith_diff)
+    zenith_mad = np.mean(np.abs(zenith_diff))
+    zenith_rmsd = np.mean(zenith_diff**2)**0.5
 
     azimuth_diff = (azimuth_1 - azimuth_2 + 180) % 360 - 180  # handle 0/360 correctly
-    azimuth_bias = azimuth_diff.mean()
-    azimuth_mad = np.abs(azimuth_diff).mean()
-    azimuth_rmsd = (azimuth_diff**2).mean()**0.5
+    azimuth_bias = np.mean(azimuth_diff)
+    azimuth_mad = np.mean(np.abs(azimuth_diff))
+    azimuth_rmsd = np.mean(azimuth_diff**2)**0.5
 
     aoi = pvlib.irradiance.aoi(zenith_1, azimuth_1, zenith_2, azimuth_2)
-    combined_rmsd = (aoi**2).mean()**0.5
+    combined_rmsd = np.mean(aoi**2)**0.5
 
     out = {
         'zenith_bias': zenith_bias,
