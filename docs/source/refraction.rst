@@ -4,6 +4,9 @@
 Refraction correction algorithms
 ================================
 
+Methods of calculating the effect of atmospheric refraction on solar elevation.
+Some methods account for secondary effects from temperature and pressure.
+
 .. autosummary::
    :toctree: generated/
 
