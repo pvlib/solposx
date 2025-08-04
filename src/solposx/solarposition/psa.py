@@ -43,7 +43,7 @@ def psa(times, latitude, longitude, coefficients=2020):
         negative to west. [degrees]
     coefficients : int or list, default 2020
         Coefficients for the solar position algorithm. Available options
-        include 2001 or 2020. Alternative a list of custom coefficients
+        include 2001 or 2020. Alternatively a list of custom coefficients
         can be specified.
 
     Raises
