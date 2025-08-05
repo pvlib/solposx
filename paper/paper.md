@@ -7,7 +7,7 @@ tags:
  - solar position
 authors:
   - name: Adam R. Jensen
-   corresponding: true
+    corresponding: true
     orcid: 0000-0002-5554-9856
     equal-contrib: true
     affiliation: 1
@@ -25,7 +25,7 @@ affiliations:
   ror: 04qtj9h94
 - name: Sandia National Laboratories, USA
   index: 2
-   ror: 01apwpt12
+  ror: 01apwpt12
 date: 13 August 2025
 bibliography: paper.bib
 ---
@@ -47,10 +47,7 @@ SolarPositionX (the X is for eXtreme awesomeness) is a Python package for calcul
 
 The solar position functions follow a standard pattern, taking three main input parameters (times, latitude, and longitude) and returning a pandas DataFrame with solar elevation, zenith, and azimuth angles. This makes it extremely easy to compare and switch between SPAs, regardless of whether the functions execute code from within the solposx package or rely on external Python packages (which is the case for the skyfield and sg2 functions). The refraction correction models also follow a standardized pattern where the main input is an array or series of solar elevation angles and the output is the atmospheric refraction correction angle.
 
-
-
 ![Overview of modules and functions in the solposx package.\label{fig:package}](solposx_package_structure.png)
-
 
 The package relies heavily on the pandas Python package [@pandas], due to its convenient DatetimeIndex class. The reason for this choice is that it offers a very convenient way to handle timestamps, including timezone information and conversion between different timezones. The refraction correction algorithms are not reliant on pandas but can be used with most Python array libraries.
 
