@@ -1,31 +1,31 @@
 ---
 title: 'solposx: A Python package determining the solar position for solar energy applications'
 tags:
- - Python
- - solar energy
- - photovoltaics
- - solar position
+  - Python
+  - solar energy
+  - photovoltaics
+  - solar position
 authors:
-  - name: Adam R Jensen
-    corresponding: true
-    orcid: 0000-0002-5554-9856
-    equal-contrib: true
-    affiliation: 1
-  - name: Ioannis Sifnaios
-    orcid: 0000-0003-0933-2952
-    equal-contrib: true
-    affiliation: 1
-  - name: Kevin S. Anderson
-    orcid: 0000-0002-1166-7957
-    equal-contrib: true
-    affiliation: 2
+  - name: Adam R. Jensen
+    corresponding: true
+    orcid: 0000-0002-5554-9856
+    equal-contrib: true
+    affiliation: 1
+  - name: Ioannis Sifnaios
+    orcid: 0000-0003-0933-2952
+    equal-contrib: true
+    affiliation: 1
+  - name: Kevin S. Anderson
+    orcid: 0000-0002-1166-7957
+    equal-contrib: true
+    affiliation: 2
 affiliations:
-- name: Technical University of Denmark (DTU), Denmark
-  index: 1
-  ror: 04qtj9h94
-- name: Sandia National Laboratories, USA
-  index: 2
-  ror: 01apwpt12
+  - name: Technical University of Denmark (DTU), Denmark
+    index: 1
+    ror: 04qtj9h94
+  - name: Sandia National Laboratories, USA
+    index: 2
+    ror: 01apwpt12
 date: 13 August 2025
 bibliography: paper.bib
 ---
