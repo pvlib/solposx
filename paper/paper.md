@@ -6,7 +6,7 @@ tags:
  - photovoltaics
  - solar position
 authors:
-  - name: Adam R. Jensen
+  - name: Adam R Jensen
     corresponding: true
     orcid: 0000-0002-5554-9856
     equal-contrib: true
