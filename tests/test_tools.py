@@ -35,7 +35,7 @@ def test_fractional_hour(times_index, expected_fractional_hour):
 
 
 @pytest.fixture
-def expected_calc_error():
+def expected_calc_error_zeros():
     N = 10
     out = {
         'zenith_bias': np.zeros(N),
@@ -49,9 +49,74 @@ def expected_calc_error():
     return out
 
 
-def test_calc_error(expected_calc_error):
+def test_calc_error_zeros(expected_calc_error_zeros):
     zeros = np.zeros(10)
     result = calc_error(zeros, zeros, zeros, zeros)
-    for k in expected_calc_error.keys():
-        np.testing.assert_equal(result[k], expected_calc_error[k])
-    assert len(result.keys()) == len(expected_calc_error.keys())
+    for k in expected_calc_error_zeros.keys():
+        np.testing.assert_equal(result[k], expected_calc_error_zeros[k])
+    assert len(result.keys()) == len(expected_calc_error_zeros.keys())
+
+
+@pytest.mark.parametrize('zenith', [0, 45, 90, 135, 180])
+@pytest.mark.parametrize('azimuth', [0, 45, 90, 135, 180, 225, 270, 315, 360])
+@pytest.mark.parametrize('zenith_delta', [-100, -50, 0, 50, 100])
+def test_calc_error_zenith_shift(zenith, azimuth, zenith_delta):
+    zenith = np.array([zenith])
+    azimuth = np.array([azimuth])
+    errs = calc_error(zenith+zenith_delta, azimuth, zenith, azimuth)
+
+    np.testing.assert_almost_equal(errs['zenith_bias'], zenith_delta)
+    np.testing.assert_almost_equal(errs['zenith_mad'], abs(zenith_delta))
+    np.testing.assert_almost_equal(errs['zenith_rmsd'], abs(zenith_delta))
+
+    for key in ['azimuth_bias', 'azimuth_mad', 'azimuth_rmsd']:
+        np.testing.assert_almost_equal(errs[key], 0)
+
+    np.testing.assert_almost_equal(errs['combined_rmsd'], abs(zenith_delta))
+
+
+@pytest.mark.parametrize('zenith', [0, 45, 90, 135, 180])
+@pytest.mark.parametrize('azimuth', [0, 45, 90, 135, 180, 225, 270, 315, 360])
+@pytest.mark.parametrize('azimuth_delta', [
+    -300, -200, -100, -10, 0, 10, 100, 200, 300
+])
+def test_calc_error_azimuth_shift(zenith, azimuth, azimuth_delta):
+    errs = calc_error(zenith, azimuth+azimuth_delta, zenith, azimuth)
+
+    for key in ['zenith_bias', 'zenith_mad', 'zenith_rmsd']:
+        np.testing.assert_almost_equal(errs[key], 0)
+
+    expected_azimuth_diff = azimuth_delta % 360
+    expected_azimuth_diff = np.minimum(expected_azimuth_diff,
+                                       360 - expected_azimuth_diff)
+    np.testing.assert_almost_equal(abs(errs['azimuth_bias']),
+                                   expected_azimuth_diff)
+    np.testing.assert_almost_equal(abs(errs['azimuth_mad']),
+                                   expected_azimuth_diff)
+    np.testing.assert_almost_equal(abs(errs['azimuth_rmsd']),
+                                   expected_azimuth_diff)
+
+    # equal when zenith=90, otherwise less than.  1e-3 accommodates round-off
+    assert errs['combined_rmsd'] <= expected_azimuth_diff + 1e-8
+
+
+def test_calc_error_special_cases():
+    result = calc_error(90, 0, 0, 90)
+    assert result == pytest.approx({
+        'zenith_bias': 90, 'zenith_mad': 90, 'zenith_rmsd': 90,
+        'azimuth_bias': -90, 'azimuth_mad': 90, 'azimuth_rmsd': 90,
+        'combined_rmsd': 90,
+    })
+    result = calc_error(0, 270, 0, 90)
+    assert result == pytest.approx({
+        'zenith_bias': 0, 'zenith_mad': 0, 'zenith_rmsd': 0,
+        'azimuth_bias': -180, 'azimuth_mad': 180, 'azimuth_rmsd': 180,
+        'combined_rmsd': 0,
+    })
+    result = calc_error(45, 270, 45, 90)
+    assert result == pytest.approx({
+        'zenith_bias': 0, 'zenith_mad': 0, 'zenith_rmsd': 0,
+        'azimuth_bias': -180, 'azimuth_mad': 180, 'azimuth_rmsd': 180,
+        'combined_rmsd': 90,
+    })
+    
