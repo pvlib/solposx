@@ -56,7 +56,7 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0.,
     .. [1] `NASA Horizons Systems
        <https://ssd.jpl.nasa.gov/horizons/>`_
     .. [2] `NASA Horizons API
-       <https://ssd-api.jpl.nasa.gov/doc/horizons.html/>`_
+       <https://ssd-api.jpl.nasa.gov/doc/horizons.html>`_
     """
     params = {
         "MAKE_EPHEM": "YES",  # generate ephemeris
