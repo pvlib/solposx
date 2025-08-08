@@ -31,12 +31,12 @@ bibliography: paper.bib
 ---
 
 # Summary
-solposx is a Python package for calculating the sun’s position and atmospheric refraction. The package includes 11 solar position algorithms and 6 refraction models from the past 50 years. All functions follow a standardized design pattern, making it easy to compare different algorithms. The provided algorithm implementations have been thoroughly vetted, making the package a reliable reference for implementing solar position algorithms in other languages or applications.
+solposx is a Python package for calculating the sun’s position and atmospheric refraction. The package includes 11 solar position algorithms and 6 refraction models from the past 50 years. All functions follow a standardized design pattern, making it easy to compare different algorithms. The provided algorithm implementations have been thoroughly vetted, making the package a reliable reference for implementing solar position algorithms in other programming languages or applications.
 
 
 # Statement of need
 
-Calculating the sun's position is a fundamental task in solar energy research, for example, when modeling solar irradiance, estimating the yield of photovoltaic (PV) systems, or determining rotation angles for solar trackers. For this reason, the literature contains numerous solar position algorithms (SPAs), some of which are: `[@spencer1971; @walraven1978; @michalsky1988, @reda2004, @blanco2020]`.
+Calculating the sun's position is a fundamental task in solar energy research, for example, when modeling solar irradiance, estimating the yield of photovoltaic (PV) systems, or determining rotation angles for solar trackers. For this reason, the literature contains numerous solar position algorithms (SPAs), some of which are: [@spencer1971; @walraven1978; @michalsky1988; @reda2004; @blanco2020].
 
 Existing SPAs vary in accuracy, computational speed, and period of validity. These characteristics are usually tradeoffs, and thus the choice of algorithm depends on the specific application. Some algorithms have been developed to be computationally lightweight for use in solar tracker microcontrollers, and as a tradeoff, are inaccurate for past and future years. In contrast, high-accuracy algorithms may consist of several hundred mathematical operations to retain validity for hundreds or even thousands of years. One example of such an algorithm is the SPA from NREL, whose high accuracy and extensive period of validity come at the cost of being computationally expensive and impractical for non-experts to implement.
 
