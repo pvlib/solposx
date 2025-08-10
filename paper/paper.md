@@ -1,5 +1,5 @@
 ---
-title: 'solposx: A Python package for determining the solar position in solar energy applications'
+title: 'solposx: A Python package of reference solar position and atmospheric refraction algorithms'
 tags:
   - Python
   - solar energy
