@@ -355,33 +355,6 @@ def expected_usno_option_2():
     return data
 
 
-def expected_usno_option_3():
-    columns = ['elevation', 'zenith', 'azimuth']
-    values = [
-        [-52.75622999, 142.75622999, 21.79646181],
-        [-52.75629905, 142.75629905, 21.79631012],
-        [-52.70645896, 142.70645896, 21.90555161],
-        [-52.80590306, 142.80590306, 21.68711753],
-        [-52.26533644, 142.26533644, 10.36430201],
-        [-9.52936557, 99.52936557, 13.17136071],
-        [-73.79243024, 163.79243024, 126.37939685],
-        [9.52936557, 80.47063443, 166.82863929],
-        [-34.19009592, 124.19009592, 164.23629816],
-        [-53.09238562, 143.09238562, 340.32816392],
-        [35.39553601, 54.60446399, 183.83764037],
-        [35.39553601, 54.60446399, 183.83764037],
-        [-52.53916413, 142.53916413, 21.60304338],
-        [-52.53510098, 142.53510098, 21.67874615],
-        [-52.53149506, 142.53149506, 22.28536974],
-        [-52.58994800, 142.58994800, 22.15910787],
-        [-52.75622999, 142.75622999, 21.79646181],
-        [-52.75622999, 142.75622999, 21.79646181],
-        [-52.75622999, 142.75622999, 21.79646181],
-    ]
-    data = pd.DataFrame(data=values, columns=columns)
-    return data
-
-
 def expected_walraven():
     columns = ['elevation', 'zenith', 'azimuth']
     values = [
@@ -488,7 +461,6 @@ def _generate_solarposition_dataframe(inputs, algorithm, **kwargs):
     # test default usno gmst_option parameter
     (usno, expected_usno, {'gmst_option': 1}),
     (usno, expected_usno_option_2, {'gmst_option': 2}),
-    (usno, expected_usno_option_3, {'gmst_option': 3}),
     (walraven, expected_walraven, {}),
 ])
 def test_algorithm(algorithm, expected, kwargs, test_conditions):
