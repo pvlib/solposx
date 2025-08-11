@@ -16,8 +16,9 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Time stamps for which to calculate solar position. Must be timezone
-        aware.
+        Timestamps - must be localized. Prior to 1970 and far in
+        the future UTC and UT1 may deviate significantly. For such use
+        cases,  UT1 times should be provided.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
