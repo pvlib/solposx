@@ -68,7 +68,7 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0.,
         "START_TIME": pd.Timestamp(start).strftime('%Y-%m-%d %H:%M'),
         "STOP_TIME": pd.Timestamp(end).strftime('%Y-%m-%d %H:%M'),
         "STEP_SIZE": time_step,
-        "QUANTITIES": "1,2,4,36",
+        "QUANTITIES": "2,4",  # corrected angles
         "REF_SYSTEM": "ICRF",
         "CAL_FORMAT": "CAL",  # output date format
         "CAL_TYPE": "MIXED",  # Gregorian or mixed Julian/Gregorian calendar
@@ -108,17 +108,10 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0.,
     data.index = pd.to_datetime(data.index, format='%Y-%b-%d %H:%M:%S.%f')
     data.index = data.index.tz_localize('UTC')
 
-    data = data.rename(columns={
-        'Unnamed: 1': 'units',
-        'RA_3sigma': 'uncertainty_right_ascension',
-        'DEC_3sigma': 'uncertainty_declination',
-    })
-
     # split columns as several params have a shared header name for two params
     column_name_split_map = {
-        'R.A.___(ICRF)___DEC': ['right_ascension', 'declination'],
-        'R.A._(a-appar)_DEC.': ['apparent_right_ascesion', 'apparent_declination'],
-        'Azi____(a-app)___Elev': ['apparent_azimuth', 'apparent_elevation'],
+        'R.A._(a-appar)_DEC.': ['right_ascension', 'declination'],
+        'Azi____(a-app)___Elev': ['azimuth', 'elevation'],
     }
 
     for old_name, new_names in column_name_split_map.items():
@@ -129,7 +122,7 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0.,
 
     data.index.name = 'time'
     try:
-        del data['units']
+        del data['Unnamed: 1']
     except KeyError:
         pass
 
