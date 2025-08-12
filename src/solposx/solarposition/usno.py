@@ -14,23 +14,24 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Time stamps for which to calculate solar position. Must be timezone
-        aware.
+        Timestamps - must be localized. Prior to 1970 and far in
+        the future UTC and UT1 may deviate significantly. For such use
+        cases,  UT1 times should be provided.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
     longitude : float
         Longitude in decimal degrees. Positive east of prime meridian,
         negative to west. [degrees]
-    delta_t : numeric, default 67.0
+    delta_t : numeric, default : 67.0
         Difference between terrestrial time and UT1.
-        If delta_t is None, uses spa.calculate_deltat
-        using time.year and time.month from pandas.DatetimeIndex.
-        For most simulations the default delta_t is sufficient.
-        The USNO has historical and forecasted delta_t [2]_. [seconds]
-    gmst_option : int, default 1
+        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
+        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
+        For most simulations the default ``delta_t`` is sufficient.
+        The USNO has historical and forecasted ``delta_t`` [2]_. [seconds]
+    gmst_option : int, default : 1
         Different ways of calculating the Greenwich mean sidereal time.
-        `gmst_option` needs to be either 1, 2, or 3. See [1]_.
+        `gmst_option` needs to be either 1 or 2. See [1]_.
 
     Returns
     -------
@@ -108,8 +109,6 @@ def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
     elif gmst_option == 2:
         GMST = (6.697375 + 0.065709824279 * DAY_UT + 1.0027379 * H
                 + 0.0000258 * T**2)
-    elif gmst_option == 3:
-        GMST = 18.697375 + 24.065709824279 * DAY_UT
     else:
         raise ValueError(f"{gmst_option} is not a valid `gmst_option`")
 

@@ -33,8 +33,9 @@ def psa(times, latitude, longitude, coefficients=2020):
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Time stamps for which to calculate solar position. Must be timezone
-        aware.
+        Timestamps - must be localized. Prior to 1970 and far in
+        the future UTC and UT1 may deviate significantly. For such use
+        cases,  UT1 times should be provided.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
@@ -43,7 +44,7 @@ def psa(times, latitude, longitude, coefficients=2020):
         negative to west. [degrees]
     coefficients : int or list, default 2020
         Coefficients for the solar position algorithm. Available options
-        include 2001 or 2020. Alternative a list of custom coefficients
+        include 2001 or 2020. Alternatively a list of custom coefficients
         can be specified.
 
     Raises

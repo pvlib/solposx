@@ -13,8 +13,9 @@ def iqbal(times, latitude, longitude):
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Time stamps for which to calculate solar position. Must be timezone
-        aware.
+        Timestamps - must be localized. Prior to 1970 and far in
+        the future UTC and UT1 may deviate significantly. For such use
+        cases,  UT1 times should be provided.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
@@ -33,7 +34,7 @@ def iqbal(times, latitude, longitude):
 
     References
     ----------
-    .. [1] M. Iqbal, “An Introduction to Solar Radiation,” 1983,
+    .. [1] M. Iqbal, "An Introduction to Solar Radiation," 1983,
        :doi:`10.1016/b978-0-12-373750-2.x5001-0`.
     .. [2] J. W. Spencer, "Fourier series representation of the position of the
        Sun," Search, vol. 2, no. 5, pp. 172, 1971.

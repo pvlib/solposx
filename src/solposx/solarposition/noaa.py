@@ -14,16 +14,17 @@ def noaa(times, latitude, longitude, delta_t=67.0):
     from years -2000 to +3000 for latitudes within +/- 72 degrees. For
     latitudes outside this the accuracy is 0.167 degrees.
 
-    The NOAA algorithm uses by default the Hughes refraction model,
-    see ~:py:func:`solposx.refraction.hughes`.  Note, that the implementation
+    The NOAA algorithm uses the Hughes refraction model,
+    see :py:func:`~solposx.refraction.hughes`.  Note, that the implementation
     deviates slightly from Hughes in that refraction is set to 0 for solar
     elevation angles above 85 degrees.
 
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Time stamps for which to calculate solar position. Must be timezone
-        aware.
+        Timestamps - must be localized. Prior to 1970 and far in
+        the future UTC and UT1 may deviate significantly. For such use
+        cases,  UT1 times should be provided.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
@@ -32,10 +33,10 @@ def noaa(times, latitude, longitude, delta_t=67.0):
         negative to west. [degrees]
     delta_t : numeric, default 67.0
         Difference between terrestrial time and UT1.
-        If delta_t is None, uses spa.calculate_deltat
-        using time.year and time.month from pandas.DatetimeIndex.
-        For most simulations the default delta_t is sufficient.
-        The USNO has historical and forecasted delta_t [3]_. [seconds]
+        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
+        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
+        For most simulations the default ``delta_t`` is sufficient.
+        The USNO has historical and forecasted ``delta_t`` [3]_. [seconds]
 
     Returns
     -------

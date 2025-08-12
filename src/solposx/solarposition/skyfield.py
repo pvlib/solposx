@@ -9,14 +9,15 @@ def skyfield(times, latitude, longitude, de='de440.bsp'):
 
     Skyfield is a Python package that can calculate high precision
     position of stars, planets, and satellites in orbit around the Earth based
-    on epherides. Calculated positions should agree with the Astronomical
+    on ephemerides. Calculated positions should agree with the Astronomical
     Almanac to within 0.0005 arcseconds.
 
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Time stamps for which to calculate solar position. Must be timezone
-        aware.
+        Timestamps - must be localized. Prior to 1970 and far in
+        the future UTC and UT1 may deviate significantly. For such use
+        cases,  UT1 times should be provided.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]

@@ -14,8 +14,9 @@ def walraven(times, latitude, longitude):
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Time stamps for which to calculate solar position. Must be timezone
-        aware.
+        Timestamps - must be localized. Prior to 1970 and far in
+        the future UTC and UT1 may deviate significantly. For such use
+        cases,  UT1 times should be provided.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
@@ -34,12 +35,12 @@ def walraven(times, latitude, longitude):
 
     References
     ----------
-    .. [1] R. Walraven, “Calculating the position of the sun,” Solar Energy,
+    .. [1] R. Walraven, "Calculating the position of the sun," Solar Energy,
        vol. 20, no. 5, pp. 393–397, 1978, :doi:`10.1016/0038-092x(78)90155-x`.
     .. [2] R. Walraven, "Erratum," Solar Energy,
        vol. 22, pp. 195, 1979, :doi:`10.1016/0038-092X(79)90106-3`
-    .. [3] J. W. Spencer, “Comments on The Astronomical Almanac’s Algorithm for
-       Approximate Solar Position (1950–2050),” Solar Energy, vol. 42, no. 4,
+    .. [3] J. W. Spencer, "Comments on The Astronomical Almanac's Algorithm for
+       Approximate Solar Position (1950–2050)," Solar Energy, vol. 42, no. 4,
        pp. 353, 1989, :doi:`10.1016/0038-092x(89)90039-x`.
     """
     times_utc = _pandas_to_utc(times)

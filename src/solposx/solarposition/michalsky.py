@@ -16,8 +16,9 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
     Parameters
     ----------
     times : pandas.DatetimeIndex
-        Time stamps for which to calculate solar position. Must be timezone
-        aware.
+        Timestamps - must be localized. Prior to 1970 and far in
+        the future UTC and UT1 may deviate significantly. For such use
+        cases,  UT1 times should be provided.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
         to south. [degrees]
@@ -29,8 +30,9 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
         works for all latitudes.
     julian_date : string, default 'original'
         Julian date calculation. Can be one of the following:
-            * ``'original'``: calculation based on Michalsky's paper [1]_.
-            * ``'pandas'``: calculation using a pandas build-in function
+
+        * ``'original'``: calculation based on Michalsky's paper [1]_.
+        * ``'pandas'``: calculation using a pandas built-in function
 
     Returns
     -------
@@ -60,7 +62,7 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
     implementation includes by default the correction provided by Spencer such
     that it works for all latitudes.
 
-    Minor clarifications were made to the original paper have been published
+    Minor clarifications to the original paper have been published
     as errata in [3]_ and [4]_.
 
     The Julian date calculation in the original Michalsky paper [1]_ ensures
@@ -71,15 +73,15 @@ def michalsky(times, latitude, longitude, spencer_correction=True,
 
     References
     ----------
-    .. [1] J. J. Michalsky, "The Astronomical Almanac’s algorithm for
+    .. [1] J. J. Michalsky, "The Astronomical Almanac's algorithm for
        approximate solar position (1950–2050)," Solar Energy, vol. 40, no. 3,
        pp. 227–235, 1988, :doi:`10.1016/0038-092x(88)90045-x`.
-    .. [2] J. W. Spencer, “Comments on The Astronomical Almanac’s Algorithm for
-       Approximate Solar Position (1950–2050),” Solar Energy, vol. 42, no. 4,
+    .. [2] J. W. Spencer, "Comments on The Astronomical Almanac's Algorithm for
+       Approximate Solar Position (1950–2050)," Solar Energy, vol. 42, no. 4,
        pp. 353, 1989, :doi:`10.1016/0038-092x(89)90039-x`.
-    .. [3] J. J. Michalsky, “Errata,” Solar Energy, vol. 41, no. 1,
+    .. [3] J. J. Michalsky, "Errata," Solar Energy, vol. 41, no. 1,
        pp. 113, 1988, :doi:`10.1016/0038-092x(88)90122-3`.
-    .. [4] J. J. Michalsky, “Errata,” Solar Energy, vol. 43, no. 5,
+    .. [4] J. J. Michalsky, "Errata," Solar Energy, vol. 43, no. 5,
        pp. 323, 1989, :doi:`10.1016/0038-092x(89)90122-9`.
     """
     times_utc = _pandas_to_utc(times)
