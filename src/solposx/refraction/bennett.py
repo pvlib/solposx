@@ -43,7 +43,7 @@ def bennett(elevation, pressure=101325., temperature=12.):
 
     pressure = pressure / 100  # convert to hPa
 
-    r = 0.016667 / tand((elevation + 7.31 / (elevation + 4.4)))
+    r = 0.016667 / tand(elevation + 7.31 / (elevation + 4.4))
 
     d = r * (0.28 * pressure / (temperature + 273.0))
 
