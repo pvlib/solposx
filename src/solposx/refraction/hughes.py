@@ -1,6 +1,5 @@
 """Hughes refraction model."""
 import numpy as np
-import pandas as pd
 
 
 def hughes(elevation, pressure=101325., temperature=12.):
