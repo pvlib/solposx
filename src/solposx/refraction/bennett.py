@@ -39,7 +39,7 @@ def bennett(elevation, pressure=101325., temperature=12.):
     .. [1] G. Bennett, "The calculation of astronomical refraction in marine
        navigation," Journal of Navigation, vol. 35, issue 2, pp. 255-259,
        1982, :doi:`10.1017/S0373463300022037`.
-    """
+    """  # noqa: E501
 
     pressure = pressure / 100  # convert to hPa
 
