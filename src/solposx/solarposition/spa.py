@@ -52,8 +52,7 @@ def spa(time, latitude, longitude,
                altitude=0., pressure=101325., temperature=12., delta_t=67.0,
                atmos_refract=None, how='numpy', numthreads=4):
     """
-    Calculate the solar position using a python implementation of the
-    NREL SPA algorithm.
+    Calculate the solar position using a python implementation of the NREL SPA algorithm.
 
     The details of the NREL SPA algorithm are described in [1]_, [2]_.
 
