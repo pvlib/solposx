@@ -117,10 +117,6 @@ def spa(time, latitude, longitude,
 
     .. [3] `U.S. Naval Observatory, delta T
        <https://maia.usno.navy.mil/products/deltaT>`_
-
-    See also
-    --------
-    pyephem, spa_c, ephemeris
     """
 
     # Added by Tony Lorenzo (@alorenzo175), University of Arizona, 2015
