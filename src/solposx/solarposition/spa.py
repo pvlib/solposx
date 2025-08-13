@@ -3,7 +3,6 @@ import numpy as np
 from pvlib import tools
 
 import warnings
-import os
 
 
 def _datetime_to_unixtime(dtindex):
@@ -18,9 +17,8 @@ def _datetime_to_unixtime(dtindex):
 
     return np.array((dtindex - epoch) / pd.Timedelta("1s"))
 
-def spa(time, latitude, longitude,
-               altitude=0., pressure=101325., temperature=12., delta_t=67.0,
-               atmos_refract=None, how='numpy', numthreads=4):
+def spa(time, latitude, longitude, altitude=0., pressure=101325.,
+        temperature=12., delta_t=67.0, atmos_refract=None):
     """
     Calculate the solar position using a python implementation of the NREL SPA algorithm.
 
@@ -106,15 +104,13 @@ def spa(time, latitude, longitude,
 
     unixtime = _datetime_to_unixtime(time)
 
-    spa = _spa_python_import(how)
-
     if delta_t is None:
         time_utc = tools._pandas_to_utc(time)
-        delta_t = spa.calculate_deltat(time_utc.year, time_utc.month)
+        delta_t = calculate_deltat(time_utc.year, time_utc.month)
 
     app_zenith, zenith, app_elevation, elevation, azimuth, eot = \
-        spa.solar_position(unixtime, lat, lon, elev, pressure, temperature,
-                           delta_t, atmos_refract, numthreads)
+        solar_position(unixtime, lat, lon, elev, pressure, temperature,
+                       delta_t, atmos_refract)
 
     result = pd.DataFrame({'apparent_zenith': app_zenith, 'zenith': zenith,
                            'apparent_elevation': app_elevation,
@@ -127,42 +123,14 @@ def spa(time, latitude, longitude,
 
 # below this line, is pvlib's spa as of commit 6dfeaf8ee97db6a7a8f3c8109eed8b5d285c4e41
 # with modifications to account for code style
+# and remove all numba-specific code
 """
 Calculate the solar position using the NREL SPA algorithm either using
-numpy arrays or compiling the code to machine language with numba.
+numpy arrays.
 """
 
 # Contributors:
 # Created by Tony Lorenzo (@alorenzo175), Univ. of Arizona, 2015
-
-import os
-import threading
-import warnings
-
-import numpy as np
-
-
-# this block is a way to use an environment variable to switch between
-# compiling the functions with numba or just use numpy
-def nocompile(*args, **kwargs):
-    return lambda func: func
-
-
-if os.getenv('PVLIB_USE_NUMBA', '0') != '0':
-    try:
-        from numba import jit
-    except ImportError:
-        warnings.warn('Could not import numba, falling back to numpy ' +
-                      'calculation')
-        jcompile = nocompile
-        USE_NUMBA = False
-    else:
-        jcompile = jit
-        USE_NUMBA = True
-else:
-    jcompile = nocompile
-    USE_NUMBA = False
-
 
 # heliocentric longitude coefficients
 L0 = np.array([
@@ -528,8 +496,6 @@ NUTATION_YTERM_ARRAY = np.array([
 ])
 
 
-@jcompile('float64(int64, int64, int64, int64, int64, int64, int64)',
-          nopython=True)
 def julian_day_dt(year, month, day, hour, minute, second, microsecond):
     """This is the original way to calculate the julian day from the NREL paper.
     However, it is much faster to convert to unix/epoch time and then convert
@@ -549,40 +515,31 @@ def julian_day_dt(year, month, day, hour, minute, second, microsecond):
     return jd
 
 
-@jcompile('float64(float64)', nopython=True)
 def julian_day(unixtime):
     jd = unixtime * 1.0 / 86400 + 2440587.5
     return jd
 
 
-@jcompile('float64(float64, float64)', nopython=True)
 def julian_ephemeris_day(julian_day, delta_t):
     jde = julian_day + delta_t * 1.0 / 86400
     return jde
 
 
-@jcompile('float64(float64)', nopython=True)
 def julian_century(julian_day):
     jc = (julian_day - 2451545) * 1.0 / 36525
     return jc
 
 
-@jcompile('float64(float64)', nopython=True)
 def julian_ephemeris_century(julian_ephemeris_day):
     jce = (julian_ephemeris_day - 2451545) * 1.0 / 36525
     return jce
 
 
-@jcompile('float64(float64)', nopython=True)
 def julian_ephemeris_millennium(julian_ephemeris_century):
     jme = julian_ephemeris_century * 1.0 / 10
     return jme
 
 
-# omit type signature here; specifying read-only arrays requires use of the
-# numba.types API, meaning numba must be available to import.
-# https://github.com/numba/numba/issues/4511
-@jcompile(nopython=True)
 def sum_mult_cos_add_mult(arr, x):
     # shared calculation used for heliocentric longitude, latitude, and radius
     s = 0.
@@ -590,7 +547,6 @@ def sum_mult_cos_add_mult(arr, x):
         s += arr[row, 0] * np.cos(arr[row, 1] + arr[row, 2] * x)
     return s
 
-@jcompile('float64(float64)', nopython=True)
 def heliocentric_longitude(jme):
     l0 = sum_mult_cos_add_mult(L0, jme)
     l1 = sum_mult_cos_add_mult(L1, jme)
@@ -604,7 +560,6 @@ def heliocentric_longitude(jme):
     l = np.rad2deg(l_rad)
     return l % 360
 
-@jcompile('float64(float64)', nopython=True)
 def heliocentric_latitude(jme):
     b0 = sum_mult_cos_add_mult(B0, jme)
     b1 = sum_mult_cos_add_mult(B1, jme)
@@ -614,7 +569,6 @@ def heliocentric_latitude(jme):
     return b
 
 
-@jcompile('float64(float64)', nopython=True)
 def heliocentric_radius_vector(jme):
     r0 = sum_mult_cos_add_mult(R0, jme)
     r1 = sum_mult_cos_add_mult(R1, jme)
@@ -626,19 +580,16 @@ def heliocentric_radius_vector(jme):
     return r
 
 
-@jcompile('float64(float64)', nopython=True)
 def geocentric_longitude(heliocentric_longitude):
     theta = heliocentric_longitude + 180.0
     return theta % 360
 
 
-@jcompile('float64(float64)', nopython=True)
 def geocentric_latitude(heliocentric_latitude):
     beta = -1.0*heliocentric_latitude
     return beta
 
 
-@jcompile('float64(float64)', nopython=True)
 def mean_elongation(julian_ephemeris_century):
     x0 = (297.85036
           + 445267.111480 * julian_ephemeris_century
@@ -647,7 +598,6 @@ def mean_elongation(julian_ephemeris_century):
     return x0
 
 
-@jcompile('float64(float64)', nopython=True)
 def mean_anomaly_sun(julian_ephemeris_century):
     x1 = (357.52772
           + 35999.050340 * julian_ephemeris_century
@@ -656,7 +606,6 @@ def mean_anomaly_sun(julian_ephemeris_century):
     return x1
 
 
-@jcompile('float64(float64)', nopython=True)
 def mean_anomaly_moon(julian_ephemeris_century):
     x2 = (134.96298
           + 477198.867398 * julian_ephemeris_century
@@ -665,7 +614,6 @@ def mean_anomaly_moon(julian_ephemeris_century):
     return x2
 
 
-@jcompile('float64(float64)', nopython=True)
 def moon_argument_latitude(julian_ephemeris_century):
     x3 = (93.27191
           + 483202.017538 * julian_ephemeris_century
@@ -674,7 +622,6 @@ def moon_argument_latitude(julian_ephemeris_century):
     return x3
 
 
-@jcompile('float64(float64)', nopython=True)
 def moon_ascending_longitude(julian_ephemeris_century):
     x4 = (125.04452
           - 1934.136261 * julian_ephemeris_century
@@ -683,9 +630,6 @@ def moon_ascending_longitude(julian_ephemeris_century):
     return x4
 
 
-@jcompile(
-    'void(float64, float64, float64, float64, float64, float64, float64[:])',
-    nopython=True)
 def longitude_obliquity_nutation(julian_ephemeris_century, x0, x1, x2, x3, x4,
                                  out):
     delta_psi_sum = 0.0
@@ -715,7 +659,6 @@ def longitude_obliquity_nutation(julian_ephemeris_century, x0, x1, x2, x3, x4,
     out[1] = delta_eps
 
 
-@jcompile('float64(float64)', nopython=True)
 def mean_ecliptic_obliquity(julian_ephemeris_millennium):
     U = 1.0*julian_ephemeris_millennium/10
     e0 = (84381.448 - 4680.93 * U - 1.55 * U**2
@@ -725,7 +668,6 @@ def mean_ecliptic_obliquity(julian_ephemeris_millennium):
     return e0
 
 
-@jcompile('float64(float64, float64)', nopython=True)
 def true_ecliptic_obliquity(mean_ecliptic_obliquity, obliquity_nutation):
     e0 = mean_ecliptic_obliquity
     deleps = obliquity_nutation
@@ -733,27 +675,23 @@ def true_ecliptic_obliquity(mean_ecliptic_obliquity, obliquity_nutation):
     return e
 
 
-@jcompile('float64(float64)', nopython=True)
 def aberration_correction(earth_radius_vector):
     deltau = -20.4898 / (3600 * earth_radius_vector)
     return deltau
 
 
-@jcompile('float64(float64, float64, float64)', nopython=True)
 def apparent_sun_longitude(geocentric_longitude, longitude_nutation,
                            aberration_correction):
     lamd = geocentric_longitude + longitude_nutation + aberration_correction
     return lamd
 
 
-@jcompile('float64(float64, float64)', nopython=True)
 def mean_sidereal_time(julian_day, julian_century):
     v0 = (280.46061837 + 360.98564736629 * (julian_day - 2451545)
           + 0.000387933 * julian_century**2 - julian_century**3 / 38710000)
     return v0 % 360.0
 
 
-@jcompile('float64(float64, float64, float64)', nopython=True)
 def apparent_sidereal_time(mean_sidereal_time, longitude_nutation,
                            true_ecliptic_obliquity):
     v = mean_sidereal_time + longitude_nutation * np.cos(
@@ -761,7 +699,6 @@ def apparent_sidereal_time(mean_sidereal_time, longitude_nutation,
     return v
 
 
-@jcompile('float64(float64, float64, float64)', nopython=True)
 def geocentric_sun_right_ascension(apparent_sun_longitude,
                                    true_ecliptic_obliquity,
                                    geocentric_latitude):
@@ -776,7 +713,6 @@ def geocentric_sun_right_ascension(apparent_sun_longitude,
     return alpha % 360
 
 
-@jcompile('float64(float64, float64, float64)', nopython=True)
 def geocentric_sun_declination(apparent_sun_longitude, true_ecliptic_obliquity,
                                geocentric_latitude):
     geocentric_latitude_rad = np.radians(geocentric_latitude)
@@ -790,7 +726,6 @@ def geocentric_sun_declination(apparent_sun_longitude, true_ecliptic_obliquity,
     return delta
 
 
-@jcompile('float64(float64, float64, float64)', nopython=True)
 def local_hour_angle(apparent_sidereal_time, observer_longitude,
                      sun_right_ascension):
     """Measured westward from south"""
@@ -798,33 +733,28 @@ def local_hour_angle(apparent_sidereal_time, observer_longitude,
     return H % 360
 
 
-@jcompile('float64(float64)', nopython=True)
 def equatorial_horizontal_parallax(earth_radius_vector):
     xi = 8.794 / (3600 * earth_radius_vector)
     return xi
 
 
-@jcompile('float64(float64)', nopython=True)
 def uterm(observer_latitude):
     u = np.arctan(0.99664719 * np.tan(np.radians(observer_latitude)))
     return u
 
 
-@jcompile('float64(float64, float64, float64)', nopython=True)
 def xterm(u, observer_latitude, observer_elevation):
     x = (np.cos(u) + observer_elevation / 6378140
          * np.cos(np.radians(observer_latitude)))
     return x
 
 
-@jcompile('float64(float64, float64, float64)', nopython=True)
 def yterm(u, observer_latitude, observer_elevation):
     y = (0.99664719 * np.sin(u) + observer_elevation / 6378140
          * np.sin(np.radians(observer_latitude)))
     return y
 
 
-@jcompile('float64(float64, float64,float64, float64)', nopython=True)
 def parallax_sun_right_ascension(xterm, equatorial_horizontal_parallax,
                                  local_hour_angle, geocentric_sun_declination):
     equatorial_horizontal_parallax_rad = \
@@ -840,15 +770,12 @@ def parallax_sun_right_ascension(xterm, equatorial_horizontal_parallax,
     return delta_alpha
 
 
-@jcompile('float64(float64, float64)', nopython=True)
 def topocentric_sun_right_ascension(geocentric_sun_right_ascension,
                                     parallax_sun_right_ascension):
     alpha_prime = geocentric_sun_right_ascension + parallax_sun_right_ascension
     return alpha_prime
 
 
-@jcompile('float64(float64, float64, float64, float64, float64, float64)',
-          nopython=True)
 def topocentric_sun_declination(geocentric_sun_declination, xterm, yterm,
                                 equatorial_horizontal_parallax,
                                 parallax_sun_right_ascension,
@@ -867,14 +794,12 @@ def topocentric_sun_declination(geocentric_sun_declination, xterm, yterm,
     return delta
 
 
-@jcompile('float64(float64, float64)', nopython=True)
 def topocentric_local_hour_angle(local_hour_angle,
                                  parallax_sun_right_ascension):
     H_prime = local_hour_angle - parallax_sun_right_ascension
     return H_prime
 
 
-@jcompile('float64(float64, float64, float64)', nopython=True)
 def topocentric_elevation_angle_without_atmosphere(observer_latitude,
                                                    topocentric_sun_declination,
                                                    topocentric_local_hour_angle
@@ -890,7 +815,6 @@ def topocentric_elevation_angle_without_atmosphere(observer_latitude,
     return e0
 
 
-@jcompile('float64(float64, float64, float64, float64)', nopython=True)
 def atmospheric_refraction_correction(local_pressure, local_temp,
                                       topocentric_elevation_angle_wo_atmosphere,
                                       atmos_refract):
@@ -905,7 +829,6 @@ def atmospheric_refraction_correction(local_pressure, local_temp,
     return delta_e
 
 
-@jcompile('float64(float64, float64)', nopython=True)
 def topocentric_elevation_angle(topocentric_elevation_angle_without_atmosphere,
                                 atmospheric_refraction_correction):
     e = (topocentric_elevation_angle_without_atmosphere
@@ -913,13 +836,11 @@ def topocentric_elevation_angle(topocentric_elevation_angle_without_atmosphere,
     return e
 
 
-@jcompile('float64(float64)', nopython=True)
 def topocentric_zenith_angle(topocentric_elevation_angle):
     theta = 90 - topocentric_elevation_angle
     return theta
 
 
-@jcompile('float64(float64, float64, float64)', nopython=True)
 def topocentric_astronomers_azimuth(topocentric_local_hour_angle,
                                     topocentric_sun_declination,
                                     observer_latitude):
@@ -934,13 +855,11 @@ def topocentric_astronomers_azimuth(topocentric_local_hour_angle,
     return gamma % 360
 
 
-@jcompile('float64(float64)', nopython=True)
 def topocentric_azimuth_angle(topocentric_astronomers_azimuth):
     phi = topocentric_astronomers_azimuth + 180
     return phi % 360
 
 
-@jcompile('float64(float64)', nopython=True)
 def sun_mean_longitude(julian_ephemeris_millennium):
     M = (280.4664567 + 360007.6982779 * julian_ephemeris_millennium
          + 0.03032028 * julian_ephemeris_millennium**2
@@ -950,7 +869,6 @@ def sun_mean_longitude(julian_ephemeris_millennium):
     return M
 
 
-@jcompile('float64(float64, float64, float64, float64)', nopython=True)
 def equation_of_time(sun_mean_longitude, geocentric_sun_right_ascension,
                      longitude_nutation, true_ecliptic_obliquity):
     E = (sun_mean_longitude - 0.0057183 - geocentric_sun_right_ascension +
@@ -966,8 +884,6 @@ def equation_of_time(sun_mean_longitude, geocentric_sun_right_ascension,
     return E
 
 
-@jcompile('void(float64[:], float64[:], float64[:], float64[:,:])',
-          nopython=True, nogil=True)
 def solar_position_loop(unixtime, delta_t, loc_args, out):
     """Loop through the time array and calculate the solar position"""
     lat = loc_args[0]
@@ -1045,63 +961,59 @@ def solar_position_loop(unixtime, delta_t, loc_args, out):
         out[5, i] = eot
 
 
-def solar_position_numba(unixtime, lat, lon, elev, pressure, temp, delta_t,
-                         atmos_refract, numthreads, sst=False, esd=False):
-    """Calculate the solar position using the numba compiled functions
-    and multiple threads. Very slow if functions are not numba compiled.
+def solar_position(unixtime, lat, lon, elev, pressure, temp, delta_t,
+                   atmos_refract, sst=False, esd=False):
     """
-    # these args are the same for each thread
-    loc_args = np.array([lat, lon, elev, pressure, temp,
-                         atmos_refract, sst, esd], dtype=np.float64)
+    Calculate the solar position using the
+    NREL SPA algorithm described in [1].
 
-    # turn delta_t into an array if it isn't already
-    delta_t = np.full_like(unixtime, delta_t, dtype=np.float64)
+    Parameters
+    ----------
+    unixtime : numpy array
+        Array of unix/epoch timestamps to calculate solar position for.
+        Unixtime is the number of seconds since Jan. 1, 1970 00:00:00 UTC.
+        A pandas.DatetimeIndex is easily converted using .view(np.int64)/10**9
+    lat : float
+        Latitude to calculate solar position for
+    lon : float
+        Longitude to calculate solar position for
+    elev : float
+        Elevation of location in meters
+    pressure : int or float
+        avg. yearly pressure at location in millibars;
+        used for atmospheric correction
+    temp : int or float
+        avg. yearly temperature at location in
+        degrees C; used for atmospheric correction
+    delta_t : float or array
+        Difference between terrestrial time and UT1.
+    atmos_refract : float
+        The approximate atmospheric refraction (in degrees)
+        at sunrise and sunset.
+    sst : bool, default False
+        If True, return only data needed for sunrise, sunset, and transit
+        calculations.
+    esd : bool, default False
+        If True, return only Earth-Sun distance in AU
 
-    # construct dims x ulength array to put the results in
-    ulength = unixtime.shape[0]
-    if sst:
-        dims = 3
-    elif esd:
-        dims = 1
-    else:
-        dims = 6
-    result = np.empty((dims, ulength), dtype=np.float64)
+    Returns
+    -------
+    Numpy Array with elements:
+        apparent zenith,
+        zenith,
+        elevation,
+        apparent_elevation,
+        azimuth,
+        equation_of_time
 
-    if unixtime.dtype != np.float64:
-        unixtime = unixtime.astype(np.float64)
+    References
+    ----------
+    .. [1] I. Reda and A. Andreas, Solar position algorithm for solar radiation
+       applications. Solar Energy, vol. 76, no. 5, pp. 577-589, 2004.
 
-    if ulength < numthreads:
-        numthreads = ulength
-
-    if numthreads <= 1:
-        solar_position_loop(unixtime, delta_t, loc_args, result)
-        return result
-
-    # split the input and output arrays into numthreads chunks
-    split0 = np.array_split(unixtime, numthreads)
-    split1 = np.array_split(delta_t, numthreads)
-    split2 = np.array_split(result, numthreads, axis=1)
-    chunks = [
-        [a0, a1, loc_args, a2]
-        for a0, a1, a2 in zip(split0, split1, split2)
-    ]
-    # Spawn one thread per chunk
-    threads = [threading.Thread(target=solar_position_loop, args=chunk)
-               for chunk in chunks]
-    for thread in threads:
-        thread.start()
-    for thread in threads:
-        thread.join()
-    return result
-
-
-def solar_position_numpy(unixtime, lat, lon, elev, pressure, temp, delta_t,
-                         atmos_refract, numthreads, sst=False, esd=False):
-    """Calculate the solar position assuming unixtime is a numpy array. Note
-    this function will not work if the solar position functions were
-    compiled with numba.
+    .. [2] I. Reda and A. Andreas, Corrigendum to Solar position algorithm for
+       solar radiation applications. Solar Energy, vol. 81, no. 6, p. 838, 2007.
     """
-
     jd = julian_day(unixtime)
     jde = julian_ephemeris_day(jd, delta_t)
     jc = julian_century(jd)
@@ -1152,77 +1064,7 @@ def solar_position_numpy(unixtime, lat, lon, elev, pressure, temp, delta_t,
     theta0 = topocentric_zenith_angle(e0)
     gamma = topocentric_astronomers_azimuth(H_prime, delta_prime, lat)
     phi = topocentric_azimuth_angle(gamma)
-    return theta, theta0, e, e0, phi, eot
-
-
-def solar_position(unixtime, lat, lon, elev, pressure, temp, delta_t,
-                   atmos_refract, numthreads=8, sst=False, esd=False):
-    """
-    Calculate the solar position using the
-    NREL SPA algorithm described in [1].
-
-    If numba is installed, the functions can be compiled
-    and the code runs quickly. If not, the functions
-    still evaluate but use numpy instead.
-
-    Parameters
-    ----------
-    unixtime : numpy array
-        Array of unix/epoch timestamps to calculate solar position for.
-        Unixtime is the number of seconds since Jan. 1, 1970 00:00:00 UTC.
-        A pandas.DatetimeIndex is easily converted using .view(np.int64)/10**9
-    lat : float
-        Latitude to calculate solar position for
-    lon : float
-        Longitude to calculate solar position for
-    elev : float
-        Elevation of location in meters
-    pressure : int or float
-        avg. yearly pressure at location in millibars;
-        used for atmospheric correction
-    temp : int or float
-        avg. yearly temperature at location in
-        degrees C; used for atmospheric correction
-    delta_t : float or array
-        Difference between terrestrial time and UT1.
-    atmos_refract : float
-        The approximate atmospheric refraction (in degrees)
-        at sunrise and sunset.
-    numthreads: int, optional, default 8
-        Number of threads to use for computation if numba>=0.17
-        is installed.
-    sst : bool, default False
-        If True, return only data needed for sunrise, sunset, and transit
-        calculations.
-    esd : bool, default False
-        If True, return only Earth-Sun distance in AU
-
-    Returns
-    -------
-    Numpy Array with elements:
-        apparent zenith,
-        zenith,
-        elevation,
-        apparent_elevation,
-        azimuth,
-        equation_of_time
-
-    References
-    ----------
-    .. [1] I. Reda and A. Andreas, Solar position algorithm for solar radiation
-       applications. Solar Energy, vol. 76, no. 5, pp. 577-589, 2004.
-
-    .. [2] I. Reda and A. Andreas, Corrigendum to Solar position algorithm for
-       solar radiation applications. Solar Energy, vol. 81, no. 6, p. 838, 2007.
-    """
-    if USE_NUMBA:
-        do_calc = solar_position_numba
-    else:
-        do_calc = solar_position_numpy
-
-    result = do_calc(unixtime, lat, lon, elev, pressure,
-                     temp, delta_t, atmos_refract, numthreads,
-                     sst, esd)
+    result = (theta, theta0, e, e0, phi, eot)
 
     if not isinstance(result, np.ndarray):
         try:
