@@ -1157,7 +1157,6 @@ def solar_position_numpy(unixtime, lat, lon, elev, pressure, temp, delta_t,
 
 def solar_position(unixtime, lat, lon, elev, pressure, temp, delta_t,
                    atmos_refract, numthreads=8, sst=False, esd=False):
-
     """
     Calculate the solar position using the
     NREL SPA algorithm described in [1].
@@ -1186,7 +1185,7 @@ def solar_position(unixtime, lat, lon, elev, pressure, temp, delta_t,
         degrees C; used for atmospheric correction
     delta_t : float or array
         Difference between terrestrial time and UT1.
-    atmos_refrac : float
+    atmos_refract : float
         The approximate atmospheric refraction (in degrees)
         at sunrise and sunset.
     numthreads: int, optional, default 8
@@ -1210,11 +1209,11 @@ def solar_position(unixtime, lat, lon, elev, pressure, temp, delta_t,
 
     References
     ----------
-    [1] I. Reda and A. Andreas, Solar position algorithm for solar radiation
-    applications. Solar Energy, vol. 76, no. 5, pp. 577-589, 2004.
+    .. [1] I. Reda and A. Andreas, Solar position algorithm for solar radiation
+       applications. Solar Energy, vol. 76, no. 5, pp. 577-589, 2004.
 
-    [2] I. Reda and A. Andreas, Corrigendum to Solar position algorithm for
-    solar radiation applications. Solar Energy, vol. 81, no. 6, p. 838, 2007.
+    .. [2] I. Reda and A. Andreas, Corrigendum to Solar position algorithm for
+       solar radiation applications. Solar Energy, vol. 81, no. 6, p. 838, 2007.
     """
     if USE_NUMBA:
         do_calc = solar_position_numba
@@ -1236,8 +1235,7 @@ def solar_position(unixtime, lat, lon, elev, pressure, temp, delta_t,
 
 def transit_sunrise_sunset(dates, lat, lon, delta_t, numthreads):
     """
-    Calculate the sun transit, sunrise, and sunset
-    for a set of dates at a given location.
+    Calculate the sun transit, sunrise, and sunset for a set of dates at a given location.
 
     Parameters
     ----------
@@ -1257,11 +1255,11 @@ def transit_sunrise_sunset(dates, lat, lon, delta_t, numthreads):
     Returns
     -------
     tuple : (transit, sunrise, sunset) localized to UTC
-
     """
 
     if ((dates % 86400) != 0.0).any():
-        raise ValueError('Input dates must be at 00:00 UTC')
+        msg = 'Input dates must be at 00:00 UTC'
+        raise ValueError(msg)
 
     utday = (dates // 86400) * 86400
     ttday0 = utday - delta_t
@@ -1342,8 +1340,8 @@ def transit_sunrise_sunset(dates, lat, lon, delta_t, numthreads):
 
 def earthsun_distance(unixtime, delta_t, numthreads):
     """
-    Calculates the distance from the earth to the sun using the
-    NREL SPA algorithm described in [1].
+    Calculate the distance from the earth to the sun using the
+    NREL SPA algorithm described in [1]_.
 
     Parameters
     ----------
@@ -1358,14 +1356,14 @@ def earthsun_distance(unixtime, delta_t, numthreads):
 
     Returns
     -------
-    R : array
+    array
         Earth-Sun distance in AU.
 
     References
     ----------
-    [1] Reda, I., Andreas, A., 2003. Solar position algorithm for solar
-    radiation applications. Technical report: NREL/TP-560- 34302. Golden,
-    USA, http://www.nrel.gov.
+    .. [1] Reda, I., Andreas, A., 2003. Solar position algorithm for solar
+       radiation applications. Technical report: NREL/TP-560- 34302. Golden,
+       USA, http://www.nrel.gov.
     """
 
     R = solar_position(unixtime, 0, 0, 0, 0, 0, delta_t,
@@ -1375,22 +1373,22 @@ def earthsun_distance(unixtime, delta_t, numthreads):
 
 
 def calculate_deltat(year, month):
-    """Calculate the difference between Terrestrial Dynamical Time (TD)
-    and Universal Time (UT).
+    """
+    Calculate the difference between Terrestrial Dynamical Time (TD) and Universal Time (UT).
 
     Equations taken from http://eclipse.gsfc.nasa.gov/SEcat5/deltatpoly.html
     """
 
-    plw = 'Deltat is unknown for years before -1999 and after 3000. ' \
-          'Delta values will be calculated, but the calculations ' \
-          'are not intended to be used for these years.'
+    plw = ('Deltat is unknown for years before -1999 and after 3000. '
+          'Delta values will be calculated, but the calculations '
+          'are not intended to be used for these years.')
 
     try:
         if np.any((year > 3000) | (year < -1999)):
-            warnings.warn(plw)
+            warnings.warn(plw, stacklevel=2)
     except ValueError:
         if (year > 3000) | (year < -1999):
-            warnings.warn(plw)
+            warnings.warn(plw, stacklevel=2)
     except TypeError:
         return 0
 
