@@ -2,38 +2,8 @@ import pandas as pd
 import numpy as np
 from pvlib import tools
 
-from importlib import reload
 import warnings
 import os
-
-def _spa_python_import(how):
-    """Compile spa.py appropriately"""
-
-    from pvlib import spa
-
-    # check to see if the spa module was compiled with numba
-    using_numba = spa.USE_NUMBA
-
-    if how == 'numpy' and using_numba:
-        # the spa module was compiled to numba code, so we need to
-        # reload the module without compiling
-        # the PVLIB_USE_NUMBA env variable is used to tell the module
-        # to not compile with numba
-        warnings.warn('Reloading spa to use numpy')
-        os.environ['PVLIB_USE_NUMBA'] = '0'
-        spa = reload(spa)
-        del os.environ['PVLIB_USE_NUMBA']
-    elif how == 'numba' and not using_numba:
-        # The spa module was not compiled to numba code, so set
-        # PVLIB_USE_NUMBA so it does compile to numba on reload.
-        warnings.warn('Reloading spa to use numba')
-        os.environ['PVLIB_USE_NUMBA'] = '1'
-        spa = reload(spa)
-        del os.environ['PVLIB_USE_NUMBA']
-    elif how != 'numba' and how != 'numpy':
-        raise ValueError("how must be either 'numba' or 'numpy'")
-
-    return spa
 
 
 def _datetime_to_unixtime(dtindex):
