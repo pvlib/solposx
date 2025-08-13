@@ -1,3 +1,4 @@
+"""SPA NREL implementation in Python, ported from pvlib."""
 import pandas as pd
 import numpy as np
 from pvlib import tools
@@ -728,7 +729,7 @@ def geocentric_sun_declination(apparent_sun_longitude, true_ecliptic_obliquity,
 
 def local_hour_angle(apparent_sidereal_time, observer_longitude,
                      sun_right_ascension):
-    """Measured westward from south"""
+    """Measured westward from south."""
     H = apparent_sidereal_time + observer_longitude - sun_right_ascension
     return H % 360
 
@@ -885,7 +886,7 @@ def equation_of_time(sun_mean_longitude, geocentric_sun_right_ascension,
 
 
 def solar_position_loop(unixtime, delta_t, loc_args, out):
-    """Loop through the time array and calculate the solar position"""
+    """Loop through the time array and calculate the solar position."""
     lat = loc_args[0]
     lon = loc_args[1]
     elev = loc_args[2]
@@ -962,7 +963,7 @@ def solar_position_loop(unixtime, delta_t, loc_args, out):
 
 
 def solar_position(unixtime, lat, lon, elev, pressure, temp, delta_t,
-                   atmos_refract, sst=False, esd=False):
+                   atmos_refract, *, sst=False, esd=False):
     """
     Calculate the solar position using the
     NREL SPA algorithm described in [1].
