@@ -54,5 +54,8 @@ Besides direct applications of calculating solar position, one of the main use c
 
 `solposx` is developed openly on GitHub and released under a BSD 3-clause license, allowing permissive use with attribution. The package is extensively tested, ensuring that the algorithms work for a large range of inputs and remain consistent. In general, solposx has been developed following modern best practices for packaging, documentation, and testing. Additional algorithms are expected to be added as new algorithms are developed or if additional historical algorithms of interest are identified.
 
+# Acknowledgements
+
+This work was supported in part by the U.S. Department of Energy’s Office of Energy Efficiency and Renewable Energy (EERE) under the Solar Energy Technologies Office Award Number 52788. Sandia National Laboratories is a multimission laboratory managed and operated by National Technology & Engineering Solutions of Sandia, LLC, a wholly owned subsidiary of Honeywell International Inc., for the U.S. Department of Energy’s National Nuclear Security Administration under contract DE-NA0003525. This paper describes objective technical results and analysis. Any subjective views or opinions that might be expressed in the paper do not necessarily represent the views of the U.S. Department of Energy or the United States Government.
 
 # References
