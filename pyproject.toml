@@ -58,7 +58,7 @@ doc = [
 all = ["solposx[optional,test,doc]"]
 
 [project.urls]
-# Documentation = "https://solposx.readthedocs.io"
+Documentation = "https://solposx.readthedocs.io"
 Issues = "https://github.com/assessingsolar/solposx/issues"
 Repository = "https://github.com/assessingsolar/solposx.git"
 Changelog = "https://github.com/assessingsolar/solposx/blob/main/docs/source/whatsnew.md"
