@@ -19,6 +19,9 @@ authors:
     orcid: 0000-0002-1166-7957
     equal-contrib: true
     affiliation: 2
+  - name: Echedey Luis
+    orcid: 0009-0009-0253-267X
+    affiliation: 3
 affiliations:
   - name: Technical University of Denmark (DTU), Denmark
     index: 1
@@ -26,6 +29,9 @@ affiliations:
   - name: Sandia National Laboratories, USA
     index: 2
     ror: 01apwpt12
+  - name: Universidad Politécnica de Madrid (UPM), Spain
+    index: 3
+    ror: 03n6nwv02
 date: 13 August 2025
 bibliography: paper.bib
 ---
