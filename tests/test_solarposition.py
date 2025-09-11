@@ -486,7 +486,7 @@ def test_michalsky_julian_date_value_error():
         )
 
 
-def test_spa_coefficients_value_error():
+def test_psa_coefficients_value_error():
     with pytest.raises(ValueError, match='unknown coefficients set: 1999'):
         _ = psa(
             times=pd.date_range('2020-01-01', '2020-01-02', tz='UTC'),
