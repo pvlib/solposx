@@ -2,7 +2,8 @@
 
 import pvlib
 
-def spa(time, latitude, longitude, altitude=0., pressure=101325.,
+
+def spa(time, latitude, longitude, elevation=0., air_pressure=101325.,
         temperature=12., delta_t=67.0, atmos_refract=None, **kwargs):
     """
     Calculate the solar position using a python implementation of the NREL SPA algorithm.
@@ -16,26 +17,29 @@ def spa(time, latitude, longitude, altitude=0., pressure=101325.,
 
     Parameters
     ----------
-    time : pandas.DatetimeIndex
-        Must be localized or UTC will be assumed.
+    times : pandas.DatetimeIndex
+        Timestamps - must be localized. Prior to 1970 and far in
+        the future UTC and UT1 may deviate significantly. For such use
+        cases,  UT1 times should be provided.
     latitude : float
         Latitude in decimal degrees. Positive north of equator, negative
-        to south.
+        to south. [degrees]
     longitude : float
         Longitude in decimal degrees. Positive east of prime meridian,
-        negative to west.
-    altitude : float, default 0.0
-        Distance above sea level.
-    pressure : int or float, optional, default 101325.0
-        avg. yearly air pressure in Pascals.
-    temperature : int or float, optional, default 12.0
-        avg. yearly air temperature in degrees C.
-    delta_t : float or array, optional, default 67.0
+        negative to west. [degrees]
+    elevation : float, default : 0
+        Altitude of the location of interest. [m]
+    air_pressure : float, default : 101325
+        Annual average air pressure. [Pa]
+    temperature : float, default : 12
+        Annual average air temperature. [°C]
+        negative to west. [degrees]
+    delta_t : numeric, default : 67.0
         Difference between terrestrial time and UT1.
-        If delta_t is None, uses spa.calculate_deltat
-        using time.year and time.month from pandas.DatetimeIndex.
-        For most simulations the default delta_t is sufficient.
-        The USNO has historical and forecasted delta_t [3]_.
+        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
+        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
+        For most simulations the default ``delta_t`` is sufficient.
+        The USNO has historical and forecasted ``delta_t`` [3]_. [seconds]
     atmos_refract : float, optional
         The approximate atmospheric refraction (in degrees)
         at sunrise and sunset.
@@ -51,15 +55,17 @@ def spa(time, latitude, longitude, altitude=0., pressure=101325.,
 
     Returns
     -------
-    DataFrame
-        The DataFrame will have the following columns:
+    pandas.DataFrame
+        DataFrame with the following columns (all values in degrees):
 
-        - apparent_zenith (degrees),
-        - zenith (degrees),
-        - apparent_elevation (degrees),
-        - elevation (degrees),
-        - azimuth (degrees),
-        - equation_of_time (minutes).
+        - elevation : actual sun elevation (not accounting for refraction). [°]
+        - apparent_elevation : sun elevation, accounting for
+          atmospheric refraction. [°]
+        - zenith : actual sun zenith (not accounting for refraction). [°]
+        - apparent_zenith : sun zenith, accounting for atmospheric
+          refraction. [°]
+        - azimuth : sun azimuth, east of north. [°]
+        - equation_of_time. [minutes]
 
     References
     ----------
@@ -76,14 +82,22 @@ def spa(time, latitude, longitude, altitude=0., pressure=101325.,
     """  # slightly modified docstring compared to pvlib original
     # if you want to view the source code for pvlib.solarposition.spa_python, it is
     # located in pvlib/solarposition.py and belongs to the repo pvlib/pvlib-python
-    return pvlib.solarposition.spa_python(
+    solpos = pvlib.solarposition.spa_python(
         time=time,
         latitude=latitude,
         longitude=longitude,
-        altitude=altitude,
-        pressure=pressure,
+        altitude=elevation,
+        pressure=air_pressure,
         temperature=temperature,
         delta_t=delta_t,
         atmos_refract=atmos_refract,
         **kwargs,
     )
+
+    reordered_columns = [
+        'elevation', 'apparent_elevation', 'zenith', 'apparent_zenith',
+        'azimuth', 'equation_of_time']
+
+    solpos = solpos[reordered_columns]
+
+    return solpos
