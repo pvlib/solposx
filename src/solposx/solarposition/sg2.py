@@ -4,7 +4,7 @@ from solposx.tools import _pandas_to_utc, _fractional_hour
 from solposx import refraction
 
 
-def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
+def sg2(times, latitude, longitude, elevation=0, *, pressure=101325,
         temperature=12):
     """
     Calculate solar position using the SG2 algorithm.
@@ -26,7 +26,7 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
         negative to west. [degrees]
     elevation : float, default : 0
         Altitude of the location of interest. [m]
-    air_pressure : float, default : 101325
+    pressure : float, default : 101325
         Annual average air pressure. [Pa]
     temperature : float, default : 12
         Annual average air temperature. [°C]
@@ -215,7 +215,7 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
     elevation_deg = np.rad2deg(elevation)
 
     # Atmospheric refraction correction term
-    r = refraction.sg2(np.array(elevation_deg), air_pressure, temperature)
+    r = refraction.sg2(np.array(elevation_deg), pressure, temperature)
 
     result = pd.DataFrame({
         'elevation': elevation_deg,
@@ -227,7 +227,7 @@ def sg2(times, latitude, longitude, elevation=0, air_pressure=101325,
     return result
 
 
-def sg2_c(times, latitude, longitude, elevation=0, air_pressure=101325,
+def sg2_c(times, latitude, longitude, elevation=0, *, pressure=101325,
           temperature=12):
     """
     Calculate solar position using the SG2 Python package.
@@ -251,7 +251,7 @@ def sg2_c(times, latitude, longitude, elevation=0, air_pressure=101325,
         negative to west. [degrees]
     elevation : float, default : 0
         Altitude of the location of interest. [m]
-    air_pressure : float, default : 101325
+    pressure : float, default : 101325
         Annual average air pressure. [Pa]
     temperature : float, default : 12
         Annual average air temperature. [°C]
@@ -306,7 +306,7 @@ def sg2_c(times, latitude, longitude, elevation=0, air_pressure=101325,
 
     apparent_elevation_rad = sg2_package.topocentric_correction_refraction_SAE(
         elevation_rad,
-        air_pressure/100,
+        pressure/100,
         temperature,
     )
 

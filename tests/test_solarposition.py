@@ -142,9 +142,9 @@ def expected_noaa():
         [34.92392895, 34.94698595, 55.07607105, 55.05301405, 169.38094302],
         [18.63438988, 18.68174893, 71.36561012, 71.31825107, 234.19290241],
         [35.75618186, 35.77854313, 54.24381814, 54.22145687, 197.67357003],
-        [-9.52911488, -9.49473872, 99.52911488, 99.49473872, 201.19219097],
+        [-9.52911395, -9.49473778, 99.52911395, 99.49473778, 201.19219097],
         [66.85423515, 66.8611327, 23.14576485, 23.1388673, 245.09172279],
-        [9.52911488, 9.62132546, 80.47088512, 80.37867454, 338.80780907],
+        [9.52911581, 9.62132639, 80.47088419,  80.3786736, 338.80780907],
         [50.10765752, 50.12113671, 39.89234248, 39.87886329, 326.22893168],
         [35.36265374, 35.38534047, 54.63734626, 54.61465953, 175.39359304],
         [-53.23987161, -53.23556094, 143.23987161, 143.23556094, 18.65415239],
@@ -238,8 +238,8 @@ def expected_sg2():
         [-23.40828474, -23.39502759, 113.40828474, 113.39502759, 79.54872263],
         [1.10752265, 1.45828141, 88.89247735, 88.54171859, 104.53992596],
         [32.21696737, 32.24355729, 57.78303263, 57.75644271, 204.91857639],
-        [32.21696737, 32.24355729, 57.78303263, 57.75644271, 204.91857639],
-        [32.21696737, 32.24355729, 57.78303263, 57.75644271, 204.91857639],
+        [32.2169674, 32.24355732, 57.7830326, 57.75644268, 204.91857639],
+        [32.21696607, 32.24355599, 57.78303393, 57.75644401, 204.91857639],
     ]
     data = pd.DataFrame(data=values, columns=columns)
     return data
@@ -274,28 +274,28 @@ def expected_skyfield():
 
 
 def expected_spa():
-    columns = ['apparent_zenith', 'zenith', 'apparent_elevation', 'elevation',
-               'azimuth', 'equation_of_time']
+    columns = ['elevation', 'apparent_elevation', 'zenith', 'apparent_zenith', 'azimuth',
+               'equation_of_time']
     values = [
-        [57.75632346, 57.78291326, 32.24367654, 32.21708674, 204.9188164, 14.75816027],
-        [57.76877737, 57.79537984, 32.23122263, 32.20462016, 204.96510208, 14.75818295],
-        [55.05347652, 55.07750143, 34.94652348, 34.92249857, 169.3767211, 14.74179647],
-        [71.31607797, 71.36506991, 18.68392203, 18.63493009, 234.19049983, 14.77445424],
-        [54.22007761, 54.24337926, 35.77992239, 35.75662074, 197.67009996, -12.4319873],
-        [99.53051391, 99.53051391, -9.53051391, -9.53051391, 201.18870641, 14.75816027],
-        [23.13598231, 23.14317082, 66.86401769, 66.85682918, 245.09065324, 14.75816027],
-        [80.38046094, 80.47430501, 9.61953906, 9.52569499, 338.81129359, 14.75816027],
-        [39.87940067, 39.89346385, 50.12059933, 50.10653615, 326.23446721, 14.75816027],
-        [54.61488591, 54.63852657, 35.38511409, 35.36147343, 175.38931352, 14.75816027],
-        [143.24113451, 143.24113451, -53.24113451, -53.24113451, 18.64817122, 14.75816027],
-        [143.24113451, 143.24113451, -53.24113451, -53.24113451, 18.64817122, 14.75816027],
-        [57.51145536, 57.5377976, 32.48854464, 32.4622024, 204.94926574, 14.55795391],
-        [57.53292309, 57.5592869, 32.46707691, 32.4407131, 204.96985758, 14.64779166],
-        [113.40808954, 113.40808954, -23.40808954, -23.40808954, 79.54868063, 14.68397497],
-        [88.54152518, 88.89226772, 1.45847482, 1.10773228, 104.53989829, 14.70334338],
-        [57.75632346, 57.78291326, 32.24367654, 32.21708674, 204.9188164, 14.75816027],
-        [57.75632346, 57.78291326, 32.24367654, 32.21708674, 204.9188164, 14.75816027],
-        [57.75632346, 57.78291326, 32.24367654, 32.21708674, 204.9188164, 14.75816027],
+        [32.21708674, 32.24367654, 57.78291326, 57.75632346, 204.9188164, 14.75816027],
+        [32.20462016, 32.23122263, 57.79537984, 57.76877737, 204.96510208, 14.75818295],
+        [34.92249857, 34.94652348, 55.07750143, 55.05347652, 169.3767211, 14.74179647],
+        [18.63493009, 18.68392203, 71.36506991, 71.31607797, 234.19049983, 14.77445424],
+        [35.75662074, 35.77992239, 54.24337926, 54.22007761, 197.67009996, -12.4319873],
+        [-9.53051391, -9.53051391, 99.53051391, 99.53051391, 201.18870641, 14.75816027],
+        [66.85682918, 66.86401769, 23.14317082, 23.13598231, 245.09065324, 14.75816027],
+        [9.52569499, 9.61953906, 80.47430501, 80.38046094, 338.81129359, 14.75816027],
+        [50.10653615, 50.12059933, 39.89346385, 39.87940067, 326.23446721, 14.75816027],
+        [35.36147343, 35.38511409, 54.63852657, 54.61488591, 175.38931352, 14.75816027],
+        [-53.24113451, -53.24113451, 143.24113451, 143.24113451, 18.64817122, 14.75816027],
+        [-53.24113451, -53.24113451, 143.24113451, 143.24113451, 18.64817122, 14.75816027],
+        [32.4622024, 32.48854464, 57.5377976, 57.51145536, 204.94926574, 14.55795391],
+        [32.4407131, 32.46707691, 57.5592869, 57.53292309, 204.96985758, 14.64779166],
+        [-23.40808954, -23.40808954, 113.40808954, 113.40808954, 79.54868063, 14.68397497],
+        [1.10773228, 1.45847482, 88.89226772, 88.54152518, 104.53989829, 14.70334338],
+        [32.21708674, 32.24367654, 57.78291326, 57.75632346, 204.9188164, 14.75816027],
+        [32.21708677, 32.24367657, 57.78291323, 57.75632343, 204.9188164, 14.75816027],
+        [32.21708544, 32.24367524, 57.78291456, 57.75632476, 204.9188164, 14.75816027],
     ]
     data = pd.DataFrame(data=values, columns=columns)
     return data
@@ -385,7 +385,7 @@ def expected_walraven():
 @pytest.fixture()
 def test_conditions():
     inputs = pd.DataFrame(
-        columns=['time', 'latitude', 'longitude', 'altitude'],
+        columns=['time', 'latitude', 'longitude', 'elevation'],
         data=(
             # Units: time, degrees, degrees, m
             ['2020-10-17T12:30+00:00', 45, 10, None],  # reference
@@ -408,6 +408,7 @@ def test_conditions():
             ['2020-10-17T12:30+00:00', 45, 10, -100],  # negative altitude
             ['2020-10-17T12:30+00:00', 45, 10, 4000],  # positive altitude
         ),
+        dtype=object,  # avoids converting None to nan
     )
     inputs = inputs.set_index('time')
     inputs.index = [pd.Timestamp(ii) for ii in inputs.index]
@@ -424,17 +425,22 @@ def _generate_solarposition_dataframe(inputs, algorithm, **kwargs):
     dfs = []
     for index, row in inputs.iterrows():
         try:
+            elevation_dict = {}
+            if row['elevation'] is not None:
+                if algorithm.__name__ in ['sg2', 'sg2_c', 'spa']:
+                    elevation_dict['elevation'] = row['elevation']
             dfi = algorithm(
                 pd.DatetimeIndex([index]),
                 row['latitude'],
                 row['longitude'],
-                **kwargs,
+                **{**kwargs, **elevation_dict},
             )
         except ValueError:
             # Add empty row (nans)
             dfi = pd.DataFrame(index=[index])
         dfs.append(dfi)
-    return pd.concat(dfs, axis='rows')
+        df = pd.concat(dfs, axis='rows')
+    return df
 
 
 @pytest.mark.parametrize('algorithm,expected,kwargs', [
@@ -470,11 +476,11 @@ def test_algorithm(algorithm, expected, kwargs, test_conditions):
     result.name = algorithm.__module__
 
     pd.testing.assert_index_equal(expected.index, result.index)
-    rtol = 1e-3 if algorithm.__name__ == 'sg2' else 1e-6
+    testing_kwargs = {'rtol': 1e-3} if algorithm.__name__ == 'sg2' else {'rtol': 1e-9}
     pd.testing.assert_frame_equal(
-        expected, result, check_like=False, rtol=rtol)
+        expected, result, check_like=False, **testing_kwargs)
     for c in expected.columns:
-        pd.testing.assert_series_equal(expected[c], result[c], rtol=rtol)
+        pd.testing.assert_series_equal(expected[c], result[c], **testing_kwargs)
 
 
 def test_michalsky_julian_date_value_error():
@@ -486,7 +492,7 @@ def test_michalsky_julian_date_value_error():
         )
 
 
-def test_spa_coefficients_value_error():
+def test_psa_coefficients_value_error():
     with pytest.raises(ValueError, match='unknown coefficients set: 1999'):
         _ = psa(
             times=pd.date_range('2020-01-01', '2020-01-02', tz='UTC'),
@@ -535,7 +541,7 @@ def test_delta_t_array_input():
     usno_float = usno(times, 50, 10, delta_t=67.0)
     pd.testing.assert_frame_equal(usno_array, usno_float)
 
-    
+
 def test_delta_t_series_input():
     # test that delta_t can be specified as either an array or float
     times = pd.date_range('2020-03-23 12', periods=10, tz='UTC')
@@ -632,3 +638,16 @@ def test_nasa_horizons_frequency_monthly():
     expected_index.freq = None
 
     pd.testing.assert_index_equal(expected_index, result.index)
+
+
+def test_site_elevation_sg2():
+    # Make sure that site elevations used by the SG2 algorithm
+    # Due to the low tolerances for the other tests for this algorithm
+    # This extra test is necessary
+    times = pd.DatetimeIndex(['2020-01-01T12:00+02'])
+    latitude, longitude = 50, 10
+    zero_elevation = sg2(times, latitude, longitude, elevation=0)
+    high_elevation = sg2(times, latitude, longitude, elevation=4000)
+    none_elevation = sg2(times, latitude, longitude)
+    assert zero_elevation.iloc[0]['elevation'] != high_elevation.iloc[0]['elevation']
+    assert zero_elevation.iloc[0]['elevation'] == none_elevation.iloc[0]['elevation']

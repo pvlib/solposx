@@ -48,9 +48,13 @@ jobs:
 
       - name: Create Pull Request
         if: steps.check_diff.outputs.no_changes == 'false'
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
-          branch: black-fixes-${{ github.run_id }}
+          # target branch: will be updated with newer commits for each action run
+          # always the same one, since we know it will only be called by pushes to main
+          branch: black-format-main
+          # base branch: where the PR points to be merged
+          # defaults to checked-out branch (black-fixes-${{ github.run_id }})
+          base: main
           title: "style: auto-format with black"
           body: "This PR was created automatically by the lint job to apply Black formatting."
-          branch: black-fixes-${{ github.run_id }}

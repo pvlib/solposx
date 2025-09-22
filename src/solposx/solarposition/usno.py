@@ -5,7 +5,7 @@ from pvlib import spa
 from solposx.tools import _pandas_to_utc
 
 
-def usno(times, latitude, longitude, delta_t=67.0, gmst_option=1):
+def usno(times, latitude, longitude, *, delta_t=67.0, gmst_option=1):
     """
     Calculate solar position using the USNO algorithm.
 

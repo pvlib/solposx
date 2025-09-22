@@ -5,7 +5,7 @@ import io
 URL = 'https://ssd.jpl.nasa.gov/api/horizons.api'
 
 
-def nasa_horizons(latitude, longitude, start, end, elevation=0.,
+def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
                   time_step='1h', url=URL):
     """
     Retrieve solar positions from NASA's Horizons web service.
@@ -35,7 +35,8 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0.,
         '1h' for hours, '1d' for days, '1mo' for months, and '1y' for years.
         The default is '1h'.
     url : str, optional
-        API endpoint. The default is :const:`URL`.
+        API endpoint. The default is
+        ``'https://ssd.jpl.nasa.gov/api/horizons.api'``.
 
     Returns
     -------
