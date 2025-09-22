@@ -3,7 +3,7 @@
 import pvlib
 
 
-def spa(time, latitude, longitude, elevation=0., air_pressure=101325.,
+def spa(time, latitude, longitude, elevation=0., *, air_pressure=101325.,
         temperature=12., delta_t=67.0, atmos_refract=None, **kwargs):
     """
     Calculate the solar position using a python implementation of the NREL SPA algorithm.

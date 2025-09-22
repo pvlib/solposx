@@ -3,7 +3,7 @@
 import pandas as pd
 
 
-def skyfield(times, latitude, longitude, de='de440.bsp'):
+def skyfield(times, latitude, longitude, *, de='de440.bsp'):
     """
     Calculate solar position using the Skyfield Python package.
 

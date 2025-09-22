@@ -18,7 +18,7 @@ _PSA_PARAMS = {
 }
 
 
-def psa(times, latitude, longitude, coefficients=2020):
+def psa(times, latitude, longitude, *, coefficients=2020):
     """
     Calculate solar position using the PSA algorithm.
 

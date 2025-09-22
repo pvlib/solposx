@@ -6,7 +6,7 @@ from solposx import refraction
 from solposx.tools import _pandas_to_utc, _fractional_hour
 
 
-def noaa(times, latitude, longitude, delta_t=67.0):
+def noaa(times, latitude, longitude, *, delta_t=67.0):
     """
     Calculate solar position using the NOAA algorithm.
 
