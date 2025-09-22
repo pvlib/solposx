@@ -92,7 +92,7 @@ def sg2(times, latitude, longitude, elevation=0, *, pressure=101325,
         np.where((year_dec >= 1986) & (year_dec <= 2005), 1,
                  np.where((year_dec >= 2005) & (year_dec <= 2030), 2,
                           np.nan
-                          ))).astype(int)[0]
+                          ))).astype(int)
 
     delta_t = 0.0
     for k in range(0, 6):
@@ -107,7 +107,7 @@ def sg2(times, latitude, longitude, elevation=0, *, pressure=101325,
              + 365.0 * year_mod + np.floor(year_mod / 4.0) + hour / 24 - 0.5
              - np.floor(year_mod / 100.0) + np.floor(year_mod / 400.0))
 
-    jd_tt = jd_ut + delta_t / 86400
+    jd_tt = jd_ut + delta_t.values / 86400
 
     jd_ut_mod = jd_ut - 2444239.5
     jd_tt_mod = jd_tt - 2444239.5
@@ -204,25 +204,25 @@ def sg2(times, latitude, longitude, elevation=0, *, pressure=101325,
     omega = mst + D_psi * np.cos(epsilon) - ra + longitude - D_r_a
 
     # Sun topocentric azimuth [rad]
-    azimuth = np.arctan2(np.sin(omega), np.cos(omega) * np.sin(latitude)
-                         - np.tan(declination) * np.cos(latitude)) + np.pi
+    solar_azimuth = np.arctan2(np.sin(omega), np.cos(omega) * np.sin(latitude)
+                               - np.tan(declination) * np.cos(latitude)) + np.pi
 
     # Sun topocentric elevation angle without refraction correction [rad]
-    elevation = np.arcsin(np.sin(latitude) * np.sin(declination)
-                          + np.cos(latitude) * np.cos(declination)
-                          * np.cos(omega))
+    solar_elevation = np.arcsin(np.sin(latitude) * np.sin(declination)
+                                + np.cos(latitude) * np.cos(declination)
+                                * np.cos(omega))
 
-    elevation_deg = np.rad2deg(elevation)
+    solar_elevation_deg = np.rad2deg(solar_elevation)
 
     # Atmospheric refraction correction term
-    r = refraction.sg2(np.array(elevation_deg), pressure, temperature)
+    r = refraction.sg2(np.array(solar_elevation_deg), pressure, temperature)
 
     result = pd.DataFrame({
-        'elevation': elevation_deg,
-        'apparent_elevation': elevation_deg + r,
-        'zenith': 90 - elevation_deg,
-        'apparent_zenith': 90 - elevation_deg - r,
-        'azimuth': np.rad2deg(azimuth),
+        'elevation': solar_elevation_deg,
+        'apparent_elevation': solar_elevation_deg + r,
+        'zenith': 90 - solar_elevation_deg,
+        'apparent_zenith': 90 - solar_elevation_deg - r,
+        'azimuth': np.rad2deg(solar_azimuth),
     }, index=times)
     return result
 
