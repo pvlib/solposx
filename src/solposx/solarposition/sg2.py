@@ -4,7 +4,7 @@ from solposx.tools import _pandas_to_utc, _fractional_hour
 from solposx import refraction
 
 
-def sg2(times, latitude, longitude, elevation=0, pressure=101325,
+def sg2(times, latitude, longitude, elevation=0, *, pressure=101325,
         temperature=12):
     """
     Calculate solar position using the SG2 algorithm.
@@ -227,7 +227,7 @@ def sg2(times, latitude, longitude, elevation=0, pressure=101325,
     return result
 
 
-def sg2_c(times, latitude, longitude, elevation=0, pressure=101325,
+def sg2_c(times, latitude, longitude, elevation=0, *, pressure=101325,
           temperature=12):
     """
     Calculate solar position using the SG2 Python package.
