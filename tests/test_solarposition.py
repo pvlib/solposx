@@ -142,9 +142,9 @@ def expected_noaa():
         [34.92392895, 34.94698595, 55.07607105, 55.05301405, 169.38094302],
         [18.63438988, 18.68174893, 71.36561012, 71.31825107, 234.19290241],
         [35.75618186, 35.77854313, 54.24381814, 54.22145687, 197.67357003],
-        [-9.52911488, -9.49473872, 99.52911488, 99.49473872, 201.19219097],
+        [-9.52911395, -9.49473778, 99.52911395, 99.49473778, 201.19219097],
         [66.85423515, 66.8611327, 23.14576485, 23.1388673, 245.09172279],
-        [9.52911488, 9.62132546, 80.47088512, 80.37867454, 338.80780907],
+        [9.52911581, 9.62132639, 80.47088419,  80.3786736, 338.80780907],
         [50.10765752, 50.12113671, 39.89234248, 39.87886329, 326.22893168],
         [35.36265374, 35.38534047, 54.63734626, 54.61465953, 175.39359304],
         [-53.23987161, -53.23556094, 143.23987161, 143.23556094, 18.65415239],
@@ -238,8 +238,8 @@ def expected_sg2():
         [-23.40828474, -23.39502759, 113.40828474, 113.39502759, 79.54872263],
         [1.10752265, 1.45828141, 88.89247735, 88.54171859, 104.53992596],
         [32.21696737, 32.24355729, 57.78303263, 57.75644271, 204.91857639],
-        [32.21696737, 32.24355729, 57.78303263, 57.75644271, 204.91857639],
-        [32.21696737, 32.24355729, 57.78303263, 57.75644271, 204.91857639],
+        [32.2169674, 32.24355732, 57.7830326, 57.75644268, 204.91857639],
+        [32.21696607, 32.24355599, 57.78303393, 57.75644401, 204.91857639],
     ]
     data = pd.DataFrame(data=values, columns=columns)
     return data
@@ -294,8 +294,8 @@ def expected_spa():
         [-23.40808954, -23.40808954, 113.40808954, 113.40808954, 79.54868063, 14.68397497],
         [1.10773228, 1.45847482, 88.89226772, 88.54152518, 104.53989829, 14.70334338],
         [32.21708674, 32.24367654, 57.78291326, 57.75632346, 204.9188164, 14.75816027],
-        [32.21708674, 32.24367654, 57.78291326, 57.75632346, 204.9188164, 14.75816027],
-        [32.21708674, 32.24367654, 57.78291326, 57.75632346, 204.9188164, 14.75816027],
+        [32.21708677, 32.24367657, 57.78291323, 57.75632343, 204.9188164, 14.75816027],
+        [32.21708544, 32.24367524, 57.78291456, 57.75632476, 204.9188164, 14.75816027],
     ]
     data = pd.DataFrame(data=values, columns=columns)
     return data
@@ -385,7 +385,7 @@ def expected_walraven():
 @pytest.fixture()
 def test_conditions():
     inputs = pd.DataFrame(
-        columns=['time', 'latitude', 'longitude', 'altitude'],
+        columns=['time', 'latitude', 'longitude', 'elevation'],
         data=(
             # Units: time, degrees, degrees, m
             ['2020-10-17T12:30+00:00', 45, 10, None],  # reference
@@ -408,6 +408,7 @@ def test_conditions():
             ['2020-10-17T12:30+00:00', 45, 10, -100],  # negative altitude
             ['2020-10-17T12:30+00:00', 45, 10, 4000],  # positive altitude
         ),
+        dtype=object,  # avoids converting None to nan
     )
     inputs = inputs.set_index('time')
     inputs.index = [pd.Timestamp(ii) for ii in inputs.index]
@@ -424,17 +425,22 @@ def _generate_solarposition_dataframe(inputs, algorithm, **kwargs):
     dfs = []
     for index, row in inputs.iterrows():
         try:
+            elevation_dict = {}
+            if row['elevation'] is not None:
+                if algorithm.__name__ in ['sg2', 'sg2_c', 'spa']:
+                    elevation_dict['elevation'] = row['elevation']
             dfi = algorithm(
                 pd.DatetimeIndex([index]),
                 row['latitude'],
                 row['longitude'],
-                **kwargs,
+                **{**kwargs, **elevation_dict},
             )
         except ValueError:
             # Add empty row (nans)
             dfi = pd.DataFrame(index=[index])
         dfs.append(dfi)
-    return pd.concat(dfs, axis='rows')
+        df = pd.concat(dfs, axis='rows')
+    return df
 
 
 @pytest.mark.parametrize('algorithm,expected,kwargs', [
@@ -470,11 +476,11 @@ def test_algorithm(algorithm, expected, kwargs, test_conditions):
     result.name = algorithm.__module__
 
     pd.testing.assert_index_equal(expected.index, result.index)
-    rtol = 1e-3 if algorithm.__name__ == 'sg2' else 1e-6
+    testing_kwargs = {'rtol': 1e-3} if algorithm.__name__ == 'sg2' else {'rtol': 1e-9}
     pd.testing.assert_frame_equal(
-        expected, result, check_like=False, rtol=rtol)
+        expected, result, check_like=False, **testing_kwargs)
     for c in expected.columns:
-        pd.testing.assert_series_equal(expected[c], result[c], rtol=rtol)
+        pd.testing.assert_series_equal(expected[c], result[c], **testing_kwargs)
 
 
 def test_michalsky_julian_date_value_error():
@@ -632,3 +638,16 @@ def test_nasa_horizons_frequency_monthly():
     expected_index.freq = None
 
     pd.testing.assert_index_equal(expected_index, result.index)
+
+
+def test_site_elevation_sg2():
+    # Make sure that site elevations used by the SG2 algorithm
+    # Due to the low tolerances for the other tests for this algorithm
+    # This extra test is necessary
+    times = pd.DatetimeIndex(['2020-01-01T12:00+02'])
+    latitude, longitude = 50, 10
+    zero_elevation = sg2(times, latitude, longitude, elevation=0)
+    high_elevation = sg2(times, latitude, longitude, elevation=4000)
+    none_elevation = sg2(times, latitude, longitude)
+    assert zero_elevation.iloc[0]['elevation'] != high_elevation.iloc[0]['elevation']
+    assert zero_elevation.iloc[0]['elevation'] == none_elevation.iloc[0]['elevation']
