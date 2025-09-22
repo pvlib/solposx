@@ -3,8 +3,17 @@
 import pvlib
 
 
-def spa(time, latitude, longitude, elevation=0., air_pressure=101325.,
-        temperature=12., delta_t=67.0, atmos_refract=None, **kwargs):
+def spa(
+    time,
+    latitude,
+    longitude,
+    elevation=0.0,
+    air_pressure=101325.0,
+    temperature=12.0,
+    delta_t=67.0,
+    atmos_refract=None,
+    **kwargs,
+):
     """
     Calculate the solar position using a python implementation of the NREL SPA algorithm.
 
@@ -95,8 +104,13 @@ def spa(time, latitude, longitude, elevation=0., air_pressure=101325.,
     )
 
     reordered_columns = [
-        'elevation', 'apparent_elevation', 'zenith', 'apparent_zenith',
-        'azimuth', 'equation_of_time']
+        "elevation",
+        "apparent_elevation",
+        "zenith",
+        "apparent_zenith",
+        "azimuth",
+        "equation_of_time",
+    ]
 
     solpos = solpos[reordered_columns]
 
