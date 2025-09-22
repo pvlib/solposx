@@ -429,8 +429,10 @@ def _generate_solarposition_dataframe(inputs, algorithm, **kwargs):
             if row['elevation'] is not None:
                 if algorithm.__name__ in ['sg2', 'sg2_c', 'spa']:
                     elevation_dict['elevation'] = row['elevation']
+            # calculate for two identical indexes to make sure
+            # indexes with more than one element works
             dfi = algorithm(
-                pd.DatetimeIndex([index]),
+                pd.DatetimeIndex([index, index]),
                 row['latitude'],
                 row['longitude'],
                 **{**kwargs, **elevation_dict},
@@ -438,7 +440,7 @@ def _generate_solarposition_dataframe(inputs, algorithm, **kwargs):
         except ValueError:
             # Add empty row (nans)
             dfi = pd.DataFrame(index=[index])
-        dfs.append(dfi)
+        dfs.append(dfi.iloc[0:1])
         df = pd.concat(dfs, axis='rows')
     return df
 
@@ -651,3 +653,18 @@ def test_site_elevation_sg2():
     none_elevation = sg2(times, latitude, longitude)
     assert zero_elevation.iloc[0]['elevation'] != high_elevation.iloc[0]['elevation']
     assert zero_elevation.iloc[0]['elevation'] == none_elevation.iloc[0]['elevation']
+
+
+def test_sg2_year_out_of_range():
+    with pytest.raises(ValueError,
+                       match='valid only between 1980 and 2030'):
+        _ = sg2(
+            times=pd.date_range('1960-01-01', '1960-01-02', tz='UTC'),
+            latitude=50, longitude=10,
+        )
+    with pytest.raises(ValueError,
+                       match='valid only between 1980 and 2030'):
+        _ = sg2(
+            times=pd.date_range('2035-01-01', '2035-01-02', tz='UTC'),
+            latitude=50, longitude=10,
+        )

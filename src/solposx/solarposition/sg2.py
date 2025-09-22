@@ -84,7 +84,7 @@ def sg2(times, latitude, longitude, elevation=0, *, pressure=101325,
          ]),
         columns=['y', 'a_0', 'a_1', 'a_2', 'a_3', 'a_4', 'a_5'])
 
-    if (year_dec < 1980) | (year_dec > 2030):
+    if (year_dec.min() < 1980) | (year_dec.max() > 2030):
         raise ValueError("The algorithm is valid only between 1980 and 2030")
 
     row = np.where(
