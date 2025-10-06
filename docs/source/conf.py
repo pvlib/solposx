@@ -45,6 +45,12 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
+# List of warning types to suppress.  This is a list of strings that
+# match the type of the warning.  See list of possible values at
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
+suppress_warnings = [
+    "config.cache",  # due to 'html_context' using a function in it
+]
 
 # -- Options for HTML output -------------------------------------------------
 
