@@ -122,8 +122,8 @@ def get_source_base_url():
     """
     repo_url = os.environ.get(
         "READTHEDOCS_GIT_CLONE_URL",
-        default="https://github.com/AssessingSolar/solposx",
-    )
+        default="https://github.com/AssessingSolar/solposx.git",
+    ).rstrip(".git")  # remove .git suffix if present, as it could be present
     READTHEDOCS_ENV = os.environ.get("READTHEDOCS", None) == "True"
     READTHEDOCS_VERSION = os.environ.get("READTHEDOCS_VERSION", None)
     READTHEDOCS_GIT_IDENTIFIER = os.environ.get(
