@@ -62,19 +62,12 @@ html_theme_options = {
     "use_repository_button": True,
     "use_download_button": False,
     "use_edit_page_button": True,
-
-    # layout structure config options inherited from pydata-sphinx-theme
-    # https://pydata-sphinx-theme.readthedocs.io/en/stable/user_guide/layout.html
-    "secondary_sidebar_items": ["page-toc", "edit-this-page"]
 }
-html_css_files = [
-    'css/fix-horizontal-sidebar-elements.css',
-]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+# html_static_path = ["_static"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
