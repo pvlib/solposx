@@ -46,7 +46,7 @@ def skyfield(times, latitude, longitude, *, de='de440.bsp'):
     try:
         # Try loading optional package
         from skyfield.api import load, wgs84
-    except ImportError:
+    except ImportError:  # pragma: no cover
         # Raise an error if package is not available
         raise ImportError(
             "The skyfield function requires the skyfield Python package."
