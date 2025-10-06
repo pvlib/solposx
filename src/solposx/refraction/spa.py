@@ -2,7 +2,7 @@
 import numpy as np
 
 
-def spa(elevation, pressure=101325., temperature=12., refraction_limit=-0.5667):
+def spa(elevation, pressure=101325., temperature=12., *, refraction_limit=-0.5667):
     r"""
     Atmospheric refraction correction from the SPA algorithm.
 

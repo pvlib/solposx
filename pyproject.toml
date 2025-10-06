@@ -20,7 +20,7 @@ authors = [
     {name = "Kevin S. Anderson"},
     {name = "Ioannis Sifnaios"},
 ]
-description = "solposx is a Python package for calculating solar position angles and comparing solar position algorithms."
+description = " solposx is a Python package for determining solar position and atmospheric refraction."
 readme = "README.md"
 requires-python = ">=3.10"
 keywords = ["solar position algorithms", "solar energy", "photovoltaics"]
