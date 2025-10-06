@@ -1,3 +1,5 @@
+from collections.abc import Iterable
+
 import numpy as np
 import pandas as pd
 
@@ -80,8 +82,13 @@ def psa(times, latitude, longitude, *, coefficients=2020):
                 f"Unknown coefficients set: {coefficients}.  "
                 f"Available options are {set(_PSA_PARAMS.keys())}."
             ) from None
-    else:
+    elif isinstance(coefficients, Iterable) and len(coefficients) == 15:
         p = coefficients
+    else:
+        raise ValueError(
+            f"Coefficients must be one of {set(_PSA_PARAMS.keys())}, "
+            "or a list of 15 coefficients."
+        )
 
     phi = np.radians(latitude)
     lambda_t = longitude
