@@ -24,9 +24,11 @@ def _pandas_to_utc(pd_object):
     try:
         pd_object_utc = pd_object.tz_convert('UTC')
     except TypeError:
-        raise TypeError('The provided time stamps are timezone naive.'
-                        'Please make the time stamps timezone aware.'
-                        'See ``pandas.Timestamp.tz_localize``.')
+        raise TypeError(
+            "The provided time stamps are timezone naive."
+            "Please make the time stamps timezone aware."
+            "See ``pandas.Timestamp.tz_localize``."
+        ) from None
     return pd_object_utc
 
 

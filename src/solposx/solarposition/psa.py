@@ -76,7 +76,10 @@ def psa(times, latitude, longitude, *, coefficients=2020):
         try:
             p = _PSA_PARAMS[coefficients]
         except KeyError:
-            raise ValueError(f"unknown coefficients set: {coefficients}")
+            raise ValueError(
+                f"Unknown coefficients set: {coefficients}.  "
+                f"Available options are {set(_PSA_PARAMS.keys())}."
+            ) from None
     else:
         p = coefficients
 
