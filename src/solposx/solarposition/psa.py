@@ -79,14 +79,14 @@ def psa(times, latitude, longitude, *, coefficients=2020):
             p = _PSA_PARAMS[coefficients]
         except KeyError:
             raise ValueError(
-                f"Unknown coefficients set: {coefficients}.  "
-                f"Available options are {set(_PSA_PARAMS.keys())}."
+                f"Unknown coefficients set: {coefficients}. "
+                f"Available options are: {_PSA_PARAMS.keys()}."
             ) from None
     elif isinstance(coefficients, Iterable) and len(coefficients) == 15:
         p = coefficients
     else:
         raise ValueError(
-            f"Coefficients must be one of {set(_PSA_PARAMS.keys())}, "
+            f"Coefficients must be one of: {_PSA_PARAMS.keys()}, "
             "or a list of 15 coefficients."
         )
 
