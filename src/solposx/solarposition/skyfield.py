@@ -49,8 +49,8 @@ def skyfield(times, latitude, longitude, *, de='de440.bsp'):
     except ImportError:  # pragma: no cover
         # Raise an error if package is not available
         raise ImportError(
-            'The skyfield function requires the skyfield Python package.'
-            )  # pragma: no cover
+            "The skyfield function requires the skyfield Python package."
+        ) from None
 
     if isinstance(de, str):
         de = load(de)

@@ -287,8 +287,8 @@ def sg2_c(times, latitude, longitude, elevation=0, *, pressure=101325,
     except ImportError:  # pragma: no cover
         # Raise an error if package is not available
         raise ImportError(
-            'The sg2_c function requires the sg2 Python package.'
-            )  # pragma: no cover
+            "The sg2_c function requires the sg2 Python package."
+        ) from None
 
     # list of geopoints as 2D array of (N,3) where each row is repectively
     # longitude in degrees, latitude in degrees and altitude in meters.

@@ -495,13 +495,13 @@ def test_michalsky_julian_date_value_error():
 
 
 def test_psa_coefficients_value_error():
-    with pytest.raises(ValueError, match='unknown coefficients set: 1999'):
+    with pytest.raises(ValueError, match='Unknown coefficients set: 1999'):
         _ = psa(
             times=pd.date_range('2020-01-01', '2020-01-02', tz='UTC'),
             latitude=50, longitude=10,
             coefficients=1999,  # not a correct option
         )
-    with pytest.raises(ValueError, match='unknown coefficients set'):
+    with pytest.raises(ValueError, match='Coefficients must be one of'):
         _ = psa(
             times=pd.date_range('2020-01-01', '2020-01-02', tz='UTC'),
             latitude=50, longitude=10,
