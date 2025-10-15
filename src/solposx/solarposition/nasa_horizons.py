@@ -18,10 +18,10 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
 
     .. admonition:: Specification of time period
 
-       The ``nasa_horizons`` function pattern differs from the other solar
-       position algorithms in that it can only determine solar position for
-       uniformly  spaced timestamps. For this reason, the function requires a
-	   start time, end time, and frequency.
+      The ``nasa_horizons`` function pattern differs from the other solar
+      position algorithms in that it can only determine solar position for
+      uniformly spaced timestamps. For this reason, the function requires
+      specifying start time, end time, and frequency.
 
     Parameters
     ----------
