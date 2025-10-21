@@ -6,7 +6,7 @@ URL = 'https://ssd.jpl.nasa.gov/api/horizons.api'
 
 
 def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
-                  time_step='1h', url=URL):
+                  time_step='1h', refraction_correction=False, url=URL):
     """
     Retrieve solar positions from NASA's Horizons web service.
 
@@ -41,6 +41,9 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
         Time step size of the requested time series. '1m' for minutes,
         '1h' for hours, '1d' for days, '1mo' for months, and '1y' for years.
         The default is '1h'.
+    refraction_correction : bool, optional
+        Whether to return apparent solar position angles corrected for
+        atmospheric refraction. The defalt is False.
     url : str, optional
         API endpoint. The default is
         ``'https://ssd.jpl.nasa.gov/api/horizons.api'``.
@@ -48,16 +51,13 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
     Returns
     -------
     pandas.DataFrame
-        DataFrame with the following columns (all values in degrees):
+        DataFrame with the following columns in degrees (note that all columns
+    except azimuth are prefixed with 'apparent_' if ``refraction_correction=True``.)
 
-        - uncertainty_right_ascension
-        - uncertainty_declination
         - right_ascension
         - declination
-        - apparent_right_ascesion
-        - apparent_declination
-        - apparent_azimuth
-        - apparent_elevation
+        - azimuth
+        - elevation
 
     References
     ----------
@@ -82,7 +82,6 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
         "CAL_TYPE": "MIXED",  # Gregorian or mixed Julian/Gregorian calendar
         "TIME_DIGITS": "FRACSEC",  # output time precision
         "ANG_FORMAT": "DEG",  # output angles in degrees
-        "APPARENT": "AIRLESS",  # no refraction
         # "RANGE_UNITS": "AU",
         # "SUPPRESS_RANGE_RATE": "NO",
         "SKIP_DAYLT": "NO",  # include daylight periods
@@ -91,6 +90,11 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
         "CSV_FORMAT": "NO",
         "OBJ_DATA": "NO"  # whether to return summary data
     }
+
+    if refraction_correction:
+        params["APPARENT"] = "REFRACTED"  # account for refraction
+    else:
+        params["APPARENT"] = "AIRLESS"  # no refraction
 
     # manual formatting of the url as all parameters except format shall be
     # in enclosed in single quotes
@@ -117,10 +121,19 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
     data.index = data.index.tz_localize('UTC')
 
     # split columns as several params have a shared header name for two params
-    column_name_split_map = {
-        'R.A._(a-appar)_DEC.': ['right_ascension', 'declination'],
-        'Azi____(a-app)___Elev': ['azimuth', 'elevation'],
-    }
+    if refraction_correction:
+        column_name_split_map = {
+            # "r" prefix stands for "refracted" aka. refracted/apparent angles
+            'R.A._(r-appar)__DEC': ['apparent_right_ascension', 'apparent_declination'],
+            'Azi____(r-app)___Elev': ['azimuth', 'apparent_elevation'],
+        }
+
+    else:
+        column_name_split_map = {
+            # "a" prefix stands for "airless" aka. unrefracted
+            'R.A._(a-appar)_DEC.': ['right_ascension', 'declination'],
+            'Azi____(a-app)___Elev': ['azimuth', 'elevation'],
+        }
 
     for old_name, new_names in column_name_split_map.items():
         data[new_names] = \
@@ -133,5 +146,4 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
         del data['Unnamed: 1']
     except KeyError:
         pass
-
     return data

@@ -559,6 +559,7 @@ def test_delta_t_series_input():
     pd.testing.assert_frame_equal(usno_array, usno_float)
 
 
+@pytest.fixture
 def expected_nasa():
     columns = ['right_ascension', 'declination', 'azimuth', 'elevation']
     values = [
@@ -595,17 +596,64 @@ def expected_nasa():
     return data
 
 
-def test_nasa_horizons():
-    expected = expected_nasa()
+@pytest.fixture
+def expected_nasa_refracted():
+    columns = ['apparent_right_ascension', 'apparent_declination', 'azimuth', 'apparent_elevation']
+    values = [
+        [280.73492, -22.42915, 18.384905, -61.460898],
+        [280.59597, -22.49103, 43.990328, -56.428642],
+        [280.54556, -22.54743, 63.159488, -48.660005],
+        [280.55006, -22.57750, 77.862491, -39.580841],
+        [280.58537, -22.58401, 90.093838, -30.008965],
+        [280.64079, -22.57277, 101.147333, -20.430330],
+        [280.71282, -22.54831, 111.849769, -11.199780],
+        [280.80156, -22.51427, 122.773903, -2.643156],
+        [281.15991, -22.87756, 134.336441, 4.426409],
+        [281.26791, -22.95121, 146.804482, 10.455202],
+        [281.33369, -22.96770, 160.234863, 14.733079],
+        [281.39128, -22.97067, 174.399466, 16.846454],
+        [281.44734, -22.96663, 188.799258, 16.581405],
+        [281.50589, -22.95497, 202.838039, 13.965712],
+        [281.57563, -22.92612, 216.067120, 9.260021],
+        [281.71485, -22.80480, 228.325009, 2.936098],
+        [282.04557, -22.49171, 239.722349, -4.450189],
+        [282.13033, -22.51721, 250.562948, -13.182278],
+        [282.19859, -22.53231, 261.295115, -22.514892],
+        [282.24984, -22.53327, 272.536349, -32.120854],
+        [282.27937, -22.51526, 285.194755, -41.626608],
+        [282.27410, -22.47247, 300.704397, -50.493032],
+        [282.20646, -22.40488, 321.186284, -57.787601],
+        [282.04689, -22.34306, 348.166418, -61.945628],
+        [281.84142, -22.34828, 18.119982, -61.406306],
+    ]
+    data = pd.DataFrame(data=values, columns=columns)
+    data.index = pd.date_range('2020-01-01', '2020-01-02', freq='1h', tz='UTC')
+    data.index.name = 'time'
+    data.index.freq = None
+    return data
 
+
+def test_nasa_horizons(expected_nasa):
     result = nasa_horizons(
         latitude=50,
         longitude=10,
         start='2020-01-01',
         end='2020-01-02',
     )
-    for c in expected.columns:
-        pd.testing.assert_series_equal(expected[c], result[c])
+    for c in expected_nasa.columns:
+        pd.testing.assert_series_equal(expected_nasa[c], result[c])
+
+
+def test_nasa_horizons_refracted(expected_nasa_refracted):
+    result = nasa_horizons(
+        latitude=50,
+        longitude=10,
+        start='2020-01-01',
+        end='2020-01-02',
+        refraction_correction=True,
+    )
+    for c in expected_nasa_refracted.columns:
+        pd.testing.assert_series_equal(expected_nasa_refracted[c], result[c])
 
 
 def test_nasa_horizons_frequency_daily():
@@ -634,6 +682,7 @@ def test_nasa_horizons_frequency_monthly():
         start=start,
         end=end,
         time_step='1mo',  # monthly
+        refraction_correction=True,
     )
     expected_index = pd.date_range(start, end, freq='MS', tz='UTC')
     expected_index.name = 'time'
