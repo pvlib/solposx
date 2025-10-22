@@ -52,7 +52,7 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
     -------
     pandas.DataFrame
         DataFrame with the following columns in degrees (note that all columns
-    except azimuth are prefixed with 'apparent_' if ``refraction_correction=True``.)
+    except azimuth are prefixed with `'apparent_'` if ``refraction_correction=True``.)
 
         - right_ascension
         - declination
