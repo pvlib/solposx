@@ -60,9 +60,9 @@ all = ["solposx[optional,test,doc]"]
 
 [project.urls]
 Documentation = "https://solposx.readthedocs.io"
-Issues = "https://github.com/assessingsolar/solposx/issues"
-Repository = "https://github.com/assessingsolar/solposx.git"
-Changelog = "https://github.com/assessingsolar/solposx/blob/main/docs/source/whatsnew.md"
+Issues = "https://github.com/pvlib/solposx/issues"
+Repository = "https://github.com/pvlib/solposx.git"
+Changelog = "https://github.com/pvlib/solposx/blob/main/docs/source/whatsnew.md"
 
 [tool.pytest.ini_options]
 addopts = "--cov=solposx --cov-fail-under=100 --cov-report=term-missing"

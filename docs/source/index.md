@@ -8,11 +8,11 @@ If you are new to this package, check out the introduction to [solar position al
 
 
 ## Contributing
-Contributions to the repository, e.g., bug fixes, feature requests, are more than welcome! The package is openly developed on [GitHub](https://github.com/AssessingSolar/solposx).
+Contributions to the repository, e.g., bug fixes, feature requests, are more than welcome! The package is openly developed on [GitHub](https://github.com/pvlib/solposx).
 
 
 ## License
-[BSD 3-clause](https://github.com/assessingsolar/solposx/blob/main/LICENSE).
+[BSD 3-clause](https://github.com/pvlib/solposx/blob/main/LICENSE).
 
 
 ```{toctree}
