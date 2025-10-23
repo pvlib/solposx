@@ -8,4 +8,4 @@ Some functions require additional optional dependencies, e.g., the Python packag
 
     pip install solposx[optional]
 
-The source code is openly developed on [GitHub](https://github.com/AssessingSolar/solposx).
+The source code is openly developed on [GitHub](https://github.com/pvlib/solposx).

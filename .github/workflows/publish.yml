@@ -1,7 +1,7 @@
 name: Build & Publish package to PyPI
 
 # CI setup instructions:
-# 1. Replace 'assessingsolar/solposx' and 'solposx' with your GitHub organization and repository name
+# 1. Replace 'pvlib/solposx' and 'solposx' with your GitHub organization and repository name
 # 2. Create a new environment for additional protection and security in the GitHub UI:
 #    Settings > Environments
 #    Name: release
@@ -59,13 +59,13 @@ jobs:
       run: |
         echo "Distribution files sizes"
         du -sh dist/*
-        python -m pip install dist/*.whl --target /tmp/assessingsolar --quiet --quiet
+        python -m pip install dist/*.whl --target /tmp/pvlib --quiet --quiet
         echo "Installation size of wheel"
-        du -sh /tmp/assessingsolar/solposx
+        du -sh /tmp/pvlib/solposx
 
     - name: Upload artifact with distribution files
       # this step uploads the distribution files to the GitHub artifact store if they are needed later to publish to PyPI
-      if: github.repository == 'assessingsolar/solposx' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+      if: github.repository == 'pvlib/solposx' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
       uses: actions/upload-artifact@v4
       with:
         name: distro-files
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-distribution  # first build, then publish
     # only publish distribution to PyPI in tagged commits
-    if: github.repository == 'assessingsolar/solposx' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: github.repository == 'pvlib/solposx' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     environment: release
     permissions:
       id-token: write  # this permission mandatory for trusted publishing
