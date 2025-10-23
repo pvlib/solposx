@@ -1,0 +1,60 @@
+name: Lint and Auto Format
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write      # to push changes
+      pull-requests: write # to create PRs
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Black
+        run: pip install black
+
+      - name: Run Black (format code)
+        run: black --verbose ./src
+
+      - name: Check for changes
+        id: check_diff
+        run: |
+          if git diff --quiet; then
+            echo "no_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_diff.outputs.no_changes == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b black-fixes-${{ github.run_id }}
+          git add .
+          git commit -m "style: auto-format with black"
+          git push origin HEAD
+
+      - name: Create Pull Request
+        if: steps.check_diff.outputs.no_changes == 'false'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          # target branch: will be updated with newer commits for each action run
+          # always the same one, since we know it will only be called by pushes to main
+          branch: black-format-main
+          # base branch: where the PR points to be merged
+          # defaults to checked-out branch (black-fixes-${{ github.run_id }})
+          base: main
+          title: "style: auto-format with black"
+          body: "This PR was created automatically by the lint job to apply Black formatting."
