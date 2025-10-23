@@ -60,12 +60,20 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
         - azimuth
         - elevation
 
+    Notes
+    -----
+    The refraction correction algorithm is the same as
+    :py:func:`solposx.refraction.spa`. See [3]_ for more
+    information.
+
     References
     ----------
     .. [1] `NASA Horizons Systems
        <https://ssd.jpl.nasa.gov/horizons/>`_
     .. [2] `NASA Horizons API
        <https://ssd-api.jpl.nasa.gov/doc/horizons.html>`_
+    .. [3] `NASA Horizons Manual
+       <https://ssd.jpl.nasa.gov/horizons/manual.html>`_
     """
     params = {
         "MAKE_EPHEM": "YES",  # generate ephemeris
