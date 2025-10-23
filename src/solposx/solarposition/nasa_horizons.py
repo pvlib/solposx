@@ -83,8 +83,6 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
         "CAL_TYPE": "MIXED",  # Gregorian or mixed Julian/Gregorian calendar
         "TIME_DIGITS": "FRACSEC",  # output time precision
         "ANG_FORMAT": "DEG",  # output angles in degrees
-        # "RANGE_UNITS": "AU",
-        # "SUPPRESS_RANGE_RATE": "NO",
         "SKIP_DAYLT": "NO",  # include daylight periods
         "SOLAR_ELONG": "0,180",
         "EXTRA_PREC": "NO",  # toggle additional digits on some angles (RA/DEC)
@@ -95,10 +93,10 @@ def nasa_horizons(latitude, longitude, start, end, elevation=0., *,
     if refraction_correction:
         params["APPARENT"] = "REFRACTED"  # account for refraction
     else:
-        params["APPARENT"] = "AIRLESS"  # no refraction
+        params["APPARENT"] = "AIRLESS"  # do not account for refraction
 
     # manual formatting of the url as all parameters except format shall be
-    # in enclosed in single quotes
+    # enclosed in single quotes
     url_formatted = (
         url
         + '?'
