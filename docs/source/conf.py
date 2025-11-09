@@ -94,8 +94,8 @@ intersphinx_mapping = {
 }
 
 extlinks = {
-    "issue": (f"https://github.com/pvlib/{github_user}/{github_repo}/%s", "GH%s"),
-    "pull": (f"https://github.com/pvlib/{github_user}/{github_repo}/%s", "GH%s"),
+    "issue": (f"https://github.com/pvlib/{github_user}/{github_repo}/issues/%s", "GH%s"),
+    "pull": (f"https://github.com/pvlib/{github_user}/{github_repo}/pull/%s", "GH%s"),
     "ghuser": ("https://github.com/%s", "@%s"),
     "doi": ("http://dx.doi.org/%s", "DOI: %s"),
 }
