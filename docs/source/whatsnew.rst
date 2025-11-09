@@ -11,8 +11,8 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 
 Changed
 ^^^^^^^
-* Moved the package GitHub repository from the GitHub organization **AssessingSolar**
-  to the **pvlib** organization. (:pull:`134`)
+* Moved the package GitHub repository from the GitHub organization AssessingSolar
+  to the pvlib organization. (:pull:`134`)
 * Improved error messages raised when optional packages are not available.
   (:issue:`86`, :pull:`122`)
 
