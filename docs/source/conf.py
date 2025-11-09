@@ -16,6 +16,9 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../src'))
 
+github_user = os.getenv("GITHUB_USER", "ORG")
+github_repo = os.getenv("GITHUB_REPO", "REPO")
+
 # -- Project information -----------------------------------------------------
 
 project = 'solposx'
@@ -62,7 +65,7 @@ html_title = "solposx"
 
 # https://sphinx-book-theme.readthedocs.io/en/stable/reference.html
 html_theme_options = {
-    "repository_url": "https://github.com/pvlib/solposx",
+    "repository_url": f"https://github.com/{github_user}/{github_repo}",
     "path_to_docs": "docs/source/",
     "use_issues_button": True,
     "use_repository_button": True,
@@ -91,8 +94,8 @@ intersphinx_mapping = {
 }
 
 extlinks = {
-    "issue": ("https://github.com/pvlib/solposx/issues/%s", "GH%s"),
-    "pull": ("https://github.com/pvlib/solposx/pull/%s", "GH%s"),
+    "issue": (f"https://github.com/pvlib/{github_user}/{github_repo}/%s", "GH%s"),
+    "pull": (f"https://github.com/pvlib/{github_user}/{github_repo}/%s", "GH%s"),
     "ghuser": ("https://github.com/%s", "@%s"),
     "doi": ("http://dx.doi.org/%s", "DOI: %s"),
 }
