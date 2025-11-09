@@ -19,7 +19,7 @@ Changed
 Added
 ^^^^^
 * Added optional ``refraction_correction`` parameter to
-  :py:func:`solposx.solarposition.nasa_horizons`. (:issue:`131`, :pull:`133`)
+  :py:func:`solposx.solarposition.nasa_horizons`. (:issue:`83`, :pull:`133`)
 
 1.0.0 - 2025-09-22
 -------------------
