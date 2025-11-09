@@ -16,8 +16,8 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../src'))
 
-github_user = os.getenv("GITHUB_USER", "ORG")
-github_repo = os.getenv("GITHUB_REPO", "REPO")
+github_org = "pvlib"
+github_repo = "solposx"
 
 # -- Project information -----------------------------------------------------
 
@@ -65,7 +65,7 @@ html_title = "solposx"
 
 # https://sphinx-book-theme.readthedocs.io/en/stable/reference.html
 html_theme_options = {
-    "repository_url": f"https://github.com/{github_user}/{github_repo}",
+    "repository_url": f"https://github.com/{github_org}/{github_repo}",
     "path_to_docs": "docs/source/",
     "use_issues_button": True,
     "use_repository_button": True,
@@ -94,8 +94,8 @@ intersphinx_mapping = {
 }
 
 extlinks = {
-    "issue": (f"https://github.com/pvlib/{github_user}/{github_repo}/issues/%s", "GH%s"),
-    "pull": (f"https://github.com/pvlib/{github_user}/{github_repo}/pull/%s", "GH%s"),
+    "issue": (f"https://github.com/{github_org}/{github_repo}/issues/%s", "GH%s"),
+    "pull": (f"https://github.com/{github_org}/{github_repo}/pull/%s", "GH%s"),
     "ghuser": ("https://github.com/%s", "@%s"),
     "doi": ("http://dx.doi.org/%s", "DOI: %s"),
 }
@@ -125,7 +125,7 @@ def get_source_base_url():
     """
     repo_url = os.environ.get(
         "READTHEDOCS_GIT_CLONE_URL",
-        default="https://github.com/pvlib/solposx.git",
+        default=f"https://github.com/{github_org}/{github_repo}.git",
     ).rstrip(".git")  # remove .git suffix if present, as it could be present
     READTHEDOCS_ENV = os.environ.get("READTHEDOCS", None) == "True"
     READTHEDOCS_VERSION = os.environ.get("READTHEDOCS_VERSION", None)
