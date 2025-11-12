@@ -7,6 +7,15 @@ The functions currently support calculating time series of solar position and at
 If you are new to this package, check out the introduction to [solar position algorithms](solarposition_introduction) and [refraction models](refraction_introduction). Alternatively, you may wish to dive straight into the [documentation](documentation), check out how to [install the solposx package](installation), or get updated on [recent developments](whatsnew).
 
 
+## Citing
+If you use solposx in published work, please cite:
+
+> Jensen, A. R., Sifnaios, I., Anderson, K., and Luis, E.
+> "solposx: A Python package for determining solar position and atmospheric refraction."
+> Journal of Open Source Software, 10(115), 9239, (2025).
+> doi: [10.21105/joss.09239](https://doi.org/10.21105/joss.09239).
+
+
 ## Contributing
 Contributions to the repository, e.g., bug fixes, feature requests, are more than welcome! The package is openly developed on [GitHub](https://github.com/pvlib/solposx).
 
