@@ -10,10 +10,10 @@ If you are new to this package, check out the introduction to [solar position al
 ## Citing
 If you use solposx in published work, please cite:
 
-  Jensen, A. R., Sifnaios, I., Anderson, K., and Luis, E.
-  "solposx: A Python package for determining solar position and atmospheric refraction."
-  Journal of Open Source Software, 10(115), 9239, (2025).
-  :doi:`10.21105/joss.09239`.
+> Jensen, A. R., Sifnaios, I., Anderson, K., and Luis, E.
+> "solposx: A Python package for determining solar position and atmospheric refraction."
+> Journal of Open Source Software, 10(115), 9239, (2025).
+> doi: [10.21105/joss.09239](https://doi.org/10.21105/joss.09239).
 
 
 ## Contributing
