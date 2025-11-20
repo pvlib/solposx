@@ -39,7 +39,6 @@ classifiers = [
 ]
 dependencies = [
     "numpy",
-    "matplotlib",
     "pandas",
     "pvlib",
 ]
@@ -55,6 +54,7 @@ doc = [
     "sphinx-book-theme==1.1.4",
     "pvlib==0.13.0",
     "pandas==2.3.0",
+    "matplotlib==3.10.7",
 ]
 all = ["solposx[optional,test,doc]"]
 
