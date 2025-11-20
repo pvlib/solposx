@@ -10,6 +10,11 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 1.0.2 - upcoming
 ----------------
 
+Changed
+^^^^^^^
+* matplotlib is now an optional ``doc`` dependency instead of a required
+  dependency. (:pull:`146`)
+
 Added
 ^^^^^
 * Add testing for Python 3.14. (:pull:`144`)
