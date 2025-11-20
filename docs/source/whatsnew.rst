@@ -15,6 +15,10 @@ Changed
 * matplotlib is now an optional ``doc`` dependency instead of a required
   dependency. (:pull:`146`)
 
+Added
+^^^^^
+* Add testing for Python 3.14. (:pull:`144`)
+
 
 1.0.1 - 2025-11-09
 -------------------
