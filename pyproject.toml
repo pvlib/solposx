@@ -19,6 +19,7 @@ authors = [
     {name = "Adam R. Jensen"},
     {name = "Kevin S. Anderson"},
     {name = "Ioannis Sifnaios"},
+    {name = "Echedey Luis"},
     {email = "adam-r-j@hotmail.com"},
 ]
 description = " solposx is a Python package for determining solar position and atmospheric refraction."

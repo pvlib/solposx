@@ -23,7 +23,7 @@ github_repo = "solposx"
 
 project = 'solposx'
 copyright = '2025 Adam R. Jensen'
-author = 'Adam R. Jensen, Kevin S. Anderson, & Ioannis Sifnaios'
+author = 'Adam R. Jensen, Kevin S. Anderson, Ioannis Sifnaios, & Echedey Luis'
 
 
 # -- General configuration ---------------------------------------------------
