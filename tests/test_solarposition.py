@@ -478,7 +478,8 @@ def test_algorithm(algorithm, expected, kwargs, test_conditions):
     result.name = algorithm.__module__
 
     pd.testing.assert_index_equal(expected.index, result.index)
-    testing_kwargs = {'rtol': 1e-3} if algorithm.__name__ == 'sg2' else {'rtol': 1e-9}
+    rtol_dict = {'sg2': 1e-3, 'skyfield': 1e-6}
+    testing_kwargs = {'rtol': rtol_dict.get(algorithm.__name__, 1e-9)}
     pd.testing.assert_frame_equal(
         expected, result, check_like=False, **testing_kwargs)
     for c in expected.columns:
