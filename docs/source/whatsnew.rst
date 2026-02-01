@@ -19,6 +19,10 @@ Added
 ^^^^^
 * Add testing for Python 3.14. (:pull:`144`)
 
+Testing
+^^^^^^^
+* The test values for the skyfield solar position function were updated to
+  match skyfield version 1.54. (:issue:`148`, :pull:`150`)
 
 1.0.1 - 2025-11-09
 -------------------
