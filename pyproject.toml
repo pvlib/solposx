@@ -47,8 +47,8 @@ dependencies = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-optional = ["skyfield>=1.51", "sg2"]
-test = ["pytest>=7", "pytest-cov", "packaging"]
+optional = ["skyfield", "sg2"]
+test = ["pytest>=7", "pytest-cov", "packaging","skyfield>=1.54"]
 doc = [
     "solposx[optional]",
     "sphinx==8.2.3",
