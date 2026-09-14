@@ -47,8 +47,8 @@ def walraven(times, latitude, longitude):
 
     longitude = -longitude  # outdated convention used by Walraven
 
-    year = times_utc.year
-    day = times_utc.dayofyear
+    year = np.asarray(times_utc.year)
+    day = np.asarray(times_utc.dayofyear)
     T = _fractional_hour(times_utc)
 
     delta = year - 1980

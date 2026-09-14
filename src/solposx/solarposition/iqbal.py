@@ -41,7 +41,7 @@ def iqbal(times, latitude, longitude):
     """
     times_utc = _pandas_to_utc(times)
 
-    dayofyear = times_utc.dayofyear
+    dayofyear = np.asarray(times_utc.dayofyear)
     day_angle = 2 * np.pi * (dayofyear - 1) / 365  # [radians]
 
     declination = (
