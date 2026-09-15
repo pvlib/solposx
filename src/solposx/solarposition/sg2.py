@@ -66,9 +66,9 @@ def sg2(times, latitude, longitude, elevation=0, *, pressure=101325, temperature
     # convert time to UTC
     times_utc = _pandas_to_utc(times)
 
-    year = times_utc.year
-    month = times_utc.month
-    day = times_utc.day  # this is day of month and not day of year
+    year = np.asarray(times_utc.year)
+    month = np.asarray(times_utc.month)
+    day = np.asarray(times_utc.day)  # this is day of month and not day of year
     hour = _fractional_hour(times_utc)
 
     # year in decimal form
@@ -107,9 +107,12 @@ def sg2(times, latitude, longitude, elevation=0, *, pressure=101325, temperature
         ),
     ).astype(int)
 
+    # Look the coefficients up as numpy arrays; indexing a pandas Series by a
+    # per-timestamp row array is a slow, index-aligning operation.
+    year_ref = params_t["y"].to_numpy()[row]
     delta_t = 0.0
     for k in range(0, 6):
-        delta_t += params_t[f"a_{k}"][row] * (year - params_t["y"][row]) ** k
+        delta_t = delta_t + params_t[f"a_{k}"].to_numpy()[row] * (year - year_ref) ** k
 
     year_mod = np.where((month == 1) | (month == 2), year - 1, year)
     month_mod = np.where((month == 1) | (month == 2), month + 12, month)
@@ -127,7 +130,7 @@ def sg2(times, latitude, longitude, elevation=0, *, pressure=101325, temperature
         + np.floor(year_mod / 400.0)
     )
 
-    jd_tt = jd_ut + delta_t.values / 86400
+    jd_tt = jd_ut + delta_t / 86400
 
     jd_ut_mod = jd_ut - 2444239.5
     jd_tt_mod = jd_tt - 2444239.5
@@ -152,7 +155,7 @@ def sg2(times, latitude, longitude, elevation=0, *, pressure=101325, temperature
     )
 
     # I reshape the jd and dataframe in order to do the sum operation
-    jd_tt_mod_reshaped = jd_tt_mod.to_numpy().reshape(len(jd_tt_mod), 1)
+    jd_tt_mod_reshaped = np.asarray(jd_tt_mod).reshape(len(jd_tt_mod), 1)
     f_L = params["f_L"].to_numpy().reshape(1, 10)
     rho_L = params["rho_L"].to_numpy().reshape(1, 10)
     phi_L = params["phi_L"].to_numpy().reshape(1, 10)
