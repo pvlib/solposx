@@ -41,6 +41,7 @@ def michalsky(elevation):
         / (1 + 0.505 * elevation + 0.0845 * elevation**2)
     )
 
+    # this limit is specified in Michalsky's code appendix
     refraction_correction[elevation < -0.56] = 0.56
 
     return refraction_correction
