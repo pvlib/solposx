@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from solposx.tools import _pandas_to_utc
-from pvlib.solarposition import _datetime_to_unixtime
 
 
 def _grena_start(times, deltaT):
@@ -21,18 +20,19 @@ def _grena_start(times, deltaT):
         - np.trunc(0.01 * yb)
         + d + h/24 - 21958
     ).values
-    te = t + 1.1574e-5 * deltaT
-    return t, te
-
-
-def _grena_start_unixtime(times, deltaT):
-    # faster alternative to _grena_start
-    unixtime = _datetime_to_unixtime(times)
+    # faster alternative:
     # unix time is the number of seconds since 1970-01-01, but Grena needs
     # number of days since 2060-01-01.  The difference is 32872 days.
-    t = unixtime / 86400 - 32872
+    # unixtime = _datetime_to_unixtime(times)
+    # t = unixtime / 86400 - 32872
     te = t + 1.1574e-5 * deltaT
+
     return t, te
+
+"""
+def _grena_start_unixtime(times, deltaT):
+    return t, te
+"""
 
 
 def _grena_end(delta, H, lat, temperature, air_pressure):
@@ -131,7 +131,7 @@ def grena1(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     """
     lat = np.radians(latitude)
     lon = np.radians(longitude)
-    t, te = _grena_start_unixtime(times, deltaT)
+    t, te = _grena_start(times, deltaT)
     theta = lon
 
     w = 0.017202786
@@ -201,7 +201,7 @@ def grena2(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     """
     lat = np.radians(latitude)
     lon = np.radians(longitude)
-    t, te = _grena_start_unixtime(times, deltaT)
+    t, te = _grena_start(times, deltaT)
     theta = lon
 
     w = 0.017202786
@@ -283,7 +283,7 @@ def grena3(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     """
     lat = np.radians(latitude)
     lon = np.radians(longitude)
-    t, te = _grena_start_unixtime(times, deltaT)
+    t, te = _grena_start(times, deltaT)
     theta = lon
 
     wa = 0.0172019715
@@ -360,7 +360,7 @@ def grena4(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     """
     lat = np.radians(latitude)
     lon = np.radians(longitude)
-    t, te = _grena_start_unixtime(times, deltaT)
+    t, te = _grena_start(times, deltaT)
     theta = lon
 
     L = (
@@ -460,7 +460,7 @@ def grena5(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     """
     lat = np.radians(latitude)
     lon = np.radians(longitude)
-    t, te = _grena_start_unixtime(times, deltaT)
+    t, te = _grena_start(times, deltaT)
     theta = lon
 
     s1 = np.sin(wa * te)
