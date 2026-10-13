@@ -90,13 +90,13 @@ def michalsky(
     hour = _fractional_hour(times_utc)
 
     if julian_date == "original":
-        year = times_utc.year
-        day = times_utc.dayofyear
+        year = np.asarray(times_utc.year)
+        day = np.asarray(times_utc.dayofyear)
         delta = year - 1949
         leap = np.floor(delta / 4)
         jd = 2432916.5 + delta * 365 + leap + day + hour / 24
     elif julian_date == "pandas":
-        jd = times_utc.to_julian_date()
+        jd = np.asarray(times_utc.to_julian_date())
     else:
         raise ValueError("`julian_date` has to be either `original` or `pandas`.")
 
