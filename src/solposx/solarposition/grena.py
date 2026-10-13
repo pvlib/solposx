@@ -29,11 +29,6 @@ def _grena_start(times, deltaT):
 
     return t, te
 
-"""
-def _grena_start_unixtime(times, deltaT):
-    return t, te
-"""
-
 
 def _grena_end(delta, H, lat, temperature, air_pressure):
     # final calculations shared by all five of Grena's algorithms
