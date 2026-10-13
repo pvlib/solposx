@@ -33,10 +33,10 @@ author = 'Adam R. Jensen, Kevin S. Anderson, Ioannis Sifnaios, & Echedey Luis'
 # ones.
 extensions = [
     'myst_nb',  # markdown and jupyter-notebook parsing
+    'numpydoc',  # parsing of Numpy docstrings
     'sphinx.ext.autodoc',  # generate documentation from docstrings
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.napoleon',  # parsing of Numpy docstrings
     'sphinx.ext.extlinks',
 ]
 
