@@ -5,6 +5,7 @@ from pvlib.solarposition import _datetime_to_unixtime
 
 
 def _grena_start(times, deltaT):
+    # initial calculations shared by all five of Grena's algorithms
     times = _pandas_to_utc(times)
     y = times.year
     m = times.month
@@ -25,6 +26,7 @@ def _grena_start(times, deltaT):
 
 
 def _grena_start_unixtime(times, deltaT):
+    # faster alternative to _grena_start
     unixtime = _datetime_to_unixtime(times)
     # unix time is the number of seconds since 1970-01-01, but Grena needs
     # number of days since 2060-01-01.  The difference is 32872 days.
@@ -33,7 +35,8 @@ def _grena_start_unixtime(times, deltaT):
     return t, te
 
 
-def _grena_end(delta, H, lat, air_temperature, pressure):
+def _grena_end(delta, H, lat, temperature, air_pressure):
+    # final calculations shared by all five of Grena's algorithms
     phi = lat
     sphi = np.sin(phi)
     cphi = np.sqrt(1 - sphi*sphi)
@@ -49,7 +52,7 @@ def _grena_end(delta, H, lat, air_temperature, pressure):
     gamma = gamma + np.pi  # not in the paper, but seems necessary to achieve into pvlib's convention
     gamma = gamma % (2 * np.pi)
 
-    dele = 0.08422 * (pressure/101000) / (273 + air_temperature) / np.tan(ep + 0.003138 / (ep + 0.08919))
+    dele = 0.08422 * (air_pressure/101000) / (273 + temperature) / np.tan(ep + 0.003138 / (ep + 0.08919))
     # step 8 (modified)
     # Grena doesn't specify an exact lower limit for applying the refraction correction.
     # Per the paper: "this formula is meaningful only when ep + Δre is positive."
@@ -61,6 +64,7 @@ def _grena_end(delta, H, lat, air_temperature, pressure):
 
 
 def _grena_out(apparent_elevation, true_elevation, azimuth, times):
+    # prepare outputs; shared by all five of Grena's algorithms
     apparent_elevation = np.degrees(apparent_elevation)
     true_elevation = np.degrees(true_elevation)
     azimuth = np.degrees(azimuth)
@@ -75,7 +79,7 @@ def _grena_out(apparent_elevation, true_elevation, azimuth, times):
     return out
 
 
-def grena1(times, latitude, longitude, air_temperature=12, pressure=101325, deltaT=67.0):
+def grena1(times, latitude, longitude, temperature=12, air_pressure=101325, deltaT=67.0):
     """
     Calculate solar position using Grena's algorithm 1.
 
@@ -98,7 +102,6 @@ def grena1(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Annual average air pressure. [Pa]
     temperature : float, default : 12
         Annual average air temperature. [°C]
-        negative to west. [degrees]
     delta_t : numeric, default : 67.0
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
@@ -144,12 +147,12 @@ def grena1(times, latitude, longitude, air_temperature=12, pressure=101325, delt
     delta = 6.57e-3 + 7.347e-2*s1 - 3.9919e-1*c1 + 7.3e-4*s2 - 6.60e-3*c2
     H = 1.75283 + 6.3003881*t + theta - alpha
     
-    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, air_temperature, pressure)
+    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, temperature, air_pressure)
     out = _grena_out(apparent_elevation, true_elevation, azimuth, times)
     return out
 
 
-def grena2(times, latitude, longitude, air_temperature=12, pressure=101325, deltaT=67.0):
+def grena2(times, latitude, longitude, temperature=12, air_pressure=101325, deltaT=67.0):
     """
     Calculate solar position using Grena's algorithm 2.
 
@@ -172,7 +175,6 @@ def grena2(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Annual average air pressure. [Pa]
     temperature : float, default : 12
         Annual average air temperature. [°C]
-        negative to west. [degrees]
     delta_t : numeric, default : 67.0
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
@@ -230,12 +232,12 @@ def grena2(times, latitude, longitude, air_temperature=12, pressure=101325, delt
     )
     H = 1.75283 + 6.3003881*t + theta - alpha
 
-    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, air_temperature, pressure)
+    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, temperature, air_pressure)
     out = _grena_out(apparent_elevation, true_elevation, azimuth, times)
     return out
 
 
-def grena3(times, latitude, longitude, air_temperature=12, pressure=101325, deltaT=67.0):
+def grena3(times, latitude, longitude, temperature=12, air_pressure=101325, deltaT=67.0):
     """
     Calculate solar position using Grena's algorithm 3.
 
@@ -258,7 +260,6 @@ def grena3(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Annual average air pressure. [Pa]
     temperature : float, default : 12
         Annual average air temperature. [°C]
-        negative to west. [degrees]
     delta_t : numeric, default : 67.0
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
@@ -311,12 +312,12 @@ def grena3(times, latitude, longitude, air_temperature=12, pressure=101325, delt
     delta = np.arcsin(slam*seps)
     H = 1.7528311 + 6.300388099*t + theta - alpha
 
-    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, air_temperature, pressure)
+    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, temperature, air_pressure)
     out = _grena_out(apparent_elevation, true_elevation, azimuth, times)
     return out
 
 
-def grena4(times, latitude, longitude, air_temperature=12, pressure=101325, deltaT=67.0):
+def grena4(times, latitude, longitude, temperature=12, air_pressure=101325, deltaT=67.0):
     """
     Calculate solar position using Grena's algorithm 4.
 
@@ -339,7 +340,6 @@ def grena4(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Annual average air pressure. [Pa]
     temperature : float, default : 12
         Annual average air temperature. [°C]
-        negative to west. [degrees]
     delta_t : numeric, default : 67.0
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
@@ -393,7 +393,7 @@ def grena4(times, latitude, longitude, air_temperature=12, pressure=101325, delt
     delta = np.arcsin(slam*seps)
     H = 1.7528311 + 6.300388099*t + theta - alpha + 0.92*dlam
 
-    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, air_temperature, pressure)
+    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, temperature, air_pressure)
     out = _grena_out(apparent_elevation, true_elevation, azimuth, times)
     return out
 
@@ -420,7 +420,7 @@ phi = np.array([-2.337, 3.065, -1.533, -2.358, 0.074, 1.547, -0.488])[np.newaxis
 
 wn = 9.282e-4  # given in the text, last sentence on page 1331
 
-def grena5(times, latitude, longitude, air_temperature=12, pressure=101325, deltaT=67.0):
+def grena5(times, latitude, longitude, temperature=12, air_pressure=101325, deltaT=67.0):
     """
     Calculate solar position using Grena's algorithm 5.
 
@@ -443,7 +443,6 @@ def grena5(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Annual average air pressure. [Pa]
     temperature : float, default : 12
         Annual average air temperature. [°C]
-        negative to west. [degrees]
     delta_t : numeric, default : 67.0
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
@@ -513,6 +512,6 @@ def grena5(times, latitude, longitude, air_temperature=12, pressure=101325, delt
     # step 15 (don't need it)
     # H = (H + np.pi) % (2 * np.pi) - np.pi
 
-    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, air_temperature, pressure)
+    apparent_elevation, true_elevation, azimuth = _grena_end(delta, H, lat, temperature, air_pressure)
     out = _grena_out(apparent_elevation, true_elevation, azimuth, times)
     return out
