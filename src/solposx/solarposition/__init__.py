@@ -1,4 +1,7 @@
 from solposx.solarposition.iqbal import iqbal  # noqa: F401
+from solposx.solarposition.grena import (  # noqa: F401
+    grena1, grena2, grena3, grena4, grena5
+)
 from solposx.solarposition.michalsky import michalsky  # noqa: F401
 from solposx.solarposition.nasa_horizons import nasa_horizons  # noqa: F401
 from solposx.solarposition.noaa import noaa  # noqa: F401
