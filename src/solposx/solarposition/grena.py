@@ -103,8 +103,7 @@ def grena1(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
         using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient.
-        The USNO has historical and forecasted ``delta_t`` [3]_. [seconds]
+        For most simulations the default ``delta_t`` is sufficient. [seconds]
 
     Returns
     -------
@@ -178,8 +177,7 @@ def grena2(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
         using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient.
-        The USNO has historical and forecasted ``delta_t`` [3]_. [seconds]
+        For most simulations the default ``delta_t`` is sufficient. [seconds]
 
     Returns
     -------
@@ -265,8 +263,7 @@ def grena3(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
         using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient.
-        The USNO has historical and forecasted ``delta_t`` [3]_. [seconds]
+        For most simulations the default ``delta_t`` is sufficient. [seconds]
 
     Returns
     -------
@@ -347,8 +344,7 @@ def grena4(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
         using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient.
-        The USNO has historical and forecasted ``delta_t`` [3]_. [seconds]
+        For most simulations the default ``delta_t`` is sufficient. [seconds]
 
     Returns
     -------
@@ -452,8 +448,7 @@ def grena5(times, latitude, longitude, air_temperature=12, pressure=101325, delt
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
         using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient.
-        The USNO has historical and forecasted ``delta_t`` [3]_. [seconds]
+        For most simulations the default ``delta_t`` is sufficient. [seconds]
 
     Returns
     -------
