@@ -48,11 +48,12 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 optional = ["skyfield", "sg2"]
-test = ["pytest>=7", "pytest-cov", "packaging","skyfield>=1.54"]
+test = ["pytest>=7", "pytest-cov", "packaging", "skyfield>=1.54"]
 doc = [
     "solposx[optional]",
     "sphinx==8.2.3",
-    "myst-nb==1.1.2",
+    "numpydoc==1.11.0",
+    "myst-nb==1.4.0",
     "sphinx-book-theme==1.1.4",
     "pvlib==0.13.0",
     "pandas==2.3.0",

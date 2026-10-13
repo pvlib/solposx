@@ -54,7 +54,7 @@ def spa(
         The approximate atmospheric refraction (in degrees)
         at sunrise and sunset.
 
-    Extra Parameters
+    Other Parameters
     ----------------
     how : str, optional, default 'numpy'
         Options are 'numpy' or 'numba'. If numba >= 0.17.0
