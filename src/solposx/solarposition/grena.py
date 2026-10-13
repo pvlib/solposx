@@ -103,10 +103,7 @@ def grena1(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     temperature : float, default : 12
         Annual average air temperature. [°C]
     delta_t : numeric, default : 67.0
-        Difference between terrestrial time and UT1.
-        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
-        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient. [seconds]
+        Difference between terrestrial time and UT1. [seconds]
 
     Returns
     -------
@@ -176,10 +173,7 @@ def grena2(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     temperature : float, default : 12
         Annual average air temperature. [°C]
     delta_t : numeric, default : 67.0
-        Difference between terrestrial time and UT1.
-        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
-        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient. [seconds]
+        Difference between terrestrial time and UT1. [seconds]
 
     Returns
     -------
@@ -261,10 +255,7 @@ def grena3(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     temperature : float, default : 12
         Annual average air temperature. [°C]
     delta_t : numeric, default : 67.0
-        Difference between terrestrial time and UT1.
-        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
-        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient. [seconds]
+        Difference between terrestrial time and UT1. [seconds]
 
     Returns
     -------
@@ -341,10 +332,7 @@ def grena4(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     temperature : float, default : 12
         Annual average air temperature. [°C]
     delta_t : numeric, default : 67.0
-        Difference between terrestrial time and UT1.
-        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
-        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient. [seconds]
+        Difference between terrestrial time and UT1. [seconds]
 
     Returns
     -------
@@ -444,10 +432,7 @@ def grena5(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     temperature : float, default : 12
         Annual average air temperature. [°C]
     delta_t : numeric, default : 67.0
-        Difference between terrestrial time and UT1.
-        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
-        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient. [seconds]
+        Difference between terrestrial time and UT1. [seconds]
 
     Returns
     -------
