@@ -19,14 +19,14 @@ def _grena_start(times, delta_t):
         + np.trunc(30.6001 * (mb + 1))
         - np.trunc(0.01 * yb)
         + d + h/24 - 21958
-    ).values
+    )
     # faster alternative:
     # unix time is the number of seconds since 1970-01-01, but Grena needs
     # number of days since 2060-01-01.  The difference is 32872 days.
     # unixtime = _datetime_to_unixtime(times)
     # t = unixtime / 86400 - 32872
-    te = t + 1.1574e-5 * delta_t
 
+    te = t + 1.1574e-5 * delta_t
     return t, te
 
 
@@ -47,13 +47,23 @@ def _grena_end(delta, H, lat, temperature, air_pressure):
     gamma = gamma + np.pi  # not in the paper, but seems necessary to achieve into pvlib's convention
     gamma = gamma % (2 * np.pi)
 
+    # Grena uses nearly the same refraction model as the NREL SPA, with two differences:
+    # 1) Minor inconsistencies in coefficient values.  For example, the numerator of
+    #    Grena's equation (0.08422) is rounded compared with the value you'd get by
+    #    translating the SPA coefficients:
+    #    np.radians(283*1.02/60 * 1013/1010) = 0.08421719959160595
+    #    The other coefficients are similarly rounded.  This all leads to very slightly
+    #    different values from the solposx.refraction.spa function, even though it is the
+    #    "same" refraction model.
+    #
+    # 2) Grena doesn't specify a lower limit for applying the refraction correction.
+    #    Per the paper: "this formula is meaningful only when ep + Δre is positive."
+    #    unfortunately, the formula for Δre has some nasty behavior near
+    #    elevation=-5.11595116 degrees, and ep + Δre can be positive even though
+    #    clearly it shouldn't be.  So, this implementation uses the default
+    #    refraction limit from the SPA function.
     dele = 0.08422 * (air_pressure/101000) / (273 + temperature) / np.tan(ep + 0.003138 / (ep + 0.08919))
-    # step 8 (modified)
-    # Grena doesn't specify an exact lower limit for applying the refraction correction.
-    # Per the paper: "this formula is meaningful only when ep + Δre is positive."
-    # unfortunately, the formula for Δre has some nasty behavior near elevation=-5.11595116 degrees,
-    # and ep + Δre can be positive even though clearly it shouldn't be.  So here we apply
-    # the same refraction limit as in the NREL SPA function, using default values:
+    #dele = np.radians(solposx.refraction.spa(np.degrees(ep), air_pressure, temperature))  # not quite equivalent
     e = np.where(ep > np.radians(-0.83337), ep + dele, ep)
     return e, ep, gamma
 
