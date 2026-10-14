@@ -54,7 +54,7 @@ def usno(times, latitude, longitude, *, delta_t=67.0, gmst_option=1):
     if delta_t is None:
         delta_t = spa.calculate_deltat(times_utc.year, times_utc.month)
 
-    JD = times_utc.to_julian_date()
+    JD = np.asarray(times_utc.to_julian_date())
 
     D = JD - 2451545.0
 
@@ -87,7 +87,7 @@ def usno(times, latitude, longitude, *, delta_t=67.0, gmst_option=1):
     # JD_0 is the Julian date of the previous midnight (0h) UT1
     midnight = times_utc.normalize()  # Convert times_utc to midnight
 
-    JD_0 = midnight.to_julian_date()
+    JD_0 = np.asarray(midnight.to_julian_date())
 
     # Hours of UT1 elapsed since the previous midnight
     H = (JD - JD_0) * 24

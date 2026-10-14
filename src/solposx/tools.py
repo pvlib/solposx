@@ -42,11 +42,18 @@ def _fractional_hour(times):
 
     Returns
     -------
-    fraction_of_hour : pd.Index
+    fraction_of_hour : numpy.ndarray
     """
+    # Extract the fields as plain numpy arrays: arithmetic on pandas Index
+    # objects allocates a new Index per operation, which dominates the runtime
+    # of the algorithms for small inputs and adds copies for large ones.
     hour = (
-        times.hour
-        + (times.minute + (times.second + times.microsecond * 1e-6) / 60) / 60
+        np.asarray(times.hour)
+        + (
+            np.asarray(times.minute)
+            + (np.asarray(times.second) + np.asarray(times.microsecond) * 1e-6) / 60
+        )
+        / 60
     )
     return hour
 

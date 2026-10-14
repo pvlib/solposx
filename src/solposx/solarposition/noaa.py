@@ -66,7 +66,7 @@ def noaa(times, latitude, longitude, *, delta_t=67.0):
        https://maia.usno.navy.mil/products/deltaT
     """
     times_utc = _pandas_to_utc(times)
-    julian_date = times_utc.to_julian_date()
+    julian_date = np.asarray(times_utc.to_julian_date())
     jc = (julian_date - 2451545) / 36525
 
     # Allow for latitude of -90 and 90 on Ubunty and MacOS
