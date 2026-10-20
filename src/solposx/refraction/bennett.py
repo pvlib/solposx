@@ -3,17 +3,18 @@
 from pvlib.tools import tand
 
 
-def bennett(elevation, pressure=101325.0, temperature=12.0):
+def bennett(apparent_elevation, pressure=101325.0, temperature=12.0):
     r"""
     Atmospheric refraction correction based on the Bennett algorithm.
 
-    Calculation of atmospheric refraction correction of the solar
-    elevation angle using the method developed by Bennett [1]_.
+    Calculation of atmospheric refraction correction based on the
+    apparent solar elevation angle using the method developed by
+    Bennett [1]_.
 
     Parameters
     ----------
-    elevation : array-like
-        True solar elevation angle (not accounting for refraction). [degrees]
+    apparent_elevation : array-like
+        Apparent solar elevation angle (accounting for refraction). [degrees]
     pressure : numeric, default 101325
         Annual average atmospheric pressure. [Pascal]
     temperature : numeric, default 12
@@ -24,16 +25,22 @@ def bennett(elevation, pressure=101325.0, temperature=12.0):
     np.array or pd.Series
         Atmospheric refraction angle. [degrees]
 
+    Warning
+    -------
+    The Bennet refraction algorithm calculates refraction based on the apparent
+    solar position, which is in contrast to most refraction algorithms, which
+    calculate refraction from the unrefracted true solar position.
+
     Notes
     -----
     The equation to calculate the refraction correction is given by:
 
     .. math::
 
-       ref = \frac{0.28*P}{T+273} \cdot \frac{0.016667}{\text{tan}(el + 7.31 / (el+4.4))}
+       ref = \frac{0.28*P}{T+273} \cdot \frac{0.016667}{\text{tan}(el_a + 7.31 / (el_a+4.4))}
 
     where :math:`P` is the local air pressure, :math:`T` is the local air
-    temperature, and :math:`el` is the true (uncorrected) solar elevation angle.
+    temperature, and :math:`el_a` is the apparent (corrected) solar elevation angle.
 
     References
     ----------
@@ -44,7 +51,7 @@ def bennett(elevation, pressure=101325.0, temperature=12.0):
 
     pressure = pressure / 100  # convert to hPa
 
-    r = 0.016667 / tand(elevation + 7.31 / (elevation + 4.4))
+    r = 0.016667 / tand(apparent_elevation + 7.31 / (apparent_elevation + 4.4))
 
     d = r * (0.28 * pressure / (temperature + 273.0))
 
