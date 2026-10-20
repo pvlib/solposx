@@ -27,9 +27,9 @@ def bennett(apparent_elevation, pressure=101325.0, temperature=12.0):
 
     Warning
     -------
-    The Bennet refraction algorithm calculates refraction based on the apparent
-    solar position, which is in contrast to most refraction algorithms, which
-    calculate refraction from the unrefracted true solar position.
+    The Bennet refraction algorithm calculates refraction from the apparent
+    solar elevation angle, in contrast to most refraction algorithms, which
+    calculate refraction from the unrefracted true solar elevation angle.
 
     Notes
     -----
