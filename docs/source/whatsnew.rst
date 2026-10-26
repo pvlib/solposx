@@ -10,6 +10,13 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 1.0.2 - upcoming
 ----------------
 
+Bug fix
+^^^^^^^
+* Change the input parameter ``elevation`` to ``apparent_elevation`` in
+  :py:func:`solposx.refraction.bennett`, reflecting that Bennett's
+  refraction correction is calculated from apparent elevation.
+  (:pull:`166`)
+
 Changed
 ^^^^^^^
 * matplotlib is now an optional ``doc`` dependency instead of a required
@@ -25,6 +32,7 @@ Testing
 ^^^^^^^
 * The test values for the skyfield solar position function were updated to
   match skyfield version 1.54. (:issue:`148`, :pull:`150`)
+
 
 1.0.1 - 2025-11-09
 -------------------
