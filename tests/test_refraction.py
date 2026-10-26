@@ -59,6 +59,7 @@ def expected_spa():
 
 @pytest.mark.parametrize('algorithm,expected,kwargs', [
     (archer, expected_archer, {}),
+    # For the Bennet algorithm, the input is apparent elevation
     (bennett, expected_bennett, {}),
     (bennett, expected_bennett, {'pressure': 101325., 'temperature': 12.}),
     (hughes, expected_hughes, {}),
@@ -71,14 +72,14 @@ def expected_spa():
 ])
 def test_algorithm(algorithm, expected, kwargs, test_elevation_angles):
     # numpy array input
-    result = algorithm(elevation=test_elevation_angles, **kwargs)
+    result = algorithm(test_elevation_angles, **kwargs)
     np.testing.assert_almost_equal(expected(), result)
 
     # pandas series input
     series_index = pd.date_range('2020-01-01', periods=len(test_elevation_angles), freq='1h')
     test_elevation_angles_series = pd.Series(test_elevation_angles, index=series_index)
     expected_series = pd.Series(expected(), index=series_index)
-    result_series = algorithm(elevation=test_elevation_angles_series, **kwargs)
+    result_series = algorithm(test_elevation_angles_series, **kwargs)
     pd.testing.assert_series_equal(expected_series, result_series)
 
 

@@ -118,12 +118,12 @@ def psa(times, latitude, longitude, *, coefficients=2020):
 
     time_utc = _pandas_to_utc(times)
 
-    year = time_utc.year
-    month = time_utc.month
-    day = time_utc.day
+    year = np.asarray(time_utc.year)
+    month = np.asarray(time_utc.month)
+    day = np.asarray(time_utc.day)
     hour = _fractional_hour(time_utc)
 
-    month_term = ((time_utc.month - 14) / 12).values.astype(int)
+    month_term = ((month - 14) / 12).astype(int)
 
     jd = (
         (1461 * ((year + 4800 + month_term)) / 4).astype(int)

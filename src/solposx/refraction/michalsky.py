@@ -28,6 +28,10 @@ def michalsky(elevation):
 
     where :math:`el` is the true (uncorrected) solar elevation angle.
 
+    The C-code implementation provided in [1]_ sets the refraction angle to
+    a constant value of 0.56 degrees when the solar elevation angle is less
+    than -0.56 degrees. This implementation includes this cutoff.
+
     References
     ----------
     .. [1] J. J. Michalsky, "The Astronomical Almanac's algorithm for
