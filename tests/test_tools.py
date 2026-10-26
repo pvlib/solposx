@@ -31,7 +31,8 @@ def expected_fractional_hour():
 
 def test_fractional_hour(times_index, expected_fractional_hour):
     result = _fractional_hour(times_index)
-    pd.testing.assert_index_equal(result, expected_fractional_hour)
+    assert isinstance(result, np.ndarray)
+    np.testing.assert_array_equal(result, expected_fractional_hour.to_numpy())
 
 
 @pytest.fixture
