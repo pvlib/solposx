@@ -13,6 +13,11 @@ Algorithms that include an atmospheric refraction model also return
    :toctree: generated/
 
    solarposition.iqbal
+   solarposition.grena1
+   solarposition.grena2
+   solarposition.grena3
+   solarposition.grena4
+   solarposition.grena5
    solarposition.michalsky
    solarposition.nasa_horizons
    solarposition.noaa
