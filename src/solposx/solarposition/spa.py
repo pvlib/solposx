@@ -74,7 +74,8 @@ def spa(
         - apparent_zenith : sun zenith, accounting for atmospheric
           refraction. [°]
         - azimuth : sun azimuth, east of north. [°]
-        - equation_of_time. [minutes]
+        - equation_of_time : difference between apparent solar time and mean
+          solar time. [minutes]
 
     References
     ----------
