@@ -43,7 +43,6 @@ def spa(
         Annual average air pressure. [Pa]
     temperature : float, default : 12
         Annual average air temperature. [°C]
-        negative to west. [degrees]
     delta_t : numeric, default : 67.0
         Difference between terrestrial time and UT1.
         If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
@@ -75,7 +74,8 @@ def spa(
         - apparent_zenith : sun zenith, accounting for atmospheric
           refraction. [°]
         - azimuth : sun azimuth, east of north. [°]
-        - equation_of_time. [minutes]
+        - equation_of_time : difference between apparent solar time and mean
+          solar time. [minutes]
 
     References
     ----------
