@@ -20,6 +20,7 @@ Algorithms that include an atmospheric refraction model also return
    solarposition.sg2
    solarposition.sg2_c
    solarposition.skyfield
+   solarposition.soltrack
    solarposition.spa
    solarposition.usno
    solarposition.walraven
