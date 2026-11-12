@@ -84,7 +84,7 @@ def _grena_out(apparent_elevation, true_elevation, azimuth, times):
     return out
 
 
-def grena1(times, latitude, longitude, temperature=12, air_pressure=101325, delta_t=67.0):
+def grena1(times, latitude, longitude, air_pressure=101325, temperature=12, delta_t=67.0):
     """
     Calculate solar position using Grena's algorithm 1.
 
@@ -154,7 +154,7 @@ def grena1(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     return out
 
 
-def grena2(times, latitude, longitude, temperature=12, air_pressure=101325, delta_t=67.0):
+def grena2(times, latitude, longitude, air_pressure=101325, temperature=12, delta_t=67.0):
     """
     Calculate solar position using Grena's algorithm 2.
 
@@ -236,7 +236,7 @@ def grena2(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     return out
 
 
-def grena3(times, latitude, longitude, temperature=12, air_pressure=101325, delta_t=67.0):
+def grena3(times, latitude, longitude, air_pressure=101325, temperature=12, delta_t=67.0):
     """
     Calculate solar position using Grena's algorithm 3.
 
@@ -313,7 +313,7 @@ def grena3(times, latitude, longitude, temperature=12, air_pressure=101325, delt
     return out
 
 
-def grena4(times, latitude, longitude, temperature=12, air_pressure=101325, delta_t=67.0):
+def grena4(times, latitude, longitude, air_pressure=101325, temperature=12, delta_t=67.0):
     """
     Calculate solar position using Grena's algorithm 4.
 
@@ -413,7 +413,7 @@ phi = np.array([-2.337, 3.065, -1.533, -2.358, 0.074, 1.547, -0.488])[np.newaxis
 
 wn = 9.282e-4  # given in the text, last sentence on page 1331
 
-def grena5(times, latitude, longitude, temperature=12, air_pressure=101325, delta_t=67.0):
+def grena5(times, latitude, longitude, air_pressure=101325, temperature=12, delta_t=67.0):
     """
     Calculate solar position using Grena's algorithm 5.
 
