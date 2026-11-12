@@ -9,6 +9,7 @@ from solposx.solarposition import psa
 from solposx.solarposition import sg2
 from solposx.solarposition import sg2_c
 from solposx.solarposition import skyfield
+from solposx.solarposition import soltrack
 from solposx.solarposition import spa
 from solposx.solarposition import usno
 from solposx.solarposition import walraven
@@ -273,6 +274,34 @@ def expected_skyfield():
     return data
 
 
+def expected_soltrack():
+    columns = ['elevation', 'apparent_elevation', 'zenith', 'apparent_zenith',
+               'azimuth']
+    values = [
+        [ 32.21889505,  32.24546849,  57.78110495,  57.75453151,  204.9161683 ],
+        [ 32.20642997,  32.23301609,  57.79357003,  57.76698391,  204.96245429],
+        [ 34.92329844,  34.94730952,  55.07670156,  55.05269048,  169.37435525],
+        [ 18.6376861 ,  18.68664382,  71.3623139 ,  71.31335618,  234.18819607],
+        [ 35.75587456,  35.77916412,  54.24412544,  54.22083588,  197.67502231],
+        [ -9.52902632,  -9.60962159,  99.52902632,  99.60962159,  201.1866233 ],
+        [ 66.8593199 ,  66.86650361,  23.1406801 ,  23.13349639,  245.08644305],
+        [  9.52902632,   9.6227897 ,  80.47097368,  80.3772103 ,  338.8133767 ],
+        [ 50.10976464,  50.12381854,  39.89023536,  39.87618146,  326.23683951],
+        [ 35.36242573,  35.38605265,  54.63757427,  54.61394735,  175.38686454],
+        [-53.24104443, -53.25358941, 143.24104443, 143.25358941,   18.64518739],
+        [-53.24104443, -53.25358941, 143.24104443, 143.25358941,   18.64518739],
+        [ 32.46416854,  32.49049442,  57.53583146,  57.50950558,  204.94779808],
+        [ 32.44261656,  32.46896406,  57.55738344,  57.53103594,  204.97018437],
+        [-23.40807981, -23.44614754, 113.40807981, 113.44614754,   79.54775354],
+        [  1.10799151,   1.45854211,  88.89200849,  88.54145789,  104.53902695],
+        [ 32.21889505,  32.24546849,  57.78110495,  57.75453151,  204.9161683 ],
+        [ 32.21889505,  32.24546849,  57.78110495,  57.75453151,  204.9161683 ],
+        [ 32.21889505,  32.24546849,  57.78110495,  57.75453151,  204.9161683 ],
+    ]
+    data = pd.DataFrame(data=values, columns=columns)
+    return data
+
+
 def expected_spa():
     columns = ['elevation', 'apparent_elevation', 'zenith', 'apparent_zenith', 'azimuth',
                'equation_of_time']
@@ -463,6 +492,7 @@ def _generate_solarposition_dataframe(inputs, algorithm, **kwargs):
     (sg2, expected_sg2, {}),
     (sg2_c, expected_sg2, {}),
     (skyfield, expected_skyfield, {}),
+    (soltrack, expected_soltrack, {}),
     (spa, expected_spa, {}),
     (usno, expected_usno, {}),
     (usno, expected_usno, {'delta_t': None}),
