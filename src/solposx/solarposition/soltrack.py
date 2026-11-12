@@ -11,9 +11,6 @@ def soltrack(times, latitude, longitude, air_pressure=101325, temperature=12):
     The SolTrack algorithm [1]_ has a stated uncertainty of 0.0036 ± 0.0042◦
     from years 2017–2116.
 
-    The NOAA algorithm uses the SPA refraction model,
-    see :py:func:`~solposx.refraction.spa`.
-
     Parameters
     ----------
     times : pandas.DatetimeIndex
