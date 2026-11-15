@@ -17,7 +17,7 @@ Bug fix
   refraction correction is calculated from apparent elevation.
   (:pull:`166`)
 * Remove unused ``delta_t`` parameter from
-  :py:func:`solposx.solarposition.noaa`. (:issue:`168`, :pull:`170`)
+  :py:func:`solposx.solarposition.noaa`. (:issue:`169`, :pull:`170`)
 
 Changed
 ^^^^^^^
