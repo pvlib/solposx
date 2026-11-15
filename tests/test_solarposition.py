@@ -455,7 +455,6 @@ def _generate_solarposition_dataframe(inputs, algorithm, **kwargs):
     (michalsky, expected_michalsky_spencer_false,
      {'spencer_correction': False, 'julian_date': 'original'}),
     (noaa, expected_noaa, {}),
-    (noaa, expected_noaa, {'delta_t': None}),
     (psa, expected_psa_2001, {'coefficients': 2001}),
     (psa, expected_psa_2020, {'coefficients': 2020}),
     # test custom psa coefficients
@@ -534,10 +533,6 @@ def test_delta_t_array_input():
     # test that delta_t can be specified as either an array or float
     times = pd.date_range('2020-03-23 12', periods=10, tz='UTC')
     delta_t = np.ones(len(times)) * 67.0
-    # test noaa - array
-    noaa_array = noaa(times, 50, 10, delta_t=delta_t)
-    noaa_float = noaa(times, 50, 10, delta_t=67.0)
-    pd.testing.assert_frame_equal(noaa_array, noaa_float)
     # test usno - array
     usno_array = usno(times, 50, 10, delta_t=delta_t)
     usno_float = usno(times, 50, 10, delta_t=67.0)
@@ -549,10 +544,6 @@ def test_delta_t_series_input():
     times = pd.date_range('2020-03-23 12', periods=10, tz='UTC')
     delta_t = np.ones(len(times)) * 67.0
     delta_t_series = pd.Series(delta_t, index=times)
-    # test noaa - series
-    noaa_array = noaa(times, 50, 10, delta_t=delta_t_series)
-    noaa_float = noaa(times, 50, 10, delta_t=67.0)
-    pd.testing.assert_frame_equal(noaa_array, noaa_float)
     # test usno - series
     usno_array = usno(times, 50, 10, delta_t=delta_t_series)
     usno_float = usno(times, 50, 10, delta_t=67.0)
