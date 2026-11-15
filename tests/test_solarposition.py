@@ -492,6 +492,7 @@ def _generate_solarposition_dataframe(inputs, algorithm, **kwargs):
     (skyfield, expected_skyfield, {}),
     (spa, expected_spa, {}),
     (usno, expected_usno, {}),
+    (usno, expected_usno, {'delta_t': None}),
     (usno, expected_usno_delta_t, {'delta_t': 70}),
     # test default usno gmst_option parameter
     (usno, expected_usno, {'gmst_option': 1}),
