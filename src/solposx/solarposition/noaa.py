@@ -1,12 +1,11 @@
 import pandas as pd
 from pvlib.tools import sind, cosd, asind, acosd, tand
 import numpy as np
-from pvlib import spa
 from solposx import refraction
 from solposx.tools import _pandas_to_utc, _fractional_hour
 
 
-def noaa(times, latitude, longitude, *, delta_t=67.0):
+def noaa(times, latitude, longitude):
     """
     Calculate solar position using the NOAA algorithm.
 
@@ -31,12 +30,6 @@ def noaa(times, latitude, longitude, *, delta_t=67.0):
     longitude : float
         Longitude in decimal degrees. Positive east of prime meridian,
         negative to west. [degrees]
-    delta_t : numeric, default 67.0
-        Difference between terrestrial time and UT1.
-        If ``delta_t`` is None, uses :py:func:`pvlib.spa.calculate_deltat`
-        using ``times.year`` and ``times.month`` from pandas.DatetimeIndex.
-        For most simulations the default ``delta_t`` is sufficient.
-        The USNO has historical and forecasted ``delta_t`` [3]_. [seconds]
 
     Returns
     -------
@@ -62,8 +55,6 @@ def noaa(times, latitude, longitude, *, delta_t=67.0):
        https://gml.noaa.gov/grad/solcalc/calcdetails.html
     .. [2] J. Meeus, "Astronomical Algorithms," 1991.
        https://archive.org/details/astronomicalalgorithmsjeanmeeus1991
-    .. [3] USNO delta T:
-       https://maia.usno.navy.mil/products/deltaT
     """
     times_utc = _pandas_to_utc(times)
     julian_date = np.asarray(times_utc.to_julian_date())
@@ -74,9 +65,6 @@ def noaa(times, latitude, longitude, *, delta_t=67.0):
         latitude += -1e-6
     elif latitude == -90:
         latitude += 1e-6
-
-    if delta_t is None:
-        delta_t = spa.calculate_deltat(times_utc.year, times_utc.month)
 
     # [degrees]
     mean_long = (280.46646 + jc * (36000.76983 + jc * 0.0003032)) % 360
