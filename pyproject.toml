@@ -43,6 +43,7 @@ dependencies = [
     "numpy",
     "pandas",
     "pvlib",
+    "requests",
 ]
 dynamic = ["version"]
 
