@@ -1,15 +1,17 @@
 import pandas as pd
 import numpy as np
 from solposx.tools import _pandas_to_utc
-from pvlib.solarposition import _datetime_to_unixtime
 
-
-def soltrack(times, latitude, longitude, air_pressure=101325, temperature=12):
+def soltrack(times, latitude, longitude, *, air_pressure=101000, temperature=9.85,
+             parallax_correction=True):
     """
     Calculate solar position using the SolTrack algorithm.
 
-    The SolTrack algorithm [1]_ has a stated uncertainty of 0.0036 ± 0.0042◦
+    The SolTrack algorithm [1]_ has a stated uncertainty of 0.0036 ± 0.0042°
     from years 2017–2116.
+
+    The SolTrack authors have also published Python [2]_ and
+    C implementations [3]_.
 
     Parameters
     ----------
@@ -23,10 +25,16 @@ def soltrack(times, latitude, longitude, air_pressure=101325, temperature=12):
     longitude : float
         Longitude in decimal degrees. Positive east of prime meridian,
         negative to west. [degrees]
-    air_pressure : float, default : 101325
-        Annual average air pressure. [Pa]
-    temperature : float, default : 12
-        Annual average air temperature. [°C]
+    air_pressure : float, default : 101000
+        Annual average air pressure.
+        The default value comes from [2]_. [Pa]
+    temperature : float, default : 9.85
+        Annual average air temperature.
+        The default value comes from [2]_. [°C]
+    parallax_correction : bool, default True
+        If True, account for parallax due to Earth's radius.
+        This adjustment is not described in [1]_, but is included
+        in the published SolTrack code implementations [2]_ and [3]_.
 
     Returns
     -------
@@ -46,6 +54,8 @@ def soltrack(times, latitude, longitude, air_pressure=101325, temperature=12):
     .. [1] Marc van der Sluys and Paul van Kan, "SolTrack: a free,
        fast and accurate routine to compute the position of the Sun,"
        2022, arXiv. :doi:`10.48550/arXiv.2209.01557`
+    .. [2] https://github.com/MarcvdSluys/SolTrack-Python
+    .. [3] https://sourceforge.net/projects/soltrack/
     """
     times_utc = _pandas_to_utc(times)
     tJd = np.asarray(times_utc.to_julian_date()) - 2451545
@@ -110,6 +120,11 @@ def soltrack(times, latitude, longitude, air_pressure=101325, temperature=12):
                   np.cos(H) * np.cos(delta) * np.cos(latitude))
     A = np.arctan2(np.sin(H),
                    np.cos(H)*np.sin(latitude) -np.tan(delta)*np.cos(latitude))
+
+    if parallax_correction:
+        # not present in [1]; included based on [2]
+        # comment from [2]: Horizontal parallax = 8.794" = 4.2635e-5 rad
+        h -= 4.2635e-5 * np.cos(h)
 
     # nearly same as SPA, but constants are very slightly different
     refraction_correction = (
