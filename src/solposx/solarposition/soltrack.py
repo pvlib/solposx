@@ -2,8 +2,16 @@ import pandas as pd
 import numpy as np
 from solposx.tools import _pandas_to_utc
 
-def soltrack(times, latitude, longitude, *, air_pressure=101000, temperature=9.85,
-             parallax_correction=True):
+
+def soltrack(
+    times,
+    latitude,
+    longitude,
+    *,
+    air_pressure=101000,
+    temperature=9.85,
+    parallax_correction=True,
+):
     """
     Calculate solar position using the SolTrack algorithm.
 
@@ -67,17 +75,16 @@ def soltrack(times, latitude, longitude, *, air_pressure=101000, temperature=9.8
 
     # Eqs 2 and 3
     lam0 = 4.895063168 + 628.331966786 * tJc + 5.291838e-6 * tJc**2
-    M = 6.240060141 + 628.301955152 * tJc - 2.682571e-6 * tJc**2 
+    M = 6.240060141 + 628.301955152 * tJc - 2.682571e-6 * tJc**2
 
     # Eqs 4 and 5
-    C = (
-        (3.34161088e-2 - 8.40725e-5*tJc - 2.443e-7*tJc**2) * np.sin(M) +
-        (3.489437e-4 - 1.76278e-6 * tJc) * np.sin(2*M)
-    )
+    C = (3.34161088e-2 - 8.40725e-5 * tJc - 2.443e-7 * tJc**2) * np.sin(M) + (
+        3.489437e-4 - 1.76278e-6 * tJc
+    ) * np.sin(2 * M)
     lam = lam0 + C
 
     # Eq 6
-    omega = 2.1824390725 - 33.7570464271 * tJc + 3.622256e-5 * tJc**2 
+    omega = 2.1824390725 - 33.7570464271 * tJc + 3.622256e-5 * tJc**2
 
     # Eq 7
     delta_psi = -8.338601e-5 * np.sin(omega)
@@ -116,10 +123,12 @@ def soltrack(times, latitude, longitude, *, air_pressure=101000, temperature=9.8
     H = theta - alpha
 
     # Eqs 24, 25
-    h = np.arcsin(np.sin(delta) * np.sin(latitude) +
-                  np.cos(H) * np.cos(delta) * np.cos(latitude))
-    A = np.arctan2(np.sin(H),
-                   np.cos(H)*np.sin(latitude) -np.tan(delta)*np.cos(latitude))
+    h = np.arcsin(
+        np.sin(delta) * np.sin(latitude) + np.cos(H) * np.cos(delta) * np.cos(latitude)
+    )
+    A = np.arctan2(
+        np.sin(H), np.cos(H) * np.sin(latitude) - np.tan(delta) * np.cos(latitude)
+    )
 
     if parallax_correction:
         # not present in [1]; included based on [2]
@@ -128,10 +137,10 @@ def soltrack(times, latitude, longitude, *, air_pressure=101000, temperature=9.8
 
     # nearly same as SPA, but constants are very slightly different
     refraction_correction = (
-        0.0002967 /
-        np.tan(h + 0.0031376 / (h + 0.0892)) *
-        (283 / (temperature+273.15)) *
-        (air_pressure / 101000)
+        0.0002967
+        / np.tan(h + 0.0031376 / (h + 0.0892))
+        * (283 / (temperature + 273.15))
+        * (air_pressure / 101000)
     )
 
     elevation = np.degrees(h)
