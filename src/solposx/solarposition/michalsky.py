@@ -6,7 +6,7 @@ from solposx.tools import _pandas_to_utc, _fractional_hour
 
 
 def michalsky(
-    times, latitude, longitude, spencer_correction=True, julian_date="original"
+    times, latitude, longitude, *, spencer_correction=True, julian_date="original",
 ):
     """
     Calculate solar position using the Michalsky algorithm.
