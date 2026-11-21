@@ -12,6 +12,7 @@ Algorithms that include an atmospheric refraction model also return
 .. autosummary::
    :toctree: generated/
 
+   solarposition.enea
    solarposition.iqbal
    solarposition.michalsky
    solarposition.nasa_horizons
