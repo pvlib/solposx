@@ -51,11 +51,11 @@ def enea(times, latitude, longitude, air_pressure=101325, temperature=12, delta_
     phi = np.radians(latitude)
     theta = np.radians(longitude)
 
-    times = _pandas_to_utc(times)
-    y = np.asarray(times.year)
-    m = np.asarray(times.month)
-    d = np.asarray(times.day)
-    UT = np.asarray(times.hour) + np.asarray(times.minute) / 60 + np.asarray(times.second) / 3600
+    times_utc = _pandas_to_utc(times)
+    y = np.asarray(times_utc.year)
+    m = np.asarray(times_utc.month)
+    d = np.asarray(times_utc.day)
+    UT = np.asarray(times_utc.hour) + np.asarray(times_utc.minute) / 60 + np.asarray(times_utc.second) / 3600
 
     mask = m <= 2
     mb = np.where(mask, m+12, m)
