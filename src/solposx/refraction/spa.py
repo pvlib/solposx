@@ -9,7 +9,7 @@ def spa(elevation, pressure=101325.0, temperature=12.0, *, refraction_limit=-0.5
 
     This function calculates the atmospheric refraction correction of the solar
     elevation angle using the method described in Reda and Andreas's [1]_
-    Solar Position Algorithm (SPA).
+    Solar Position Algorithm (SPA) by way of [2]_ and [3]_.
 
     Parameters
     ----------
@@ -45,6 +45,9 @@ def spa(elevation, pressure=101325.0, temperature=12.0, *, refraction_limit=-0.5
     .. [1] I. Reda and A. Andreas, "Solar Position Algorithm for Solar
        Radiation Applications (Revised)," NREL Report No. TP-560-34302, pp. 55,
        2008, :doi:`10.2172/15003974`.
+    .. [2] J. Meeus, Astronomical Algorithms, 1991.
+    .. [3] Þ. Sæmundsson, "Atmospheric refraction", Sky and Telescope 72, pp. 70,
+       1986.
     """  # noqa: E501
     pressure = pressure / 100  # convert from Pa to hPa/mbar
     # switch sets elevation when the sun is below the horizon
